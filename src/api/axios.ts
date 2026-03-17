@@ -26,16 +26,18 @@ api.interceptors.response.use(
 	(response) => response,
 
 	async (error) => {
+		// silent refresh
 		const originalRequest = error.config;
 
 		// If the error is 401 (Unauthorized) and we haven't tried to refresh yet
-		// AND it's not a login/signup attempt (we don't want to refresh on failed credentials)
+		// AND it's not a login/signup/refresh attempt (we don't want to refresh on failed credentials)
 		const isAuthRequest =
 			originalRequest.url?.includes("/auth/login") ||
-			originalRequest.url?.includes("/auth/signup");
+			originalRequest.url?.includes("/auth/signup") ||
+			originalRequest.url?.includes("/auth/refresh");
 
 		if (
-			error.response?.status === 401 &&
+			error.response?.status === 401 && // token expired
 			!originalRequest._retry &&
 			!isAuthRequest
 		) {

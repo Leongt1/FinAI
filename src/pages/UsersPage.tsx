@@ -1,4 +1,4 @@
-import Navbar from "../components/NavBar";
+import Navbar from "../components/Navbar";
 import { useUsers } from "../hooks/useUsers";
 
 const UsersPage = () => {
@@ -50,30 +50,33 @@ const UsersPage = () => {
 						<tbody className="divide-y divide-gray-100">
 							{users?.map((user) => (
 								<tr
-									key={user.ID}
+									key={user.id}
 									className="hover:bg-gray-50 transition-colors"
 								>
 									<td className="px-6 py-4 text-sm text-gray-900">
-										{user.Name}
+										{user.name}
 									</td>
 									<td className="px-6 py-4 text-sm text-gray-900">
-										{user.Email}
+										{user.email}
 									</td>
 									<td className="px-6 py-4 text-sm text-gray-900">
-										{user.Gender}
+										{user.gender}
 									</td>
 									<td className="px-6 py-4 text-sm text-gray-900">
-										{user.DateOfBirth
-											? new Date(user.DateOfBirth).toLocaleDateString("en-US", {
-													year: "numeric",
-													month: "short",
-													day: "numeric",
-												})
+										{user.date_of_birth
+											? new Date(user.date_of_birth).toLocaleDateString(
+													"en-US",
+													{
+														year: "numeric",
+														month: "short",
+														day: "numeric",
+													},
+												)
 											: "-"}
 									</td>
 									<td className="px-6 py-4 text-sm text-gray-900">
 										<button
-											onClick={() => deleteUser(user.ID)}
+											onClick={() => deleteUser(user.id)}
 											disabled={isDeleting}
 											className="bg-red-500 text-white text-sm px-3 py-1.5 rounded-lg font-medium disabled:opacity-50 hover:bg-red-700 transition-colors cursor-pointer"
 										>

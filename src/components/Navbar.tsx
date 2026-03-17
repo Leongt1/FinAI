@@ -29,7 +29,7 @@ const Navbar = () => {
 				<NavLink to={"/transactions"} className={navLinkClass}>
 					Transactions
 				</NavLink>
-				{currentUser?.Role === "Admin" && (
+				{currentUser?.role === "Admin" && (
 					<NavLink to={"/admin/users"} className={navLinkClass}>
 						Users
 					</NavLink>
@@ -40,7 +40,7 @@ const Navbar = () => {
 			<div className="flex items-center gap-4">
 				<button
 					className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors cursor-pointer"
-					onClick={() => navigate(`/profile/${currentUser?.ID}`)}
+					onClick={() => navigate(`/profile/${currentUser?.id}`)}
 				>
 					Profile
 				</button>

@@ -33,7 +33,7 @@ const Sidebar = () => {
 				<NavLink to="/profile" className={navLinkClass}>
 					Profile
 				</NavLink>
-				{currentUser?.Role === "Admin" && (
+				{currentUser?.role === "Admin" && (
 					<NavLink to={"/admin/users"} className={navLinkClass}>
 						Users
 					</NavLink>

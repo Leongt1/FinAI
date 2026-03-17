@@ -19,7 +19,7 @@ export const ProtectedRoute = ({ requiredRole }: ProtectedRouteProps) => {
 		return <Navigate to="/login" replace />;
 	}
 
-	if (requiredRole && user.Role !== requiredRole) {
+	if (requiredRole && user.role !== requiredRole) {
 		return <Navigate to="/dashboard" replace />;
 	}
 

@@ -1,4 +1,4 @@
-import type { UpdateRequest, User } from "../types";
+import type { UpdateUserRequest, User } from "../types";
 import api from "./axios";
 
 // GET /users
@@ -18,7 +18,7 @@ export const getUserById = async (id: string): Promise<User> => {
 // Partial update — only send fields you want to change
 export const updateUser = async (
 	id: string,
-	req: UpdateRequest,
+	req: UpdateUserRequest,
 ): Promise<void> => {
 	await api.put<User>(`/users/${id}`, req);
 };

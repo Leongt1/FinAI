@@ -36,9 +36,11 @@ export const useUsers = () => {
 		users,
 		isLoading,
 		error,
+
 		deleteUser: (id: string) => deleteMutation.mutate(id),
 		updateMutation: (id: string, req: UpdateUserRequest) =>
 			updateMutation.mutate({ id, req }),
+
 		isDeleting: deleteMutation.isPending,
 		isUpdating: deleteMutation.isPending,
 	};
