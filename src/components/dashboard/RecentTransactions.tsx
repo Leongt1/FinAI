@@ -1,13 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import { recentTransactions } from "../../data/dashboardData";
 
 const RecentTransactions = () => {
+	const navigate = useNavigate();
+
 	return (
 		<div className="bg-white rounded-2xl border border-gray-100 p-6 mt-4">
 			<div className="flex justify-between items-center mb-6">
 				<h2 className="text-lg font-semibold text-gray-900">
 					Recent Transactions
 				</h2>
-				<button className="text-sm text-gray-400 border-1 border-gray-300 px-2 py-1 rounded-md hover:text-gray-600 hover:border-gray-400 font-medium cursor-pointer transition-colors">
+				<button
+					onClick={() => navigate("/transactions")}
+					className="text-sm text-gray-400 border-1 border-gray-300 px-2 py-1 rounded-md hover:text-gray-600 hover:border-gray-400 font-medium cursor-pointer transition-colors"
+				>
 					View all
 				</button>
 			</div>

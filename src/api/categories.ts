@@ -2,7 +2,7 @@ import type { Category, CreateCategoryRequest } from "../types";
 import api from "./axios";
 
 export const listCategories = async (): Promise<Category[]> => {
-	const { data } = await api.get<Category[]>("/categories");
+	const { data } = await api.get<Category[]>("/categories/");
 	return data;
 };
 

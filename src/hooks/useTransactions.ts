@@ -30,6 +30,7 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		mutationFn: (input: CreateTransactionRequest) => createTransaction(input),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
+			queryClient.invalidateQueries({ queryKey: ["categories"] });
 		},
 	});
 
@@ -44,6 +45,7 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		}) => updateTransaction(id, input),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
+			queryClient.invalidateQueries({ queryKey: ["categories"] });
 		},
 	});
 
