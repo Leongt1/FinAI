@@ -3,29 +3,51 @@ import DashboardLayout from "../components/DashboardLayout";
 import type { Transaction, TransactionFilter } from "../types";
 import { useTransactions } from "../hooks/useTransactions";
 import { useCategories } from "../hooks/useCategories";
-import CategoryDropdown from "../components/CategoryDropDown";
 import TransactionModel from "../components/TransactionModel";
+import CategoryDropdown from "../components/CategoryDropDown";
 
-const getMonthRange = () => {
-	const now = new Date();
-	const from = new Date(now.getFullYear(), now.getMonth(), 1);
-	const to = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+const getMonthRange = (year: number, month: number) => {
+	const from = new Date(year, month, 1);
+	const to = new Date(year, month + 1, 0);
 	return {
 		date_from: from.toISOString(),
 		date_to: to.toISOString(),
 	};
 };
 
+const now = new Date();
+
 const TransactionPage = () => {
-	const [filters, setFilters] = useState<TransactionFilter>(getMonthRange());
+	const monthNames = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec",
+	];
+
+	const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
+	const [selectedYear, setSelectedYear] = useState(now.getFullYear());
+	const [filters, setFilters] = useState<TransactionFilter>(
+		getMonthRange(now.getFullYear(), now.getMonth()),
+	);
+
 	const [activeTab, setActiveTab] = useState<"All" | "Income" | "Expense">(
 		"All",
 	);
-
 	const [isModelOpen, setIsModelOpen] = useState(false);
 	const [selectedTransaction, setSelectedTransaction] = useState<
 		Transaction | undefined
 	>(undefined);
+
+	const [showToolTip, setShowToolTip] = useState(false);
 
 	const { transactions, isLoading, error, deleteTransaction, isDeleting } =
 		useTransactions(filters);
@@ -74,29 +96,47 @@ const TransactionPage = () => {
 				{/* Header */}
 				<div className="bg-white rounded-3xl p-6 mb-4 flex justify-between items-center">
 					<h1 className="text-2xl font-semibold text-gray-900">Transactions</h1>
+					{/* Add transaction Btn */}
+					<div className="fixed flex-col items-end right-10 bottom-10 flex items-center gap-2">
+						{showToolTip && (
+							<span className="text-gray-600 text-sm bg-white/50 px-2 py-1 rounded-lg whitespace-nowrap shadow-md">
+								New Transaction
+							</span>
+						)}
+						<button
+							onClick={handleAddNew}
+							onMouseEnter={() => setShowToolTip(true)}
+							onMouseLeave={() => setShowToolTip(false)}
+							className="bg-white w-12 h-12 border-1 border-gray-300 p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors shadow-md"
+						>
+							<p className="text-2xl mb-1 font-semibold text-black">+</p>
+						</button>
+					</div>
 				</div>
 				{/* Summary Cards */}
 				<div className="flex gap-6 justify-start">
-					<div className="bg-white rounded-3xl p-6 px-10 mb-4 flex flex-col items-center justify-between">
+					<div className="bg-white rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border-2 border-blue-200 shadow-sm">
 						<p className="text-gray-600 text-sm">Total Income</p>
-						<p className="font-bold text-2xl text-green-400">
+						<p className="font-bold text-2xl text-blue-400">
 							₹{summary.income.toFixed(2)}
 						</p>
 					</div>
-					<div className="bg-white rounded-3xl p-6 px-10 mb-4 flex flex-col items-center justify-between">
+					<div className="bg-white rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border-2 border-red-200 shadow-sm">
 						<p className="text-gray-600 text-sm">Total Expense</p>
 						<p className="font-bold text-2xl text-red-400">
 							₹{summary.expense.toFixed(2)}
 						</p>
 					</div>
-					<div className="bg-white rounded-3xl p-6 px-10 mb-4 flex flex-col items-center justify-between">
+					<div
+						className={`bg-white rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border-2 ${summary.net >= 0 ? "border-green-200" : "border-red-200"} shadow-sm`}
+					>
 						<p className="text-gray-600 text-sm">Net Savings</p>
 						<p
 							className={`font-bold text-2xl ${
 								summary.net >= 0 ? "text-green-400" : "text-red-400"
 							}`}
 						>
-							{summary.net >= 0 ? "+" : ""}₹{summary.net.toFixed(2)}
+							{summary.net >= 0 ? "+" : "-"}₹{Math.abs(summary.net).toFixed(2)}
 						</p>
 					</div>
 				</div>
@@ -133,7 +173,7 @@ const TransactionPage = () => {
 						/>
 					</div>
 					{/* Middle */}
-					<div className="flex items-center gap-2">
+					{/* <div className="flex items-center gap-2">
 						<div className="bg-gray-200 rounded-full px-2 pb-1 cursor-pointer hover:bg-gray-300 transition-colors">
 							←
 						</div>
@@ -141,16 +181,78 @@ const TransactionPage = () => {
 						<div className="bg-gray-200 rounded-full px-2 pb-1 cursor-pointer hover:bg-gray-300 transition-colors">
 							→
 						</div>
-					</div>
-					{/* Right */}
-					<div className="flex items-center gap-2">
-						<p className="text-gray-600 text-sm">Add Transaction</p>
+					</div> */}
+				</div>
+				{/* Month/Year navigation bar */}
+				<div className="bg-white rounded-3xl mb-1 flex items-center px-4">
+					{/* Year */}
+					<div className="flex items-center gap-1 pr-4 border-r border-gray-200">
 						<button
-							onClick={handleAddNew}
-							className="bg-green-200 border-2 border-green-300 p-2 rounded-full flex items-center justify-center w-10 h-10 cursor-pointer hover:bg-green-300 transition-colors"
+							onClick={() => {
+								const newYear = selectedYear - 1;
+								setSelectedYear(newYear);
+								setFilters((prev) => ({
+									...prev,
+									...getMonthRange(newYear, selectedMonth),
+								}));
+							}}
+							className="text-gray-400 hover:text-gray-600 cursor-pointer px-1"
 						>
-							<p className="text-2xl mb-1 font-semibold text-green-800">+</p>
+							←
 						</button>
+						<span className="text-sm font-semibold text-gray-700 w-10 text-center">
+							{selectedYear}
+						</span>
+						<button
+							onClick={() => {
+								const newYear = selectedYear + 1;
+								setSelectedYear(newYear);
+								setFilters((prev) => ({
+									...prev,
+									...getMonthRange(newYear, selectedMonth),
+								}));
+							}}
+							disabled={selectedYear >= now.getFullYear()}
+							className="text-gray-400 hover:text-gray-600 cursor-pointer px-1 disabled:opacity-30 disabled:cursor-not-allowed"
+						>
+							→
+						</button>
+					</div>
+
+					{/* Month tabs */}
+					<div className="flex flex-1">
+						{monthNames.map((month, index) => {
+							const isActive = selectedMonth === index;
+							const isFuture =
+								selectedYear === now.getFullYear() && index > now.getMonth();
+
+							return (
+								<button
+									key={month}
+									onClick={() => {
+										if (isFuture) return;
+										setSelectedMonth(index);
+										setFilters((prev) => ({
+											...prev,
+											...getMonthRange(selectedYear, index),
+										}));
+									}}
+									className={`flex-1 py-4 text-sm font-medium transition-colors relative ${
+										isActive
+											? "text-gray-900 font-bold"
+											: isFuture
+												? "text-gray-300 cursor-not-allowed"
+												: "text-gray-500 hover:text-gray-700 cursor-pointer"
+									}`}
+								>
+									{month}
+									{/* active underline */}
+									{isActive && (
+										<span className="absolute bottom-0 left-0 right-0 h-0.5 bg-black rounded-full" />
+									)}
+								</button>
+							);
+						})}
 					</div>
 				</div>
 				{/* Transaction List */}

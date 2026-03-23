@@ -62,15 +62,16 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		isLoading,
 		error,
 
-		createTransaction: (input: CreateTransactionRequest) =>
-			createMutation.mutate(input),
-		updateTransaction: ({
-			id,
-			input,
-		}: {
-			id: string;
-			input: UpdateTransactionRequest;
-		}) => updateMutation.mutate({ id, input }),
+		createTransaction: (
+			input: CreateTransactionRequest,
+			options?: { onSuccess?: () => void },
+		) => createMutation.mutate(input, { onSuccess: options?.onSuccess }),
+		updateTransaction: (
+			id: string,
+			input: UpdateTransactionRequest,
+			options?: { onSuccess?: () => void },
+		) =>
+			updateMutation.mutate({ id, input }, { onSuccess: options?.onSuccess }),
 		deleteTransaction: (id: string) => deleteMutation.mutate(id),
 
 		isCreating: createMutation.isPending,

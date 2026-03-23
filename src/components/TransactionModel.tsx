@@ -72,7 +72,9 @@ const TransactionModel = ({
 				type,
 				date: new Date(date).toISOString(),
 			};
-			updateTransaction({ id: transaction!.id, input });
+			updateTransaction(transaction!.id, input, {
+				onSuccess: () => onClose(),
+			});
 		} else {
 			const input: CreateTransactionRequest = {
 				category_id: categoryID,
@@ -81,10 +83,10 @@ const TransactionModel = ({
 				type,
 				date: new Date(date).toISOString(),
 			};
-			createTransaction(input);
+			createTransaction(input, {
+				onSuccess: () => onClose(),
+			});
 		}
-
-		onClose();
 	};
 
 	if (!isOpen) return null;
