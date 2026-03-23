@@ -31,8 +31,15 @@ export const useCategories = () => {
 
 	// rename category
 	const renameMutation = useMutation({
-		mutationFn: ({ id, name }: { id: string; name: string }) =>
-			renameCategory(id, name),
+		mutationFn: ({
+			id,
+			name,
+			icon,
+		}: {
+			id: string;
+			name: string;
+			icon?: string;
+		}) => renameCategory(id, name, icon),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 		},
@@ -59,10 +66,18 @@ export const useCategories = () => {
 		isLoading,
 		error,
 
-		createCategory: (input: CreateCategoryRequest) =>
-			createMutation.mutate(input),
-		renameCategory: (id: string, name: string) =>
-			renameMutation.mutate({ id, name }),
+		createCategory: (
+			input: CreateCategoryRequest,
+			options?: { onSuccess?: () => void },
+		) => createMutation.mutate(input, options),
+
+		renameCategory: (
+			id: string,
+			name: string,
+			icon?: string,
+			options?: { onSuccess?: () => void },
+		) => renameMutation.mutate({ id, name, icon }, options),
+
 		hideCategory: (id: string) => hideMutation.mutate(id),
 		unhideCategory: (id: string) => unhideMutation.mutate(id),
 

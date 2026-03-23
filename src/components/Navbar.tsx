@@ -29,6 +29,9 @@ const Navbar = () => {
 				<NavLink to={"/transactions"} className={navLinkClass}>
 					Transactions
 				</NavLink>
+				<NavLink to={"/categories"} className={navLinkClass}>
+					Categories
+				</NavLink>
 				{currentUser?.role === "Admin" && (
 					<NavLink to={"/admin/users"} className={navLinkClass}>
 						Users

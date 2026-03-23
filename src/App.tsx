@@ -9,6 +9,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
 import ProfilePage from "./pages/ProfilePage";
 import TransactionPage from "./pages/TransactionPage";
+import CategoriesPage from "./pages/CategoriesPage";
 
 const App = () => {
 	const { restoreSession } = useAuth();
@@ -35,8 +36,9 @@ const App = () => {
 			{/* user routes */}
 			<Route element={<ProtectedRoute />}>
 				<Route path="/dashboard" element={<DashboardPage />} />
-				<Route path="/profile/:id" element={<ProfilePage />} />
+				<Route path="/profile" element={<ProfilePage />} />
 				<Route path="/transactions" element={<TransactionPage />} />
+				<Route path="/categories" element={<CategoriesPage />} />
 			</Route>
 
 			{/* admin routes */}

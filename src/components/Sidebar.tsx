@@ -30,6 +30,9 @@ const Sidebar = () => {
 				<NavLink to="/budget" className={navLinkClass}>
 					Budget
 				</NavLink>
+				<NavLink to="/categories" className={navLinkClass}>
+					Categories
+				</NavLink>
 				<NavLink to="/profile" className={navLinkClass}>
 					Profile
 				</NavLink>
