@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { LoginResponse } from "../types";
 
 // base instance
 const api = axios.create({
@@ -46,7 +47,7 @@ api.interceptors.response.use(
 			try {
 				// Call the refresh endpoint
 				// Try to get a new access token using the refresh_token cookie
-				const { data } = await axios.post(
+				const { data } = await axios.post<LoginResponse>(
 					"http://localhost:8080/api/v1/auth/refresh",
 					{},
 					{ withCredentials: true },

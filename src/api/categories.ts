@@ -13,9 +13,7 @@ export const createCategory = async (
 };
 
 export const renameCategory = async (
-	id: string,
-	name: string,
-	icon?: string,
+	{id, name, icon}: Pick<Category, "id" | "name" | "icon">
 ): Promise<void> => {
 	await api.patch(`/categories/${id}/rename`, {
 		name,

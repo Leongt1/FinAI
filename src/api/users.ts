@@ -20,10 +20,10 @@ export const updateUser = async (
 	id: string,
 	req: UpdateUserRequest,
 ): Promise<void> => {
-	await api.put<User>(`/users/${id}`, req);
+	await api.patch(`/users/${id}`, req);
 };
 
 // DELETE /users/:id
 export const deleteUser = async (id: string): Promise<void> => {
-	await api.delete<User>(`/users/${id}`);
+	await api.delete(`/users/${id}`);
 };

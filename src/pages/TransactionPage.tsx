@@ -4,7 +4,7 @@ import type { Transaction, TransactionFilter } from "../types";
 import { useTransactions } from "../hooks/useTransactions";
 import { useCategories } from "../hooks/useCategories";
 import TransactionModel from "../components/TransactionModel";
-import CategoryDropdown from "../components/CategoryDropDown";
+import CategoryDropdown from "../components/CategoryDropdown";
 
 const getMonthRange = (year: number, month: number) => {
 	const from = new Date(year, month, 1);

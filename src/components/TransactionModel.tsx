@@ -5,9 +5,9 @@ import type {
 	Transaction,
 	UpdateTransactionRequest,
 } from "../types";
-import CategoryDropdown from "./CategoryDropDown";
 import { useEffect, useState } from "react";
-import CalenderInput from "./CalenderInput";
+import CalendarInput from "./CalenderInput";
+import CategoryDropdown from "./CategoryDropdown";
 
 interface TransactionModelProps {
 	isOpen: boolean;
@@ -177,7 +177,7 @@ const TransactionModel = ({
 					/>
 
 					{/* date */}
-					<CalenderInput
+					<CalendarInput
 						date={date}
 						setDate={(date: string | null) => setDate(date!)}
 					/>

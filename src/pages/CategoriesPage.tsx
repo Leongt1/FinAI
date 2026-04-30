@@ -51,7 +51,7 @@ const CategoriesPage = () => {
 				<div className="bg-white rounded-3xl p-6 mb-4 flex justify-between items-center">
 					<h1 className="text-2xl font-semibold text-gray-900">Categories</h1>
 					{/* Add transaction Btn */}
-					<div className="fixed flex-col items-end right-10 bottom-10 flex items-center gap-2">
+					<div className="fixed flex-col right-10 bottom-10 flex items-center gap-2">
 						{showToolTip && (
 							<span className="text-gray-600 text-sm bg-white/50 px-2 py-1 rounded-lg whitespace-nowrap shadow-md">
 								New Category
@@ -61,7 +61,7 @@ const CategoriesPage = () => {
 							onClick={() => setIsAddOpen(true)}
 							onMouseEnter={() => setShowToolTip(true)}
 							onMouseLeave={() => setShowToolTip(false)}
-							className="bg-white w-12 h-12 border-1 border-gray-300 p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors shadow-md"
+							className="bg-white w-12 h-12 border border-gray-300 p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors shadow-md"
 						>
 							<p className="text-2xl mb-1 font-semibold text-black">+</p>
 						</button>
@@ -112,7 +112,7 @@ const CategoriesPage = () => {
 													renameCategory(
 														cat.id,
 														editingName,
-														editingIcon || undefined,
+														editingIcon,
 														{
 															onSuccess: () => {
 																setEditingId(null);
@@ -160,7 +160,7 @@ const CategoriesPage = () => {
 												renameCategory(
 													cat.id,
 													editingName,
-													editingIcon || undefined,
+													editingIcon,
 													{
 														onSuccess: () => {
 															setEditingId(null);

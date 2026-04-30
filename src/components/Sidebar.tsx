@@ -47,7 +47,7 @@ const Sidebar = () => {
 			<div className="mt-auto border-t border-gray-100 pt-4 w-full flex items-center">
 				<button
 					onClick={handleLogout}
-					className="p-4 m-2 rounded-2xl w-full bg-red-50 border-1 border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600 transition-colors cursor-pointer text-center"
+					className="p-4 m-2 rounded-2xl w-full bg-red-50 border border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600 transition-colors cursor-pointer text-center"
 				>
 					Logout
 				</button>

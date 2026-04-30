@@ -38,8 +38,8 @@ export const useCategories = () => {
 		}: {
 			id: string;
 			name: string;
-			icon?: string;
-		}) => renameCategory(id, name, icon),
+			icon: string;
+		}) => renameCategory({id, name, icon}),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 		},
@@ -74,7 +74,7 @@ export const useCategories = () => {
 		renameCategory: (
 			id: string,
 			name: string,
-			icon?: string,
+			icon: string,
 			options?: { onSuccess?: () => void },
 		) => renameMutation.mutate({ id, name, icon }, options),
 
