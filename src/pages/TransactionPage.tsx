@@ -97,7 +97,7 @@ const TransactionPage = () => {
 				<div className="bg-white rounded-3xl p-6 mb-4 flex justify-between items-center">
 					<h1 className="text-2xl font-semibold text-gray-900">Transactions</h1>
 					{/* Add transaction Btn */}
-					<div className="fixed flex-col right-10 bottom-10 flex items-center gap-2">
+					<div className="fixed right-10 bottom-10 flex items-center gap-2">
 						{showToolTip && (
 							<span className="text-gray-600 text-sm bg-white/50 px-2 py-1 rounded-lg whitespace-nowrap shadow-md">
 								New Transaction
