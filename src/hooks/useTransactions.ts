@@ -65,13 +65,25 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		createTransaction: (
 			input: CreateTransactionRequest,
 			options?: { onSuccess?: () => void },
-		) => createMutation.mutate(input, { onSuccess: options?.onSuccess }),
+		) => createMutation.mutate(input, { 
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ["transactions"] });
+				queryClient.invalidateQueries({ queryKey: ["categories"] });
+				options?.onSuccess?.();
+			} ,
+		}),
 		updateTransaction: (
 			id: string,
 			input: UpdateTransactionRequest,
 			options?: { onSuccess?: () => void },
 		) =>
-			updateMutation.mutate({ id, input }, { onSuccess: options?.onSuccess }),
+			updateMutation.mutate({ id, input }, { 
+				onSuccess: () => {
+					queryClient.invalidateQueries({ queryKey: ["transactions"] });
+					queryClient.invalidateQueries({ queryKey: ["categories"] });
+					options?.onSuccess?.();
+				},
+			 }),
 		deleteTransaction: (id: string) => deleteMutation.mutate(id),
 
 		isCreating: createMutation.isPending,
