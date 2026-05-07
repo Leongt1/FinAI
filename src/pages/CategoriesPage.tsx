@@ -48,12 +48,12 @@ const CategoriesPage = () => {
 		<DashboardLayout>
 			<div className="w-full h-full">
 				{/* Header */}
-				<div className="bg-white rounded-3xl p-6 mb-4 flex justify-between items-center">
-					<h1 className="text-2xl font-semibold text-gray-900">Categories</h1>
+				<div className="bg-surface rounded-3xl p-6 mb-4 flex justify-between items-center">
+					<h1 className="text-2xl font-semibold text-text-muted">Categories</h1>
 					{/* Add transaction Btn */}
-					<div className="fixed flex-col right-10 bottom-10 flex items-center gap-2">
+					<div className="fixed right-10 bottom-10 flex items-center gap-2">
 						{showToolTip && (
-							<span className="text-gray-600 text-sm bg-white/50 px-2 py-1 rounded-lg whitespace-nowrap shadow-md">
+							<span className="text-text-muted text-sm bg-surface/50 px-2 py-1 rounded-lg whitespace-nowrap shadow-md">
 								New Category
 							</span>
 						)}
@@ -61,23 +61,23 @@ const CategoriesPage = () => {
 							onClick={() => setIsAddOpen(true)}
 							onMouseEnter={() => setShowToolTip(true)}
 							onMouseLeave={() => setShowToolTip(false)}
-							className="bg-white w-12 h-12 border border-gray-300 p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors shadow-md"
+							className="bg-surface-raised w-12 h-12 border border-border p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-surface hover:text-accent-glow transition-colors shadow-md"
 						>
-							<p className="text-2xl mb-1 font-semibold text-black">+</p>
+							<p className="text-2xl mb-1 font-semibold text-text-muted">+</p>
 						</button>
 					</div>
 				</div>
 				{/* Categories List */}
 				{isLoading && (
-					<p className="text-center text-sm text-gray-400 py-8">Loading...</p>
+					<p className="text-center text-sm text-text-muted py-8">Loading...</p>
 				)}
 				{error && (
-					<p className="text-center text-sm text-red-500 py-8">
+					<p className="text-center text-sm text-expense py-8">
 						Something went wrong.
 					</p>
 				)}
 				{!isLoading && categories?.length === 0 && (
-					<p className="text-center text-sm text-gray-400 py-8">
+					<p className="text-center text-sm text-text-muted py-8">
 						No categories found.
 					</p>
 				)}
@@ -85,10 +85,10 @@ const CategoriesPage = () => {
 					{categories?.map((cat) => (
 						<div
 							key={cat.id}
-							className={`flex flex-col items-center justify-between gap-2 bg-white/90 border border-gray-200 rounded-3xl p-6 shadow-md hover:shadow-lg transition-shadow ${cat.hidden ? "opacity-50" : ""}`}
+							className={`flex flex-col items-center justify-between gap-2 bg-surface border border-border rounded-3xl p-6 shadow-md hover:shadow-lg transition-shadow ${cat.hidden ? "opacity-50" : ""}`}
 						>
 							{renameError && editingId === cat.id && (
-								<p className="text-red-500 p-2 bg-red-200 rounded-lg mb-4">
+								<p className="text-expense p-2 bg-expense-bg rounded-lg mb-4">
 									Invalid input
 								</p>
 							)}
@@ -100,7 +100,7 @@ const CategoriesPage = () => {
 											maxLength={2}
 											value={editingIcon}
 											onChange={(e) => setEditingIcon(e.target.value)}
-											className="rounded-lg w-15 border border-gray-200 text-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+											className="rounded-lg w-15 border border-border text-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-income"
 										/>
 										<input
 											autoFocus
@@ -128,7 +128,7 @@ const CategoriesPage = () => {
 													setEditingIcon("");
 												}
 											}}
-											className="rounded-lg border border-gray-200 text-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+											className="rounded-lg border border-border text-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-income"
 										/>
 									</>
 								) : (
@@ -137,8 +137,8 @@ const CategoriesPage = () => {
 										<p
 											className={`text-sm font-medium ${
 												cat.hidden
-													? "line-through text-gray-400"
-													: "text-gray-900"
+													? "line-through text-subtle"
+													: "text-text-muted"
 											}`}
 										>
 											{cat.name}
@@ -146,13 +146,13 @@ const CategoriesPage = () => {
 									</>
 								)}
 								{cat.hidden && (
-									<span className="text-xs bg-red-50 text-red-400 px-2 py-0.5 rounded-full">
+									<span className="text-xs bg-surface-raised text-text-muted px-2 py-0.5 border border-border rounded-full">
 										Hidden
 									</span>
 								)}
 							</div>
 
-							<div className="flex gap-2">
+							<div className="flex gap-3 mt-2">
 								{editingId == cat.id ? (
 									<>
 										<button
@@ -171,7 +171,7 @@ const CategoriesPage = () => {
 												)
 											}
 											disabled={isRenaming}
-											className="text-green-500 hover:text-green-600 hover:bg-green-50 rounded-xl cursor-pointer p-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+											className="text-text-muted hover:bg-surface-raised rounded-xl cursor-pointer p-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-border"
 										>
 											Save
 										</button>
@@ -181,7 +181,8 @@ const CategoriesPage = () => {
 												setEditingName("");
 												setEditingIcon("");
 											}}
-											className="text-gray-500 hover:bg-gray-50 rounded-xl cursor-pointer p-2 transition-colors"
+											className="text-text-muted rounded-xl cursor-pointer p-2 transition-colors
+											hover:bg-surface-raised border border-border"
 										>
 											Cancel
 										</button>
@@ -194,7 +195,7 @@ const CategoriesPage = () => {
 												setEditingName(cat.name);
 												setEditingIcon(cat.icon);
 											}}
-											className="text-blue-500 hover:bg-blue-50 rounded-xl cursor-pointer p-2 transition-colors"
+											className="text-text-muted hover:bg-surface-raised rounded-xl cursor-pointer p-2 transition-colors border border-border"
 										>
 											Edit
 										</button>
@@ -204,10 +205,10 @@ const CategoriesPage = () => {
 													? unhideCategory(cat.id)
 													: hideCategory(cat.id)
 											}
-											className={`rounded-xl cursor-pointer p-2 transition-colors ${
+											className={`rounded-xl cursor-pointer p-2 transition-colors border border-border ${
 												cat.hidden
-													? "text-green-500 hover:bg-green-50"
-													: "text-red-500 hover:bg-red-50"
+													? "text-text-muted hover:bg-surface-raised"
+													: "text-accent hover:bg-surface-raised"
 											}`}
 										>
 											{cat.hidden ? "Unhide" : "Hide"}
@@ -220,27 +221,27 @@ const CategoriesPage = () => {
 					{/* Add Category */}
 					{addError && (
 						<div className="flex items-center justify-between bg-white/90 rounded-3xl px-6 py-4">
-							<p className="text-red-500">{addError}</p>
+							<p className="text-expense">{addError}</p>
 						</div>
 					)}
 					{isAddOpen && (
 						<div
 							ref={bottomRef}
-							className="flex flex-col gap-2 items-center justify-between bg-white/90 rounded-3xl px-6 py-4"
+							className="flex flex-col gap-2 items-center justify-between bg-surface rounded-3xl px-6 py-4 border border-border shadow-md"
 						>
 							{createError && (
-								<p className="text-red-500 p-2 bg-red-200 mb-4">
+								<p className="text-expense p-2 bg-expense-bg mb-4">
 									Invalid input
 								</p>
 							)}
-							<div className="flex gap-2">
+							<div className="flex flex-col gap-2">
 								<input
 									type="text"
 									value={newIcon}
 									maxLength={2}
 									onChange={(e) => setNewIcon(e.target.value)}
 									placeholder="Icon (optional)"
-									className="rounded-lg w-15 border border-gray-200 text-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+									className="rounded-lg border border-border text-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-income w-full"
 								/>
 								<input
 									autoFocus
@@ -248,11 +249,11 @@ const CategoriesPage = () => {
 									value={newName}
 									onChange={(e) => setNewName(e.target.value)}
 									placeholder="Category Name"
-									className="rounded-lg border border-gray-200 text-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+									className="rounded-lg border border-border text-sm p-2 px-4 focus:outline-none focus:ring-2 focus:ring-income w-full"
 								/>
 							</div>
 
-							<div className="flex gap-2">
+							<div className="flex gap-3 mt-3">
 								<button
 									onClick={() => {
 										if (!newName.trim()) return;
@@ -266,7 +267,7 @@ const CategoriesPage = () => {
 										);
 									}}
 									disabled={isCreating}
-									className="text-green-500 hover:text-green-600 hover:bg-green-50 rounded-xl cursor-pointer p-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+									className="text-text-muted hover:bg-surface-raised rounded-xl cursor-pointer p-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-border"
 								>
 									{isCreating ? "Saving..." : "Save"}
 								</button>
@@ -274,7 +275,7 @@ const CategoriesPage = () => {
 									onClick={() => {
 										handleAddClose();
 									}}
-									className="text-blue-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl cursor-pointer p-2 transition-colors"
+									className="text-text-muted hover:bg-surface-raised rounded-xl cursor-pointer p-2 transition-colors border border-border"
 								>
 									Cancel
 								</button>

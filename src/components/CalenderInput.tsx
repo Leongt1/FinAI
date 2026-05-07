@@ -24,12 +24,12 @@ const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>(
 		<div
 			ref={ref}
 			onClick={onClick}
-			className="flex items-center gap-2 w-full border border-gray-200 rounded-xl p-3 text-sm cursor-pointer focus-within:ring-1 focus-within:ring-green-500 bg-white"
+			className="flex items-center gap-2 w-full border border-border rounded-xl p-3 text-sm cursor-pointer focus-within:ring-1 focus-within:ring-bg-accent-glow bg-surface"
 		>
-			<span className={`flex-1 ${value ? "text-gray-800" : "text-gray-400"}`}>
+			<span className={`flex-1 ${value ? "text-text-muted" : "text-subtle"}`}>
 				{value || placeholder}
 			</span>
-			<FontAwesomeIcon icon={faCalendar} className="text-gray-400 text-base" />
+			<FontAwesomeIcon icon={faCalendar} className="text-text-muted text-base" />
 		</div>
 	),
 );
