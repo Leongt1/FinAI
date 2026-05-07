@@ -8,7 +8,6 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-// import { monthlyData } from "../../data/dashboardData";
 import { useTransactions } from "../../hooks/useTransactions";
 import { useMemo } from "react";
 
@@ -50,24 +49,27 @@ const MoneyFlowChart = () => {
 	}, [transactions]);
 
 	return (
-		<div className="bg-white rounded-2xl border border-gray-100 p-6 h-full">
-			<h2 className="text-lg font-semibold text-gray-900 mb-6">Money Flow</h2>
+		<div className="bg-surface rounded-2xl border border-border p-6 h-full">
+			<h2 className="text-lg font-semibold text-foreground mb-6">Money Flow</h2>
 			<ResponsiveContainer width="100%" height={300}>
 				<BarChart data={monthlyData}>
-					<CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-					<XAxis dataKey="month" tick={{ fontSize: 12 }} />
-					<YAxis tick={{ fontSize: 12 }} />
-					<Tooltip />
-					<Legend />
+					<CartesianGrid strokeDasharray="3 3" stroke="#1e3530" vertical={false} />
+					<XAxis dataKey="month" tick={{ fontSize: 11, fill: "#7aaa96" }} axisLine={false} tickLine={false} />
+					<YAxis tick={{ fontSize: 11, fill: "#7aaa96" }} axisLine={false} tickLine={false} />
+					<Tooltip
+						contentStyle={{ backgroundColor: "#162622", border: "1px solid #1e3530", borderRadius: "12px", color: "#dff2ea" }}
+						cursor={{ fill: "#1e3530" }}
+					/>
+					<Legend wrapperStyle={{ fontSize: "12px", color: "#7aaa96" }} />
 					<Bar
 						dataKey="income"
-						fill="#41de70ff"
+						fill="#408A71"
 						radius={[4, 4, 0, 0]}
 						name="Income"
 					/>
 					<Bar
 						dataKey="expense"
-						fill="#e85f5fff"
+						fill="#e05c5c"
 						radius={[4, 4, 0, 0]}
 						name="Expense"
 					/>

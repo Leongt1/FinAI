@@ -1,40 +1,16 @@
-export const summaryCards = [
-	{
-		title: "Total Balance",
-		amount: "$15,700",
-		change: "+8.8%",
-		isPositive: true,
-		bg: "bg-green-50",
-		text: "text-green-600",
-		border: "border-green-100",
-	},
-	{
-		title: "Total Income",
-		amount: "$8,500",
-		change: "+5.2%",
-		isPositive: true,
-		bg: "bg-blue-50",
-		text: "text-blue-600",
-		border: "border-blue-100",
-	},
-	{
-		title: "Total Expenses",
-		amount: "$6,222",
-		change: "-10.2%",
-		isPositive: false,
-		bg: "bg-red-50",
-		text: "text-red-600",
-		border: "border-red-100",
-	},
-	{
-		title: "Total Savings",
-		amount: "$32,913",
-		change: "+16.4%",
-		isPositive: true,
-		bg: "bg-purple-50",
-		text: "text-purple-600",
-		border: "border-purple-100",
-	},
+import type { CardType } from "../components/dashboard/SummaryCard";
+
+export const summaryCards: {
+  title: string;
+  amount: string;
+  change: string;
+  isPositive: boolean;
+  type: CardType;
+}[] = [
+	{ title: "Total Balance",  amount: "$15,700", change: "+8.8%",  isPositive: true,  type: "balance" },
+	{ title: "Total Income",   amount: "$8,500",  change: "+5.2%",  isPositive: true,  type: "income"  },
+	{ title: "Total Expenses", amount: "$6,222",  change: "-10.2%", isPositive: false, type: "expense" },
+	{ title: "Total Savings",  amount: "$32,913", change: "+16.4%", isPositive: true,  type: "savings" },
 ];
 
 export const monthlyData = [
@@ -47,10 +23,10 @@ export const monthlyData = [
 ];
 
 export const budgetData = [
-	{ category: "Food & Drink", spent: 450, limit: 600, color: "bg-green-400" },
-	{ category: "Entertainment", spent: 120, limit: 150, color: "bg-blue-400" },
-	{ category: "Transport", spent: 89, limit: 200, color: "bg-purple-400" },
-	{ category: "Shopping", spent: 340, limit: 300, color: "bg-red-400" },
+  { category: "Food & Drink",  spent: 450, limit: 600 },
+  { category: "Entertainment", spent: 120, limit: 150 },
+  { category: "Transport",     spent: 89,  limit: 200 },
+  { category: "Shopping",      spent: 340, limit: 300 },
 ];
 
 export const recentTransactions = [

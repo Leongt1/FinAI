@@ -31,6 +31,14 @@
 	--font-sans: 'Fira Code', monospace;
 }
 
+@layer base {
+	html, body, #root {
+		background-color: theme('color-bg');
+		color: theme('color-foreground');
+		min-height: 100vh;
+	}
+}
+
 /* Datepicker Styles - overrides */
 .react-datepicker {
 	border: 1px solid #e5e7eb !important;

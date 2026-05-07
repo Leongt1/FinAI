@@ -19,10 +19,10 @@ const DashboardPage = () => {
 		<DashboardLayout>
 			{/* Header */}
 			<div className="mb-8">
-				<h1 className="text-2xl font-bold text-gray-900">
-					Welcome back, {currentUser?.name}!
+				<h1 className="text-2xl font-bold text-foreground">
+					Welcome back, <span className="text-accent-glow">{currentUser?.name}</span>!
 				</h1>
-				<p className="text-gray-500 text-sm mt-1">{today}</p>
+				<p className="text-muted text-sm mt-1">{today}</p>
 			</div>
 			{/* Summary Cards */}
 			<div className="grid grid-cols-4 gap-4 mb-8">

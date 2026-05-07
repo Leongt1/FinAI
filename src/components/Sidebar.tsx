@@ -45,7 +45,7 @@ const Sidebar = () => {
 			</nav>
 
 			{/* Logout button */}
-			<div className="border-t border-border pt-4 w-full">
+			<div className="mt-auto border-t-2 border-border pt-4 w-full">
 				<button
 					onClick={handleLogout}
 					className="w-full p-3 m-1 rounded-xl text-expense hover:bg-expense-bg border border-transparent hover:border-expense/30 transition-all font-medium cursor-pointer"

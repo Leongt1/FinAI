@@ -21,7 +21,6 @@ const UsersPage = () => {
 	return (
 		<div
 			className="min-h-screen bg-gray-50 bg-cover bg-center bg-no-repeat p-4"
-			style={{ backgroundImage: `url('/background_image.png')` }}
 		>
 			<Navbar />
 			{/* main content */}

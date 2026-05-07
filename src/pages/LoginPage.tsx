@@ -22,7 +22,6 @@ const LoginPage = () => {
 	return (
 		<div
 			className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat bg-gray-900"
-			style={{ backgroundImage: `url('/background_image.png')` }}
 		>
 			{/* Card */}
 			<div className="bg-white rounded-2xl shadow-md p-10 w-full max-w-md flex flex-col items-center justify-center border border-gray-100">

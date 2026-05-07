@@ -10,40 +10,40 @@ const RecentTransactions = () => {
 	const recent = transactions?.slice(0, 5);
 
 	return (
-		<div className="bg-white rounded-2xl border border-gray-100 p-6 mt-4">
+		<div className="bg-surface rounded-2xl border border-border p-6 mt-4">
 			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-lg font-semibold text-gray-900">
+				<h2 className="text-lg font-semibold text-foreground">
 					Recent Transactions
 				</h2>
 				<button
 					onClick={() => navigate("/transactions")}
-					className="text-sm text-gray-400 border-1 border-gray-300 px-2 py-1 rounded-md hover:text-gray-600 hover:border-gray-400 font-medium cursor-pointer transition-colors"
+					className="text-sm text-text-muted border border-border px-2 py-1 rounded-md hover:text-accent-glow hover:border-border-strong font-medium cursor-pointer transition-all"
 				>
 					View all
 				</button>
 			</div>
 			<table className="w-full">
 				<thead>
-					<tr className="border-b border-gray-100">
-						<th className="text-left text-xs font-medium text-gray-500 uppercase pb-3">
+					<tr className="border-b border-border">
+						<th className="text-left text-xs font-medium text-subtle uppercase pb-3">
 							Description
 						</th>
-						<th className="text-left text-xs font-medium text-gray-500 uppercase pb-3">
+						<th className="text-left text-xs font-medium text-subtle uppercase pb-3">
 							Category
 						</th>
-						<th className="text-left text-xs font-medium text-gray-500 uppercase pb-3">
+						<th className="text-left text-xs font-medium text-subtle uppercase pb-3">
 							Date
 						</th>
-						<th className="text-right text-xs font-medium text-gray-500 uppercase pb-3">
+						<th className="text-right text-xs font-medium text-subtle uppercase pb-3">
 							Amount
 						</th>
 					</tr>
 				</thead>
-				<tbody className="divide-y divide-gray-50">
+				<tbody className="divide-y divide-border">
 					{isLoading && (
 						<tr>
 							<td colSpan={6} className="text-center py-8">
-								<div className="py-4 text-center text-sm text-gray-400">
+								<div className="py-4 text-center text-sm text-subtle">
 									Loading...
 								</div>
 							</td>
@@ -52,7 +52,7 @@ const RecentTransactions = () => {
 					{!isLoading && recent?.length === 0 && (
 						<tr>
 							<td colSpan={6} className="text-center py-8">
-								<div className="py-4 text-center text-sm text-gray-400">
+								<div className="py-4 text-center text-sm text-subtle">
 									No transactions found
 								</div>
 							</td>
@@ -63,15 +63,15 @@ const RecentTransactions = () => {
 						return (
 							<tr
 								key={tx.id}
-								className="hover:bg-gray-50 transition-colors py-1"
+								className="hover:bg-surface-raised transition-colors py-1"
 							>
-								<td className="py-3 text-sm font-medium text-gray-900">
+								<td className="py-3 text-sm font-medium text-foreground">
 									{tx.description ?? "-"}
 								</td>
-								<td className="py-3 text-sm text-gray-500">
+								<td className="py-3 text-sm text-text-muted">
 									{category?.icon} {category?.name ?? "Unknown"}
 								</td>
-								<td className="py-3 text-sm text-gray-500">
+								<td className="py-3 text-sm text-text-muted">
 									{new Date(tx.date).toLocaleDateString("en-IN", {
 										month: "short",
 										day: "numeric",
@@ -80,7 +80,7 @@ const RecentTransactions = () => {
 								</td>
 								<td
 									className={`py-3 text-sm font-semibold text-right ${
-										tx.type === "Income" ? "text-green-500" : "text-red-500"
+										tx.type === "Income" ? "text-income" : "text-expense"
 									}`}
 								>
 									{tx.type === "Income" ? "+" : "-"}₹{tx.amount.toFixed(2)}
@@ -88,26 +88,6 @@ const RecentTransactions = () => {
 							</tr>
 						);
 					})}
-					{/* {recentTransactions.map((tx) => (
-						<tr key={tx.id} className="hover:bg-gray-50 transition-colors py-1">
-							<td className="py-3 text-sm font-medium text-gray-900">
-								{tx.name}
-							</td>
-							<td className="py-3 text-sm text-gray-500">{tx.category}</td>
-							<td className="py-3 text-sm text-gray-500">
-								{new Date(tx.date).toLocaleDateString("en-US", {
-									month: "short",
-									day: "numeric",
-									year: "numeric",
-								})}
-							</td>
-							<td
-								className={`py-3 text-sm font-semibold text-right ${tx.amount > 0 ? "text-green-500" : "text-red-500"}`}
-							>
-								{tx.amount > 0 ? "+" : ""}${Math.abs(tx.amount).toFixed(2)}
-							</td>
-						</tr>
-					))} */}
 				</tbody>
 			</table>
 		</div>
