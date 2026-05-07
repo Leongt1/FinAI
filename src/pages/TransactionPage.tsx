@@ -94,12 +94,12 @@ const TransactionPage = () => {
 		<DashboardLayout>
 			<div className="w-full h-full">
 				{/* Header */}
-				<div className="bg-white rounded-3xl p-6 mb-4 flex justify-between items-center">
-					<h1 className="text-2xl font-semibold text-gray-900">Transactions</h1>
+				<div className="bg-surface rounded-3xl p-6 mb-4 flex justify-between items-center">
+					<h1 className="text-2xl font-semibold text-accent">Transactions</h1>
 					{/* Add transaction Btn */}
 					<div className="fixed right-10 bottom-10 flex items-center gap-2">
 						{showToolTip && (
-							<span className="text-gray-600 text-sm bg-white/50 px-2 py-1 rounded-lg whitespace-nowrap shadow-md">
+							<span className="text-text-muted text-sm bg-surface-raised px-2 py-1 rounded-lg whitespace-nowrap shadow-md">
 								New Transaction
 							</span>
 						)}
@@ -107,33 +107,33 @@ const TransactionPage = () => {
 							onClick={handleAddNew}
 							onMouseEnter={() => setShowToolTip(true)}
 							onMouseLeave={() => setShowToolTip(false)}
-							className="bg-white w-12 h-12 border border-gray-300 p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors shadow-md"
+							className="bg-surface w-12 h-12 border border-transparent hover:border-border p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-surface-raised transition-all shadow-md"
 						>
-							<p className="text-2xl mb-1 font-semibold text-black">+</p>
+							<p className="text-2xl mb-1 font-semibold text-accent-glow">+</p>
 						</button>
 					</div>
 				</div>
 				{/* Summary Cards */}
 				<div className="flex gap-6 justify-start">
-					<div className="bg-white rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border-2 border-blue-200 shadow-sm">
-						<p className="text-gray-600 text-sm">Total Income</p>
-						<p className="font-bold text-2xl text-blue-400">
+					<div className="bg-surface rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border border-border shadow-sm">
+						<p className="text-text-muted text-sm">Total Income</p>
+						<p className="font-bold text-2xl text-income">
 							₹{summary.income.toFixed(2)}
 						</p>
 					</div>
-					<div className="bg-white rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border-2 border-red-200 shadow-sm">
-						<p className="text-gray-600 text-sm">Total Expense</p>
-						<p className="font-bold text-2xl text-red-400">
+					<div className="bg-surface rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border border-border shadow-sm">
+						<p className="text-text-muted text-sm">Total Expense</p>
+						<p className="font-bold text-2xl text-expense">
 							₹{summary.expense.toFixed(2)}
 						</p>
 					</div>
 					<div
-						className={`bg-white rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border-2 ${summary.net >= 0 ? "border-green-200" : "border-red-200"} shadow-sm`}
+						className={`bg-surface rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border border-border shadow-sm`}
 					>
-						<p className="text-gray-600 text-sm">Net Savings</p>
+						<p className="text-text-muted text-sm">Net Savings</p>
 						<p
 							className={`font-bold text-2xl ${
-								summary.net >= 0 ? "text-green-400" : "text-red-400"
+								summary.net >= 0 ? "text-text-muted" : "text-expense"
 							}`}
 						>
 							{summary.net >= 0 ? "+" : "-"}₹{Math.abs(summary.net).toFixed(2)}
@@ -141,20 +141,20 @@ const TransactionPage = () => {
 					</div>
 				</div>
 				{/* Filter section */}
-				<div className="bg-white rounded-3xl p-2 flex justify-between mb-1 items-center">
+				<div className="bg-surface rounded-3xl p-2 flex justify-between mb-1 items-center">
 					{/* Left */}
-					<div className="flex items-center gap-2">
-						<div className="flex items-center gap-2 bg-gray-300 rounded-full p-1">
+					<div className="flex items-center gap-4">
+						<div className="flex items-center gap-2 bg-surface-raised rounded-full p-1">
 							{["All", "Expense", "Income"].map((tab) => (
 								<p
 									key={tab}
 									onClick={() =>
 										handleTabChange(tab as "All" | "Income" | "Expense")
 									}
-									className={`text-sm p-2 px-4 rounded-full cursor-pointer transition-colors ${
+									className={`text-sm text-text-muted p-2 px-4 rounded-full cursor-pointer transition-colors ${
 										activeTab === tab
-											? "bg-white font-semibold"
-											: "hover:bg-gray-200"
+											? "bg-surface font-semibold"
+											: "hover:bg-surface"
 									}`}
 								>
 									{tab}
@@ -184,9 +184,9 @@ const TransactionPage = () => {
 					</div> */}
 				</div>
 				{/* Month/Year navigation bar */}
-				<div className="bg-white rounded-3xl mb-1 flex items-center px-4">
+				<div className="bg-surface rounded-3xl mb-3 flex items-center px-4">
 					{/* Year */}
-					<div className="flex items-center gap-1 pr-4 border-r border-gray-200">
+					<div className="flex items-center gap-1 pr-4 border-r border-border">
 						<button
 							onClick={() => {
 								const newYear = selectedYear - 1;
@@ -196,11 +196,11 @@ const TransactionPage = () => {
 									...getMonthRange(newYear, selectedMonth),
 								}));
 							}}
-							className="text-gray-400 hover:text-gray-600 cursor-pointer px-1"
+							className="text-text-muted hover:text-accent-glow cursor-pointer px-1"
 						>
 							←
 						</button>
-						<span className="text-sm font-semibold text-gray-700 w-10 text-center">
+						<span className="text-sm font-semibold text-text-muted w-10 text-center">
 							{selectedYear}
 						</span>
 						<button
@@ -213,7 +213,7 @@ const TransactionPage = () => {
 								}));
 							}}
 							disabled={selectedYear >= now.getFullYear()}
-							className="text-gray-400 hover:text-gray-600 cursor-pointer px-1 disabled:opacity-30 disabled:cursor-not-allowed"
+							className="text-text-muted hover:text-subtle cursor-pointer px-1 disabled:opacity-30 disabled:cursor-not-allowed"
 						>
 							→
 						</button>
@@ -239,16 +239,16 @@ const TransactionPage = () => {
 									}}
 									className={`flex-1 py-4 text-sm font-medium transition-colors relative ${
 										isActive
-											? "text-gray-900 font-bold"
+											? "text-accent-glow font-bold"
 											: isFuture
-												? "text-gray-300 cursor-not-allowed"
-												: "text-gray-500 hover:text-gray-700 cursor-pointer"
+												? "text-subtle/70 cursor-not-allowed"
+												: "text-text-muted hover:text-foreground cursor-pointer"
 									}`}
 								>
 									{month}
 									{/* active underline */}
 									{isActive && (
-										<span className="absolute bottom-0 left-0 right-0 h-0.5 bg-black rounded-full" />
+										<span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-glow rounded-full" />
 									)}
 								</button>
 							);
@@ -256,56 +256,56 @@ const TransactionPage = () => {
 					</div>
 				</div>
 				{/* Transaction List */}
-				<div className="w-full bg-white rounded-t-3xl">
+				<div className="w-full bg-surface border border-border rounded-t-3xl">
 					<table className="w-full">
 						<thead>
-							<tr className="border-b border-gray-100">
-								<th className="text-left text-xs font-medium text-gray-500 uppercase p-4">
+							<tr className="border-b border-border">
+								<th className="text-left text-xs font-medium text-subtle uppercase p-4">
 									Date
 								</th>
-								<th className="text-left text-xs font-medium text-gray-500 uppercase p-4">
+								<th className="text-left text-xs font-medium text-subtle uppercase p-4">
 									Category
 								</th>
-								<th className="text-left text-xs font-medium text-gray-500 uppercase p-4">
+								<th className="text-left text-xs font-medium text-subtle uppercase p-4">
 									Description
 								</th>
-								<th className="text-left text-xs font-medium text-gray-500 uppercase p-4">
+								<th className="text-left text-xs font-medium text-subtle uppercase p-4">
 									Type
 								</th>
-								<th className="text-left text-xs font-medium text-gray-500 uppercase p-4">
+								<th className="text-left text-xs font-medium text-subtle uppercase p-4">
 									Amount
 								</th>
-								<th className="text-left text-xs font-medium text-gray-500 uppercase p-4">
+								<th className="text-left text-xs font-medium text-subtle uppercase p-4">
 									Actions
 								</th>
 							</tr>
 						</thead>
-						<tbody className="divide-y divide-gray-100">
+						<tbody className="divide-y divide-border">
 							{error && (
 								<tr>
 									<td
 										colSpan={6}
-										className="py-8 text-center text-sm text-red-600"
+										className="py-8 text-center text-sm text-expense"
 									>
 										Something went wrong. Please try again.
 									</td>
 								</tr>
 							)}
 							{isLoading && (
-								<tr className="hover:bg-gray-50 transition-colors py-1 px-4">
+								<tr className="hover:bg-surface-raised transition-colors py-1 px-4">
 									<td
 										colSpan={6}
-										className="py-4 text-center text-sm text-gray-600"
+										className="py-4 text-center text-sm text-accent"
 									>
 										Loading...
 									</td>
 								</tr>
 							)}
 							{!isLoading && !error && transactions?.length === 0 && (
-								<tr className="hover:bg-gray-50 transition-colors py-1 px-4">
+								<tr className="hover:bg-surface-raised transition-colors py-1 px-4">
 									<td
 										colSpan={6}
-										className="py-4 text-center text-sm text-gray-600"
+										className="py-4 text-center text-sm text-text-muted"
 									>
 										No transactions found
 									</td>
@@ -319,40 +319,40 @@ const TransactionPage = () => {
 								return (
 									<tr
 										key={tx.id}
-										className="hover:bg-gray-50 transition-colors"
+										className="hover:bg-surface-raised transition-colors"
 									>
-										<td className="p-4 text-sm text-gray-600">
+										<td className="p-4 text-sm text-text-muted">
 											{new Date(tx.date).toLocaleDateString("en-IN", {
 												day: "numeric",
 												month: "short",
 												year: "numeric",
 											})}
 										</td>
-										<td className="py-4 text-sm text-gray-600">
+										<td className="py-4 text-sm text-text-muted">
 											{category?.icon} {category?.name ?? "Unknown"}
 										</td>
-										<td className="py-4 text-sm text-gray-600">
+										<td className="py-4 text-sm text-text-muted">
 											{tx.description ?? "-"}
 										</td>
-										<td className="py-4 text-sm text-gray-600">{tx.type}</td>
+										<td className="py-4 text-sm text-text-muted">{tx.type}</td>
 										<td
 											className={`py-4 text-sm font-semibold ${
-												tx.type === "Income" ? "text-green-500" : "text-red-500"
+												tx.type === "Income" ? "text-income" : "text-expense"
 											}`}
 										>
 											{tx.type === "Income" ? "+" : "-"}₹{tx.amount.toFixed(2)}
 										</td>
-										<td className="py-4 text-sm text-gray-600 flex gap-4">
+										<td className="py-4 text-sm text-text-muted flex gap-4">
 											<button
 												onClick={() => handleEdit(tx)}
-												className="text-blue-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl cursor-pointer p-2 transition-colors"
+												className="text-accent hover:text-accent-glow hover:bg-surface rounded-xl cursor-pointer p-2 transition-all"
 											>
 												Edit
 											</button>
 											<button
 												onClick={() => deleteTransaction(tx.id)}
 												disabled={isDeleting}
-												className="text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl cursor-pointer p-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+												className="text-expense hover:text-expense hover:bg-expense-bg rounded-xl cursor-pointer p-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
 											>
 												Delete
 											</button>

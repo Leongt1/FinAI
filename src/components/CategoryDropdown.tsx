@@ -35,20 +35,20 @@ const CategoryDropdown = ({
 			<button
 				type="button"
 				onClick={() => setIsOpen((prev) => !prev)}
-				className="flex gap-2 items-center justify-between bg-white border-2 border-gray-200 rounded-full px-4 py-2 text-sm cursor-pointer hover:border-gray-300 transition-colors"
+				className="flex gap-3 items-center justify-between bg-surface border border-border rounded-full px-4 py-2 text-sm cursor-pointer hover:border-border-strong transition-colors"
 			>
 				<span>
 					{selected ? (
-						<span className="flex items-center gap-1">
+						<span className="flex items-center gap-2 text-text-muted">
 							<span>{selected.icon}</span>
 							<span>{selected.name}</span>
 						</span>
 					) : (
-						<span className="text-gray-400">{placeholder}</span>
+						<span className="text-text-muted">{placeholder}</span>
 					)}
 				</span>
 				<span
-					className={`text-gray-400 text-xs transition-transform ${isOpen ? "rotate-180" : ""}`}
+					className={`text-text-muted text-xs transition-transform ${isOpen ? "rotate-180" : ""}`}
 				>
 					▼
 				</span>
@@ -56,7 +56,7 @@ const CategoryDropdown = ({
 			{/* dropdown list */}
 			{isOpen && (
 				<div
-					className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-2xl shadow-lg z-50 p-3"
+					className="absolute top-full left-0 mt-1 bg-surface border border-border rounded-2xl shadow-md z-50 p-3"
 					onClick={(e) => e.stopPropagation()}
 				>
 					<div className="flex flex-wrap gap-2 w-120">
@@ -68,8 +68,8 @@ const CategoryDropdown = ({
 							}}
 							className={`px-3 py-1.5 rounded-full text-sm cursor-pointer border transition-colors ${
 								!value
-									? "bg-gray-800 text-white border-gray-800"
-									: "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
+									? "bg-surface-raised font-bold text-text-muted border-border-strong"
+									: "bg-surface text-text-muted border-border hover:border-border-strong"
 							}`}
 						>
 							All Categories
@@ -87,12 +87,12 @@ const CategoryDropdown = ({
 									}}
 									className={`px-3 py-1.5 rounded-full text-sm cursor-pointer border transition-colors flex items-center gap-1 whitespace-nowrap ${
 										value === c.id
-											? "bg-gray-800 text-white border-gray-800"
-											: "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
+											? "bg-surface-raised text-accent-glow font-bold border-border-strong"
+											: "bg-surface text-text-muted border-border hover:border-border-strong"
 									}`}
 								>
 									<span>{c.icon}</span>
-									<span>{c.name}</span>
+									<span className="text-text-muted">{c.name}</span>
 								</div>
 							))}
 					</div>
