@@ -1,5 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
+
 @import "tailwindcss";
 
+@theme {
+	/* ── Raw Palette ── */
+	--color-bg: #091413;
+	--color-surface: #0f1c1a;
+	--color-surface-raised: #162622;
+
+	/* ── Borders ── */
+	--color-border: #1e3530;
+	--color-border-strong: #285A48;
+
+	/* ── Brand Colors ── */
+	--color-accent: #408A71;
+	--color-accent-dim: #285A48;
+	--color-accent-glow: #B0E4CC;
+
+	/* ── Text ── */
+	--color-foreground: #dff2ea;
+	--color-text-muted: #7aaa96;
+	--color-subtle: #3d6b5a;
+
+	/* ── Semantic Status ── */
+	--color-income:        #408A71;
+	--color-income-bg:     #0f2720;
+	--color-expense:       #e05c5c;
+	--color-expense-bg:    #2a0f0f;
+
+	--font-sans: 'Fira Code', monospace;
+}
+
+/* Datepicker Styles - overrides */
 .react-datepicker {
 	border: 1px solid #e5e7eb !important;
 	border-radius: 1rem !important;

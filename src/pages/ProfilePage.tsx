@@ -3,7 +3,7 @@ import { useAuthStore } from "../store/authStore";
 import CalendarInput from "../components/CalenderInput";
 import { useState, useEffect } from "react";
 import type { SyntheticEvent } from "react";
-import { useUser } from "../hooks/useUsers";
+import { useUser } from "../hooks/useUser";
 
 const ProfilePage = () => {
 	const { user: currentUser } = useAuthStore();

@@ -8,19 +8,20 @@ const Sidebar = () => {
 
 	const navLinkClass = ({ isActive }: { isActive: boolean }) => {
 		return isActive
-			? "p-4 m-2 rounded-2xl w-full bg-green-100 border-1 border-green-500 text-green-600 font-semibold"
-			: "p-4 m-2 rounded-2xl w-full text-black hover:text-green-600 transition-colors cursor-pointer";
+			? "flex items-center p-3 m-1 rounded-xl w-full bg-accent-dim border border-border-strong text-accent-glow transition-colors cursor-pointer"
+			: "flex items-center p-3 m-1 rounded-xl w-full text-muted hover:text-foreground hover:bg-surface-raised transition-all cursor-pointer";
 	};
 
 	return (
-		<div className="w-64 bg-white text-black min-h-screen rounded-2xl flex flex-col items-start p-4 mr-4">
+		<div className="w-64 bg-surface border border-border text-foreground min-h-screen rounded-2xl flex flex-col items-start p-4 mr-4">
 			{/* Logo */}
-			<div className="border-b border-gray-100 pb-4 mb-4">
-				<h1 className="text-2xl font-bold">FinAI</h1>
+			<div className="border-b-2 border-border pb-4 mb-4 w-full px-2">
+				<span className="text-accent-glow text-2xl font-semibold tracking-widest uppercase">Fin</span>
+				<span className="text-foreground text-2xl font-bold">AI</span>
 			</div>
 
 			{/* Navigation links */}
-			<nav className="flex flex-col items-center w-full">
+			<nav className="flex flex-col gap-3 items-center w-full">
 				<NavLink to={"/dashboard"} className={navLinkClass}>
 					Dashboard
 				</NavLink>
@@ -44,10 +45,10 @@ const Sidebar = () => {
 			</nav>
 
 			{/* Logout button */}
-			<div className="mt-auto border-t border-gray-100 pt-4 w-full flex items-center">
+			<div className="border-t border-border pt-4 w-full">
 				<button
 					onClick={handleLogout}
-					className="p-4 m-2 rounded-2xl w-full bg-red-50 border border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600 transition-colors cursor-pointer text-center"
+					className="w-full p-3 m-1 rounded-xl text-expense hover:bg-expense-bg border border-transparent hover:border-expense/30 transition-all font-medium cursor-pointer"
 				>
 					Logout
 				</button>
