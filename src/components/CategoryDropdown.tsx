@@ -35,7 +35,7 @@ const CategoryDropdown = ({
 			<button
 				type="button"
 				onClick={() => setIsOpen((prev) => !prev)}
-				className="flex gap-3 items-center justify-between bg-surface border border-border rounded-full px-4 py-2 text-sm cursor-pointer hover:border-border-strong transition-colors"
+				className="flex gap-3 items-center justify-between bg-surface border border-border rounded-full px-4 py-3 text-sm cursor-pointer hover:border-border-strong transition-all"
 			>
 				<span>
 					{selected ? (

@@ -141,9 +141,9 @@ const TransactionPage = () => {
 					</div>
 				</div>
 				{/* Filter section */}
-				<div className="bg-surface rounded-3xl p-2 flex justify-between mb-1 items-center">
+				<div className="bg-surface rounded-3xl p-2 flex justify-between mb-2 items-center">
 					{/* Left */}
-					<div className="flex items-center gap-4">
+					<div className="flex items-center gap-4 justify-start">
 						<div className="flex items-center gap-2 bg-surface-raised rounded-full p-1">
 							{["All", "Expense", "Income"].map((tab) => (
 								<p
