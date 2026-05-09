@@ -69,7 +69,6 @@ export interface Category {
 	name: string;
 	icon: string;
 	hidden: boolean;
-	custom: boolean;
 }
 
 // Create Category Request
