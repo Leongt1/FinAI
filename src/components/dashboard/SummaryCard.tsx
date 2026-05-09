@@ -29,7 +29,7 @@ const SummaryCard = ({
 			{/* top accent bar */}
       		<div className={`absolute top-0 left-0 right-0 h-0.5 ${barClass}`} />
 
-			<p className="text-sm text-muted">{title}</p>
+			<p className="text-sm text-text-muted">{title}</p>
 			<p className={`text-2xl font-bold ${amountClass}`}>{amount}</p>
 			<p
 				className={`text-sm font-medium ${isPositive ? "text-income" : "text-expense"}`}
