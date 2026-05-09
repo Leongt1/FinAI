@@ -1,18 +1,3 @@
-import type { CardType } from "../components/dashboard/SummaryCard";
-
-export const summaryCards: {
-  title: string;
-  amount: string;
-  change: string;
-  isPositive: boolean;
-  type: CardType;
-}[] = [
-	{ title: "Total Balance",  amount: "$15,700", change: "+8.8%",  isPositive: true,  type: "balance" },
-	{ title: "Total Income",   amount: "$8,500",  change: "+5.2%",  isPositive: true,  type: "income"  },
-	{ title: "Total Expenses", amount: "$6,222",  change: "-10.2%", isPositive: false, type: "expense" },
-	{ title: "Total Savings",  amount: "$32,913", change: "+16.4%", isPositive: true,  type: "savings" },
-];
-
 export const monthlyData = [
 	{ month: "Jan", income: 3000, expense: 2100 },
 	{ month: "Feb", income: 3000, expense: 1800 },

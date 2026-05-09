@@ -95,22 +95,3 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		deleteError: deleteMutation.error,
 	};
 };
-
-export const useTransaction = (id: string) => {
-	// get transaction by id
-	const {
-		data: transaction,
-		isLoading,
-		error,
-	} = useQuery({
-		queryKey: ["transactions", id],
-		queryFn: () => getTransactionByID(id!),
-		enabled: !!id,
-	});
-
-	return {
-		transaction,
-		isLoading,
-		error,
-	};
-};
