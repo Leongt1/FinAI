@@ -13,10 +13,13 @@ const CategoriesPage = () => {
 		renameCategory,
 		hideCategory,
 		unhideCategory,
+		deleteCategory,
 		renameError,
 		createError,
+		deleteError,
 		isCreating,
 		isRenaming,
+		isDeleting,
 	} = useCategories();
 
 	const [isAddOpen, setIsAddOpen] = useState(false);
@@ -49,6 +52,7 @@ const CategoriesPage = () => {
 			<div className="w-full h-full">
 				{/* Header */}
 				<div className="bg-surface rounded-3xl p-6 mb-4 flex justify-between items-center">
+					{/* Title */}
 					<h1 className="text-2xl font-semibold text-text-muted">Categories</h1>
 					{/* Add transaction Btn */}
 					<div className="fixed right-10 bottom-10 flex items-center gap-2">
@@ -88,7 +92,7 @@ const CategoriesPage = () => {
 							className={`flex flex-col items-center justify-between gap-2 bg-surface border border-border rounded-3xl p-6 shadow-md hover:shadow-lg transition-shadow ${cat.hidden ? "opacity-50" : ""}`}
 						>
 							{renameError && editingId === cat.id && (
-								<p className="text-expense p-2 bg-expense-bg rounded-lg mb-4">
+								<p className="text-expense p-1 bg-expense-bg rounded-lg mb-2 text-sm border border-expense">
 									Invalid input
 								</p>
 							)}
@@ -146,7 +150,7 @@ const CategoriesPage = () => {
 									</>
 								)}
 								{cat.hidden && (
-									<span className="text-xs bg-surface-raised text-text-muted px-2 py-0.5 border border-border rounded-full">
+									<span className="text-xs bg-surface-raised text-text-muted px-2 py-0.5 border border-border rounded-full opacity-100">
 										Hidden
 									</span>
 								)}
@@ -189,30 +193,37 @@ const CategoriesPage = () => {
 									</>
 								) : (
 									<>
-										<button
-											onClick={() => {
-												setEditingId(cat.id);
-												setEditingName(cat.name);
-												setEditingIcon(cat.icon);
-											}}
+										{!cat.hidden && (
+											<button
+												onClick={() => {
+													setEditingId(cat.id);
+													setEditingName(cat.name);
+													setEditingIcon(cat.icon);
+												}}
 											className="text-text-muted hover:bg-surface-raised rounded-xl cursor-pointer p-2 transition-colors border border-border"
 										>
 											Edit
 										</button>
+										)}
 										<button
 											onClick={() =>
 												cat.hidden
 													? unhideCategory(cat.id)
 													: hideCategory(cat.id)
 											}
-											className={`rounded-xl cursor-pointer p-2 transition-colors border border-border ${
-												cat.hidden
-													? "text-text-muted hover:bg-surface-raised"
-													: "text-accent hover:bg-surface-raised"
-											}`}
+											className={`rounded-xl cursor-pointer p-2 transition-colors border border-border text-text-muted hover:bg-surface-raised ${cat.hidden ? "border-border-strong" : "hover:border-border-strong"}`}
 										>
-											{cat.hidden ? "Unhide" : "Hide"}
+											<span>{cat.hidden ? "Unhide" : "Hide"}</span>
 										</button>
+										{cat.hidden && (
+											<button
+												onClick={() => deleteCategory(cat.id)}
+												disabled={isDeleting}
+												className="text-expense hover:bg-expense-bg rounded-xl cursor-pointer p-2 transition-colors border border-expense"
+											>
+												{isDeleting ? "Deleting..." : "Delete"}
+											</button>
+										)}
 									</>
 								)}
 							</div>
@@ -229,11 +240,14 @@ const CategoriesPage = () => {
 							ref={bottomRef}
 							className="flex flex-col gap-2 items-center justify-between bg-surface rounded-3xl px-6 py-4 border border-border shadow-md"
 						>
-							{createError && (
-								<p className="text-expense p-2 bg-expense-bg mb-4">
-									Invalid input
+							{createError || deleteError ? (
+								<p className="text-expense p-2 bg-expense-bg mb-4 text-sm">
+									{createError
+										? "Failed to create category. Please try again."
+										: "Failed to delete category. Please try again."
+									}
 								</p>
-							)}
+							) : null}
 							<div className="flex flex-col gap-2">
 								<input
 									type="text"

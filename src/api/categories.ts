@@ -28,3 +28,7 @@ export const hideCategory = async (id: string): Promise<void> => {
 export const unhideCategory = async (id: string): Promise<void> => {
 	await api.patch(`/categories/${id}/unhide`);
 };
+
+export const deleteCategory = async (id: string): Promise<void> => {
+	await api.delete(`/categories/${id}`);
+}

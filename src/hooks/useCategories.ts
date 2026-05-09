@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
 	createCategory,
+	deleteCategory,
 	hideCategory,
 	listCategories,
 	renameCategory,
@@ -61,6 +62,14 @@ export const useCategories = () => {
 		},
 	});
 
+	const deleteMutation = useMutation({
+		mutationFn: (id: string) => deleteCategory(id),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["categories"] });
+			queryClient.invalidateQueries({ queryKey: ["transactions"] });
+		},
+	})
+
 	return {
 		categories,
 		isLoading,
@@ -81,14 +90,18 @@ export const useCategories = () => {
 		hideCategory: (id: string) => hideMutation.mutate(id),
 		unhideCategory: (id: string) => unhideMutation.mutate(id),
 
+		deleteCategory: (id: string) => deleteMutation.mutate(id),
+
 		// loading states
 		isCreating: createMutation.isPending,
 		isRenaming: renameMutation.isPending,
 		isHiding: hideMutation.isPending,
 		isUnhiding: unhideMutation.isPending,
+		isDeleting: deleteMutation.isPending,
 
 		// error states
 		createError: createMutation.error,
 		renameError: renameMutation.error,
+		deleteError: deleteMutation.error,
 	};
 };
