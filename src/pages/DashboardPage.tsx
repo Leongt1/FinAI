@@ -1,4 +1,3 @@
-import BudgetOverview from "../components/dashboard/BudgetOverview";
 import DashboardLayout from "../components/DashboardLayout";
 import MoneyFlowChart from "../components/dashboard/MoneyFlowChart";
 import RecentTransactions from "../components/dashboard/RecentTransactions";
@@ -6,6 +5,7 @@ import SummaryCard from "../components/dashboard/SummaryCard";
 import { useAuthStore } from "../store/authStore";
 import { useTransactions } from "../hooks/useTransactions";
 import { useMemo } from "react";
+import SpendingBreakdown from "../components/dashboard/SpendingBreakdown";
 
 const DashboardPage = () => {
 	const currentUser = useAuthStore((s) => s.user);
@@ -102,7 +102,7 @@ const DashboardPage = () => {
 				{/* 2/3 width occupied */}
 				<div className="col-span-2 h-full">{/* Money Flow Chart */}<MoneyFlowChart /></div>
 				{/* 1/3 width occupied */}
-				<div className="col-span-1 h-full"><BudgetOverview /></div>
+				<div className="col-span-1 h-full"><SpendingBreakdown /></div>
 			</div>
 			{/* Recent Transactions */}
 			<RecentTransactions />

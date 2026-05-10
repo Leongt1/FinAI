@@ -99,7 +99,7 @@ const TransactionPage = () => {
 					{/* Add transaction Btn */}
 					<div className="fixed right-10 bottom-10 flex items-center gap-2">
 						{showToolTip && (
-							<span className="text-text-muted text-sm bg-surface-raised px-2 py-1 rounded-lg whitespace-nowrap shadow-md">
+							<span className="text-text-muted text-sm bg-surface/50 px-2 py-1 rounded-lg border border-border whitespace-nowrap shadow-md">
 								New Transaction
 							</span>
 						)}
@@ -107,9 +107,9 @@ const TransactionPage = () => {
 							onClick={handleAddNew}
 							onMouseEnter={() => setShowToolTip(true)}
 							onMouseLeave={() => setShowToolTip(false)}
-							className="bg-surface w-12 h-12 border border-transparent hover:border-border p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-surface-raised transition-all shadow-md"
+							className="bg-accent w-12 h-12 border border-transparent hover:border-border p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-surface-raised transition-all shadow-md"
 						>
-							<p className="text-2xl mb-1 font-semibold text-accent-glow">+</p>
+							<span className="text-2xl mb-1 font-semibold text-accent-glow leading-none">+</span>
 						</button>
 					</div>
 				</div>

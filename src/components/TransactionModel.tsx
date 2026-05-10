@@ -94,22 +94,22 @@ const TransactionModel = ({
 	return (
 		// backdrop
 		<div
-			className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+			className="fixed inset-0 bg-bg/70 flex items-center justify-center z-50"
 			onClick={onClose}
 		>
 			{/* model */}
 			<div
-				className="bg-white rounded-3xl p-8 w-full max-w-md shadow-xl"
+				className="bg-surface rounded-3xl p-8 w-full max-w-md shadow-xl"
 				onClick={(e) => e.stopPropagation()}
 			>
 				{/* header */}
 				<div className="flex items-center justify-between mb-6">
-					<h2 className="text-xl font-semibold text-gray-900">
+					<h2 className="text-xl font-semibold text-text-muted">
 						{isEditMode ? "Edit Transaction" : "New Transaction"}
 					</h2>
 					<button
 						onClick={onClose}
-						className="text-gray-400 hover:text-gray-600 cursor-pointer px-2 py-1"
+						className="text-text-muted hover:text-subtle cursor-pointer px-2 py-1"
 					>
 						✕
 					</button>
@@ -117,7 +117,7 @@ const TransactionModel = ({
 
 				{/* error */}
 				{error && (
-					<div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-xl mb-4">
+					<div className="bg-expense-bg text-expense text-sm px-4 py-3 rounded-xl mb-4">
 						{error}
 					</div>
 				)}
@@ -125,7 +125,7 @@ const TransactionModel = ({
 				{/* form */}
 				<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
 					{/* type toggle */}
-					<div className="flex bg-gray-100 rounded-full p-1 h-14">
+					<div className="flex bg-bg rounded-full p-1 h-14 border border-border">
 						{["Expense", "Income"].map((t) => (
 							<button
 								key={t}
@@ -134,9 +134,9 @@ const TransactionModel = ({
 								className={`flex-1 px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${
 									type === t
 										? t === "Expense"
-											? "bg-red-200 text-red-800"
-											: "bg-green-200 text-green-800"
-										: "text-gray-500 hover:text-gray-700"
+											? "bg-expense-bg text-expense"
+											: "bg-income-bg text-income"
+										: "text-subtle hover:text-text-muted"
 								}`}
 							>
 								{t}
@@ -152,7 +152,7 @@ const TransactionModel = ({
 					/>
 					{/* amount */}
 					<div className="relative">
-						<span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+						<span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-sm">
 							₹
 						</span>
 						<input
@@ -163,7 +163,7 @@ const TransactionModel = ({
 							min="0.01"
 							step="0.01"
 							required
-							className="w-full border border-gray-200 rounded-xl p-3 pl-7 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+							className="w-full border border-border rounded-xl p-3 pl-7 text-sm focus:outline-none focus:ring focus:ring-border-strong text-text-muted font-semibold"
 						/>
 					</div>
 
@@ -173,7 +173,7 @@ const TransactionModel = ({
 						value={description}
 						onChange={(e) => setDescription(e.target.value)}
 						placeholder="Description (optional)"
-						className="w-full border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+						className="w-full border border-border rounded-xl p-3 text-sm focus:outline-none focus:ring focus:ring-text-muted text-text-muted font-semibold"
 					/>
 
 					{/* date */}
@@ -186,7 +186,7 @@ const TransactionModel = ({
 					<button
 						type="submit"
 						disabled={isCreating || isUpdating}
-						className="w-full bg-green-500 text-white rounded-xl p-3 font-semibold hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+						className="w-full bg-accent text-accent-glow rounded-xl p-3 font-semibold hover:bg-accent-glow hover:text-accent transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
 					>
 						{isCreating || isUpdating
 							? "Saving..."
