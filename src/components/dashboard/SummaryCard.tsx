@@ -25,7 +25,7 @@ const SummaryCard = ({
 	const { amount: amountClass, bar: barClass } = config[type];
 
 	return (
-		<div className="bg-surface border border-border rounded-2xl p-5 flex flex-col gap-3 relative overflow-hidden">
+		<div className="bg-surface border border-border hover:border-border-strong shadow-xs hover:shadow-accent-glow rounded-2xl p-5 flex flex-col gap-3 relative overflow-hidden">
 			{/* top accent bar */}
       		<div className={`absolute top-0 left-0 right-0 h-0.5 ${barClass}`} />
 
