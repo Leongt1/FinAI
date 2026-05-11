@@ -4,6 +4,7 @@ import CalendarInput from "../components/CalenderInput";
 import { useState, useEffect } from "react";
 import type { SyntheticEvent } from "react";
 import { useUser } from "../hooks/useUser";
+import TitleText from "../components/TitleText";
 
 const ProfilePage = () => {
 	const { user: currentUser } = useAuthStore();
@@ -62,9 +63,7 @@ const ProfilePage = () => {
 		<DashboardLayout>
 			<div className="w-full h-full">
 				{/* Header */}
-				<div className="bg-surface rounded-3xl p-6 mb-4 border border-border">
-					<h1 className="text-2xl font-semibold text-text-muted">Profile</h1>
-				</div>
+				<TitleText title="Profile" />
 				{/* Profile Form */}
 				<div className="flex gap-4 bg-surface rounded-3xl p-6 border border-border">
 					{/* Left */}

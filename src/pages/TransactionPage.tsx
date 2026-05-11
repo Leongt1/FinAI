@@ -5,6 +5,7 @@ import { useTransactions } from "../hooks/useTransactions";
 import { useCategories } from "../hooks/useCategories";
 import TransactionModel from "../components/TransactionModel";
 import CategoryDropdown from "../components/CategoryDropdown";
+import TitleText from "../components/TitleText";
 
 const getMonthRange = (year: number, month: number) => {
 	const from = new Date(year, month, 1);
@@ -94,24 +95,22 @@ const TransactionPage = () => {
 		<DashboardLayout>
 			<div className="w-full h-full">
 				{/* Header */}
-				<div className="bg-surface rounded-3xl p-6 mb-4 flex justify-between items-center">
-					<h1 className="text-2xl font-semibold text-accent">Transactions</h1>
-					{/* Add transaction Btn */}
-					<div className="fixed right-10 bottom-10 flex items-center gap-2">
-						{showToolTip && (
-							<span className="text-text-muted text-sm bg-surface/50 px-2 py-1 rounded-lg border border-border whitespace-nowrap shadow-md">
-								New Transaction
-							</span>
-						)}
-						<button
-							onClick={handleAddNew}
-							onMouseEnter={() => setShowToolTip(true)}
-							onMouseLeave={() => setShowToolTip(false)}
-							className="bg-accent w-12 h-12 border border-transparent hover:border-border p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-surface-raised transition-all shadow-md"
-						>
-							<span className="text-2xl mb-1 font-semibold text-accent-glow leading-none">+</span>
-						</button>
-					</div>
+				<TitleText title="Transactions" />
+				{/* Add transaction Btn */}
+				<div className="fixed right-10 bottom-10 flex items-center gap-2">
+					{showToolTip && (
+						<span className="text-text-muted text-sm bg-surface/50 px-2 py-1 rounded-lg border border-border whitespace-nowrap shadow-md">
+							New Transaction
+						</span>
+					)}
+					<button
+						onClick={handleAddNew}
+						onMouseEnter={() => setShowToolTip(true)}
+						onMouseLeave={() => setShowToolTip(false)}
+						className="bg-accent w-12 h-12 border border-transparent hover:border-border p-2 rounded-xl flex items-center justify-center cursor-pointer hover:bg-surface-raised transition-all shadow-md"
+					>
+						<span className="text-2xl mb-1 font-semibold text-accent-glow leading-none">+</span>
+					</button>
 				</div>
 				{/* Summary Cards */}
 				<div className="flex gap-6 justify-start">
@@ -132,9 +131,8 @@ const TransactionPage = () => {
 					>
 						<p className="text-text-muted text-sm">Net Savings</p>
 						<p
-							className={`font-bold text-2xl ${
-								summary.net >= 0 ? "text-text-muted" : "text-expense"
-							}`}
+							className={`font-bold text-2xl ${summary.net >= 0 ? "text-text-muted" : "text-expense"
+								}`}
 						>
 							{summary.net >= 0 ? "+" : "-"}₹{Math.abs(summary.net).toFixed(2)}
 						</p>
@@ -151,11 +149,10 @@ const TransactionPage = () => {
 									onClick={() =>
 										handleTabChange(tab as "All" | "Income" | "Expense")
 									}
-									className={`text-sm text-text-muted p-2 px-4 rounded-full cursor-pointer transition-colors ${
-										activeTab === tab
+									className={`text-sm text-text-muted p-2 px-4 rounded-full cursor-pointer transition-colors ${activeTab === tab
 											? "bg-surface font-semibold"
 											: "hover:bg-surface"
-									}`}
+										}`}
 								>
 									{tab}
 								</p>
@@ -237,13 +234,12 @@ const TransactionPage = () => {
 											...getMonthRange(selectedYear, index),
 										}));
 									}}
-									className={`flex-1 py-4 text-sm font-medium transition-colors relative ${
-										isActive
+									className={`flex-1 py-4 text-sm font-medium transition-colors relative ${isActive
 											? "text-accent-glow font-bold"
 											: isFuture
 												? "text-subtle/70 cursor-not-allowed"
 												: "text-text-muted hover:text-foreground cursor-pointer"
-									}`}
+										}`}
 								>
 									{month}
 									{/* active underline */}
@@ -336,9 +332,8 @@ const TransactionPage = () => {
 										</td>
 										<td className="py-4 text-sm text-text-muted">{tx.type}</td>
 										<td
-											className={`py-4 text-sm font-semibold ${
-												tx.type === "Income" ? "text-income" : "text-expense"
-											}`}
+											className={`py-4 text-sm font-semibold ${tx.type === "Income" ? "text-income" : "text-expense"
+												}`}
 										>
 											{tx.type === "Income" ? "+" : "-"}₹{tx.amount.toFixed(2)}
 										</td>

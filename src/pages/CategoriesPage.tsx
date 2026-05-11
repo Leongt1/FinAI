@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import { useCategories } from "../hooks/useCategories";
+import TitleText from "../components/TitleText";
 
 const CategoriesPage = () => {
 	const [showToolTip, setShowToolTip] = useState(false);
@@ -51,9 +52,8 @@ const CategoriesPage = () => {
 		<DashboardLayout>
 			<div className="w-full h-full">
 				{/* Header */}
-				<div className="bg-surface rounded-3xl p-6 mb-4 flex justify-between items-center">
 					{/* Title */}
-					<h1 className="text-2xl font-semibold text-text-muted">Categories</h1>
+					<TitleText title="Categories" />
 					{/* Add transaction Btn */}
 					<div className="fixed right-10 bottom-10 flex items-center gap-2">
 						{showToolTip && (
@@ -70,7 +70,6 @@ const CategoriesPage = () => {
 							<p className="text-2xl mb-1 font-semibold text-accent-glow">+</p>
 						</button>
 					</div>
-				</div>
 				{/* Categories List */}
 				{isLoading && (
 					<p className="text-center text-sm text-text-muted py-8">Loading...</p>
