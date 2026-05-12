@@ -21,17 +21,17 @@ const LoginPage = () => {
 
 	return (
 		<div
-			className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat bg-gray-900"
+			className="min-h-screen flex items-center justify-center bg bg-center bg-no-repeat"
 		>
 			{/* Card */}
-			<div className="bg-white rounded-2xl shadow-md p-10 w-full max-w-md flex flex-col items-center justify-center border border-gray-100">
-				<h1 className="text-2xl font-bold">Login</h1>
-				<p className="text-sm text-gray-500 py-3">
+			<div className="bg-surface rounded-2xl shadow-md p-10 w-full max-w-md flex flex-col items-center justify-center border border-border">
+				<h1 className="text-2xl font-bold text-text-muted">Login</h1>
+				<p className="text-sm text-subtle py-3">
 					Enter your details to login to your account
 				</p>
 				{/* Error message */}
 				{error && (
-					<div className="w-full bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg">
+					<div className="w-full bg-expense-bg text-expense text-sm px-4 py-3 rounded-lg">
 						{error}
 					</div>
 				)}
@@ -43,7 +43,7 @@ const LoginPage = () => {
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						placeholder="Enter your Email"
-						className="w-full rounded-lg border border-gray-200 text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+						className="w-full rounded-lg border border-border text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-border-strong text-text-muted"
 					/>
 					<input
 						type="password"
@@ -51,24 +51,24 @@ const LoginPage = () => {
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						placeholder="Enter your Password"
-						className="w-full rounded-lg border border-gray-200 text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+						className="w-full rounded-lg border border-border text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-border-strong text-text-muted"
 					/>
 					<div className="flex items-end justify-between flex-col my-4">
-						<span className="text-sm text-gray-500 cursor-pointer hover:text-black">
+						<span className="text-sm text-text-muted cursor-pointer hover:text-accent-glow">
 							Having trouble logging in?
 						</span>
 						<button
 							type="submit"
 							disabled={isLoading}
-							className="w-full bg-green-500 text-white rounded-lg p-3 mt-3 font-semibold hover:bg-green-600 transition-colors cursor-pointer"
+							className="w-full bg-accent-dim text-accent-glow rounded-lg p-3 mt-3 font-semibold hover:bg-accent transition-colors cursor-pointer"
 						>
 							{isLoading ? "Logging in..." : "Login"}
 						</button>
 					</div>
 				</form>
-				<p className="text-sm">
+				<p className="text-sm text-text-muted">
 					Don't have an account?{" "}
-					<Link to="/signup" className="font-bold hover:underline">
+					<Link to="/signup" className="font-bold hover:underline text-accent-glow">
 						Signup Now
 					</Link>
 				</p>

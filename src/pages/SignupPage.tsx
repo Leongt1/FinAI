@@ -35,18 +35,17 @@ const SignupPage = () => {
 
 	return (
 		<div
-			className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat bg-gray-900"
-			style={{ backgroundImage: `url('/background_image.png')` }}
+			className="min-h-screen bg-bg flex items-center justify-center bg-cover bg-center bg-no-repeat"
 		>
 			{/* Card */}
-			<div className="bg-white rounded-2xl shadow-md p-10 w-full max-w-md flex flex-col items-center justify-center border border-gray-100">
-				<h1 className="text-2xl font-bold">Signup</h1>
-				<p className="text-sm text-gray-500 py-3">
+			<div className="bg-surface rounded-2xl shadow-md p-10 w-full max-w-md flex flex-col items-center justify-center border border-border">
+				<h1 className="text-2xl font-bold text-text-muted">Signup</h1>
+				<p className="text-sm text-subtle py-3">
 					Enter your details to create a new account
 				</p>
 				{/* Error message */}
 				{(localError || error) && (
-					<div className="w-full bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg">
+					<div className="w-full bg-expense-bg text-expense text-sm px-4 py-3 rounded-lg">
 						{localError || error}
 					</div>
 				)}
@@ -58,7 +57,7 @@ const SignupPage = () => {
 						value={name}
 						onChange={(e) => setName(e.target.value)}
 						placeholder="Enter your Name"
-						className="w-full rounded-lg border border-gray-200 text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+						className="w-full rounded-lg border border-border text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-border-strong text-text-muted"
 					/>
 					<input
 						type="email"
@@ -66,7 +65,7 @@ const SignupPage = () => {
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						placeholder="Enter your Email"
-						className="w-full rounded-lg border border-gray-200 text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+						className="w-full rounded-lg border border-border text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-border-strong text-text-muted"
 					/>
 					<input
 						type="password"
@@ -74,7 +73,7 @@ const SignupPage = () => {
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						placeholder="Enter your Password"
-						className="w-full rounded-lg border border-gray-200 text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+						className="w-full rounded-lg border border-border text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-border-strong text-text-muted"
 					/>
 					<input
 						type="password"
@@ -82,34 +81,36 @@ const SignupPage = () => {
 						value={confirmPassword}
 						onChange={(e) => setConfirmPassword(e.target.value)}
 						placeholder="Confirm your Password"
-						className="w-full rounded-lg border border-gray-200 text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+						className="w-full rounded-lg border border-border text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-border-strong text-text-muted"
 					/>
 					<select
-						className="w-full p-2 px-3 mt-4 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+						className="w-full p-2 px-3 mt-4 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-border-strong text-text-muted"
 						required
 						value={gender}
 						onChange={(e) => setGender(e.target.value)}
 					>
-						<option value="">Select gender</option>
+						<option value="" className="text-text-muted">
+							Select gender
+						</option>
 						<option value="Male">Male</option>
 						<option value="Female">Female</option>
 					</select>
 					<div className="flex items-end justify-between flex-col my-4">
-						<span className="text-sm text-gray-500 cursor-pointer hover:text-black">
+						<span className="text-sm text-text-muted cursor-pointer hover:text-accent-glow">
 							Having trouble signing up?
 						</span>
 						<button
 							type="submit"
 							disabled={isLoading}
-							className="w-full bg-green-500 text-white rounded-lg p-3 mt-3 font-semibold hover:bg-green-600 transition-colors cursor-pointer"
+							className="w-full bg-accent-dim text-accent-glow rounded-lg p-3 mt-3 font-semibold hover:bg-accent transition-colors cursor-pointer"
 						>
 							{isLoading ? "Signing up..." : "Sign up"}
 						</button>
 					</div>
 				</form>
-				<p className="text-sm">
+				<p className="text-sm text-text-muted">
 					Already have an account?{" "}
-					<Link to="/login" className="font-bold hover:underline">
+					<Link to="/login" className="font-bold hover:underline text-accent-glow">
 						Login Now
 					</Link>
 				</p>

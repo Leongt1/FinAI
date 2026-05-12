@@ -163,7 +163,7 @@ const TransactionModel = ({
 							min="0.01"
 							step="0.01"
 							required
-							className="w-full border border-border rounded-xl p-3 pl-7 text-sm focus:outline-none focus:ring focus:ring-border-strong text-text-muted font-semibold"
+							className="w-full border border-border rounded-xl p-3 pl-7 text-sm focus:outline-none focus:ring-2 focus:ring-border-strong text-text-muted font-semibold"
 						/>
 					</div>
 
@@ -173,7 +173,7 @@ const TransactionModel = ({
 						value={description}
 						onChange={(e) => setDescription(e.target.value)}
 						placeholder="Description (optional)"
-						className="w-full border border-border rounded-xl p-3 text-sm focus:outline-none focus:ring focus:ring-text-muted text-text-muted font-semibold"
+						className="w-full border border-border rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-border-strong text-text-muted font-semibold"
 					/>
 
 					{/* date */}
