@@ -28,9 +28,9 @@ const Sidebar = () => {
 				<NavLink to={"/transactions"} className={navLinkClass}>
 					Transactions
 				</NavLink>
-				<NavLink to="/budget" className={navLinkClass}>
+				{/* <NavLink to="/budget" className={navLinkClass}>
 					Budget
-				</NavLink>
+				</NavLink> */}
 				<NavLink to="/categories" className={navLinkClass}>
 					Categories
 				</NavLink>

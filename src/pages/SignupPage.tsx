@@ -89,11 +89,15 @@ const SignupPage = () => {
 						value={gender}
 						onChange={(e) => setGender(e.target.value)}
 					>
-						<option value="" className="text-text-muted">
+						<option value="" className="bg-surface text-text-muted">
 							Select gender
 						</option>
-						<option value="Male">Male</option>
-						<option value="Female">Female</option>
+						<option value="Male" className="bg-surface text-text-muted">
+							Male
+						</option>
+						<option value="Female" className="bg-surface text-text-muted">
+							Female
+						</option>
 					</select>
 					<div className="flex items-end justify-between flex-col my-4">
 						<span className="text-sm text-text-muted cursor-pointer hover:text-accent-glow">
