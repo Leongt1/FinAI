@@ -25,8 +25,8 @@ const DashboardPage = () => {
 		const thisMonth = now.getMonth();
 		const thisYear = now.getFullYear();
 
-		const prevMonth = thisMonth === 0 ? 11 : thisMonth - 1
-		const prevYear = thisYear === 0 ? thisYear - 1 : thisYear
+		const prevMonth = thisMonth === 0 ? 11 : thisMonth - 1;
+		const prevYear = thisMonth === 0 ? thisYear - 1 : thisYear;
 
 		const isCurrent = (d: Date) => d.getMonth() === thisMonth && d.getFullYear() === thisYear;
 		const isPrev = (d: Date) => d.getMonth() === prevMonth && d.getFullYear() === prevYear;

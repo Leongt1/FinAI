@@ -18,7 +18,7 @@ const SignupPage = () => {
 		e.preventDefault();
 
 		if (password !== confirmPassword) {
-			setLocalError("Passwords no not match");
+			setLocalError("Passwords do not match");
 			return;
 		}
 
