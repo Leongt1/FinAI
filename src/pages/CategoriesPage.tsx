@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import { useCategories } from "../hooks/useCategories";
 import TitleText from "../components/TitleText";
+import type { Category } from "../types";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 const CategoriesPage = () => {
 	const [showToolTip, setShowToolTip] = useState(false);
@@ -32,6 +34,8 @@ const CategoriesPage = () => {
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [editingName, setEditingName] = useState("");
 	const [editingIcon, setEditingIcon] = useState("");
+
+	const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
 
 	const handleAddClose = () => {
 		setIsAddOpen(false);
@@ -204,6 +208,15 @@ const CategoriesPage = () => {
 											Edit
 										</button>
 										)}
+										{cat.hidden && (
+											<button
+												onClick={() => setCategoryToDelete(cat)}
+												disabled={isDeleting}
+												className="text-expense hover:bg-expense-bg rounded-xl cursor-pointer p-2 transition-colors border border-expense"
+											>
+												{isDeleting ? "Deleting..." : "Delete"}
+											</button>
+										)}
 										<button
 											onClick={() =>
 												cat.hidden
@@ -214,15 +227,6 @@ const CategoriesPage = () => {
 										>
 											<span>{cat.hidden ? "Unhide" : "Hide"}</span>
 										</button>
-										{cat.hidden && (
-											<button
-												onClick={() => deleteCategory(cat.id)}
-												disabled={isDeleting}
-												className="text-expense hover:bg-expense-bg rounded-xl cursor-pointer p-2 transition-colors border border-expense"
-											>
-												{isDeleting ? "Deleting..." : "Delete"}
-											</button>
-										)}
 									</>
 								)}
 							</div>
@@ -297,6 +301,18 @@ const CategoriesPage = () => {
 					)}
 				</div>
 			</div>
+			<ConfirmDialog
+				isOpen={!!categoryToDelete}
+				title="Delete category?"
+				message={`Delete "${categoryToDelete?.name}"? Transactions using this category will be reassigned.`}
+				isLoading={isDeleting}
+				onCancel={() => setCategoryToDelete(null)}
+				onConfirm={() => {
+					if (!categoryToDelete) return;
+					deleteCategory(categoryToDelete.id);
+					setCategoryToDelete(null);
+				}}
+			/>
 		</DashboardLayout>
 	);
 };

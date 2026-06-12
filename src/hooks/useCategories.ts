@@ -7,7 +7,7 @@ import {
 	renameCategory,
 	unhideCategory,
 } from "../api/categories";
-import type { CreateCategoryRequest } from "../types";
+import type { Category, CreateCategoryRequest } from "../types";
 
 export const useCategories = () => {
 	const queryClient = useQueryClient();
@@ -30,18 +30,33 @@ export const useCategories = () => {
 		},
 	});
 
+	type renameMutationProps = {
+		id: string, 
+		name: string,
+		icon: string
+	}
+
 	// rename category
 	const renameMutation = useMutation({
 		mutationFn: ({
 			id,
 			name,
 			icon,
-		}: {
-			id: string;
-			name: string;
-			icon: string;
-		}) => renameCategory({id, name, icon}),
-		onSuccess: () => {
+		}: renameMutationProps) => renameCategory({id, name, icon}),
+		onMutate: async ({id, name, icon}: renameMutationProps) => {
+			await queryClient.cancelQueries({ queryKey: ["categories"] });
+
+			const prevCategories = queryClient.getQueryData<Category[]>(["categories"]);
+			queryClient.setQueryData(["categories"], (old: Category[] = []) => old.map((cat) => {
+				return cat.id === id ? {...cat, name, icon}: cat
+			}));
+
+			return { prevCategories }
+		},
+		onError: (_err, _vars, context) => {
+			queryClient.setQueryData(["categories"], context?.prevCategories)
+		},
+		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 		},
 	});
@@ -49,7 +64,20 @@ export const useCategories = () => {
 	// hide category
 	const hideMutation = useMutation({
 		mutationFn: (id: string) => hideCategory(id),
-		onSuccess: () => {
+		onMutate: async (id: string) => {
+			await queryClient.cancelQueries({ queryKey: ["categories"] }) // cancel ongoing queries
+
+			const prevCategories = queryClient.getQueryData<Category[]>(["categories"])
+			queryClient.setQueryData(["categories"], (old: Category[] = []) => old.map((cat) => {
+				return cat.id === id ? {...cat, hidden: true}: cat
+			}));
+
+			return { prevCategories };
+		},
+		onError: (_err, _var, context) => {
+			queryClient.setQueryData(["categories"], context?.prevCategories)
+		},
+		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 		},
 	});
@@ -57,7 +85,20 @@ export const useCategories = () => {
 	// unhide category
 	const unhideMutation = useMutation({
 		mutationFn: (id: string) => unhideCategory(id),
-		onSuccess: () => {
+		onMutate: async (id: string) => {
+			await queryClient.cancelQueries({queryKey: ["categories"]});
+
+			const prevCategories = queryClient.getQueryData<Category[]>(["categories"]);
+			queryClient.setQueryData(["categories"], (old: Category[] = []) => old.map((cat) => {
+					return cat.id === id ? { ...cat, hidden: false }: cat
+			}));
+
+			return { prevCategories };
+		},
+		onError: (_err, _vars, context) => {
+			queryClient.setQueryData(["categories"], context?.prevCategories )
+		},
+		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 		},
 	});

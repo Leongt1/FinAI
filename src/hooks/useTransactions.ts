@@ -7,6 +7,7 @@ import {
 } from "../api/transactions";
 import type {
 	CreateTransactionRequest,
+	Transaction,
 	TransactionFilter,
 	UpdateTransactionRequest,
 } from "../types";
@@ -51,7 +52,26 @@ export const useTransactions = (filters?: TransactionFilter) => {
 	// delete mutation
 	const deleteMutation = useMutation({
 		mutationFn: (id: string) => deleteTransaction(id),
-		onSuccess: () => {
+		onMutate: async (id: string) => {
+			await queryClient.cancelQueries({ queryKey: ["transactions"] });
+
+			const prevTransactions = 
+				queryClient.getQueriesData<Transaction[]>({ 
+					queryKey: ["transactions"] 
+			});
+			queryClient.setQueriesData<Transaction[]>(
+				{ queryKey: ["transactions"] }, 
+				(old = []) => old.filter((tx) => tx.id !== id)
+			)
+
+			return { prevTransactions };
+		},
+		onError: (_err, _vars, context) => {
+			context?.prevTransactions.forEach(([queryKey, data]) => {
+				queryClient.setQueryData(queryKey, data)
+			});
+		},
+		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
 		},
 	});

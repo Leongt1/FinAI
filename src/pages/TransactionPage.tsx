@@ -6,6 +6,7 @@ import { useCategories } from "../hooks/useCategories";
 import TransactionModel from "../components/TransactionModel";
 import CategoryDropdown from "../components/CategoryDropdown";
 import TitleText from "../components/TitleText";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 const getMonthRange = (year: number, month: number) => {
 	const from = new Date(year, month, 1);
@@ -47,6 +48,8 @@ const TransactionPage = () => {
 	const [selectedTransaction, setSelectedTransaction] = useState<
 		Transaction | undefined
 	>(undefined);
+	const [transactionToDelete, setTransactionToDelete] =
+		useState<Transaction | null>(null);
 
 	const [showToolTip, setShowToolTip] = useState(false);
 
@@ -89,6 +92,14 @@ const TransactionPage = () => {
 	const handleClose = () => {
 		setIsModelOpen(false);
 		setSelectedTransaction(undefined);
+	};
+
+	const getTransactionCategoryName = (tx: Transaction | null) => {
+		if (!tx) return "Unknown";
+		return (
+			categories?.find((category) => category.id === tx.category_id)?.name ??
+			"Unknown"
+		);
 	};
 
 	return (
@@ -345,7 +356,7 @@ const TransactionPage = () => {
 												Edit
 											</button>
 											<button
-												onClick={() => deleteTransaction(tx.id)}
+												onClick={() => setTransactionToDelete(tx)}
 												disabled={isDeleting}
 												className="text-expense hover:text-expense hover:bg-expense-bg rounded-xl cursor-pointer p-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
 											>
@@ -364,6 +375,18 @@ const TransactionPage = () => {
 				onClose={handleClose}
 				categories={categories ?? []}
 				transaction={selectedTransaction}
+			/>
+			<ConfirmDialog
+				isOpen={!!transactionToDelete}
+				title="Delete transaction?"
+				message={`Delete ${getTransactionCategoryName(transactionToDelete)} transaction for ₹${transactionToDelete?.amount.toFixed(2) ?? "0.00"}?`}
+				isLoading={isDeleting}
+				onCancel={() => setTransactionToDelete(null)}
+				onConfirm={() => {
+					if (!transactionToDelete) return;
+					deleteTransaction(transactionToDelete.id);
+					setTransactionToDelete(null);
+				}}
 			/>
 		</DashboardLayout>
 	);
