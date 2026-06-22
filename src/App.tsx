@@ -4,7 +4,7 @@ import { useAuthStore } from "./store/authStore";
 import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import UsersPage from "./pages/UsersPage";
+import AdminPage from "./pages/AdminPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -43,7 +43,7 @@ const App = () => {
 
 			{/* admin routes */}
 			<Route element={<ProtectedRoute requiredRole="Admin" />}>
-				<Route path="/admin/users" element={<UsersPage />} />
+				<Route path="/admin/users" element={<AdminPage />} />
 			</Route>
 
 			{/* Error routes */}
