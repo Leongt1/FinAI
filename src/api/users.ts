@@ -4,7 +4,7 @@ import api from "./axios";
 // GET /users
 // Returns all users — Admin only on your backend
 export const getUsers = async (): Promise<User[]> => {
-	const { data } = await api.get<User[]>("/users");
+	const { data } = await api.get<User[]>("/users/");
 	return data;
 };
 
