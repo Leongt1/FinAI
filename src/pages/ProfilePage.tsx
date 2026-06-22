@@ -22,7 +22,6 @@ const ProfilePage = () => {
 			setName(currentUser.name || "");
 			setEmail(currentUser.email || "");
 			setDateOfBirth(currentUser.date_of_birth || null);
-			console.log(currentUser.date_of_birth)
 			setGender(currentUser.gender || "");
 		}
 	}, [currentUser]);
@@ -42,7 +41,6 @@ const ProfilePage = () => {
 		if (!isEditing) {
 			setIsEditing(true);
 		} else {
-			console.log("submitting: " + dateOfBirth)
 			updateUser(
 				{
 					name,
@@ -71,21 +69,25 @@ const ProfilePage = () => {
 							<div className="flex flex-col items-start gap-1">
 								<p>Full Name:</p>
 								<input
+									name="fullname"
 									onChange={(e) => setName(e.target.value)}
 									className={`rounded-xl border border-border text-sm p-3 focus:outline-none focus:ring-1 focus:ring-accent w-full ${!isEditing && "w-1/2 disabled:bg-surface-raised disabled:text-text-muted"}`}
 									type="text"
 									value={name}
 									disabled={!isEditing || isUpdating}
+									autoComplete="on"
 								/>
 							</div>
 							<div className="flex flex-col items-start gap-1">
 								<p>Email:</p>
 								<input
+									name="email"
 									onChange={(e) => setEmail(e.target.value)}
 									className={`rounded-xl border border-border text-sm p-3 focus:outline-none focus:ring-1 focus:ring-accent w-full  disabled:bg-surface-raised disabled:text-text-muted`}
 									type="text"
 									disabled={true}
 									value={email}
+									autoComplete="off"
 								/>
 							</div>
 							<div className="flex flex-col items-start w-full gap-1">
@@ -109,6 +111,7 @@ const ProfilePage = () => {
 							<div className="flex flex-col items-start gap-1">
 								<p>Gender:</p>
 								<select
+									name="gender"
 									className={`rounded-xl border border-border text-sm p-3 focus:outline-none focus:ring-1 focus:ring-accent w-full ${!isEditing && "disabled:bg-surface disabled:text-subtle"}`}
 									required
 									value={gender}
