@@ -41,7 +41,6 @@ export interface SignupRequest {
 // User Update
 export interface UpdateUserRequest {
 	name?: string;
-	role?: string;
 	gender?: string;
 	date_of_birth?: string | null;
 }

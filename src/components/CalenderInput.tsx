@@ -47,7 +47,7 @@ const CalendarInput = ({
 		<DatePicker
 			selected={date ? new Date(date) : null}
 			onChange={(d: Date | null) =>
-				setDate(d ? d.toISOString().split("T")[0] : null)
+				setDate(d?.toISOString()!)
 			}
 			maxDate={new Date()}
 			dateFormat="dd MMM yyyy"

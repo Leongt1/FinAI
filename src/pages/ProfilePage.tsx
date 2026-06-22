@@ -12,9 +12,7 @@ const ProfilePage = () => {
 
 	const [name, setName] = useState(currentUser?.name || "");
 	const [email, setEmail] = useState(currentUser?.email || "");
-	const [dateOfBirth, setDateOfBirth] = useState<string | null>(
-		currentUser?.date_of_birth || null,
-	);
+	const [dateOfBirth, setDateOfBirth] = useState<string | null>(currentUser?.date_of_birth!);
 	const [gender, setGender] = useState(currentUser?.gender || "");
 
 	const [isEditing, setIsEditing] = useState(false);
@@ -24,6 +22,7 @@ const ProfilePage = () => {
 			setName(currentUser.name || "");
 			setEmail(currentUser.email || "");
 			setDateOfBirth(currentUser.date_of_birth || null);
+			console.log(currentUser.date_of_birth)
 			setGender(currentUser.gender || "");
 		}
 	}, [currentUser]);
@@ -43,12 +42,12 @@ const ProfilePage = () => {
 		if (!isEditing) {
 			setIsEditing(true);
 		} else {
+			console.log("submitting: " + dateOfBirth)
 			updateUser(
 				{
 					name,
-					role: currentUser?.role || "User",
 					gender,
-					date_of_birth: dateOfBirth ? `${dateOfBirth}T00:00:00Z` : null,
+					date_of_birth: dateOfBirth,
 				},
 				{
 					onSuccess() {
@@ -83,9 +82,9 @@ const ProfilePage = () => {
 								<p>Email:</p>
 								<input
 									onChange={(e) => setEmail(e.target.value)}
-									className={`rounded-xl border border-border text-sm p-3 focus:outline-none focus:ring-1 focus:ring-accent w-full ${!isEditing && "w-1/2 disabled:bg-surface-raised disabled:text-text-muted"}`}
+									className={`rounded-xl border border-border text-sm p-3 focus:outline-none focus:ring-1 focus:ring-accent w-full  disabled:bg-surface-raised disabled:text-text-muted`}
 									type="text"
-									disabled={!isEditing || isUpdating}
+									disabled={true}
 									value={email}
 								/>
 							</div>
