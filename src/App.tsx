@@ -11,6 +11,7 @@ import ProfilePage from "./pages/ProfilePage";
 import TransactionPage from "./pages/TransactionPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import AdminUserProfile from "./pages/admin/AdminUserProfile";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 const App = () => {
 	const { restoreSession } = useAuth();
@@ -33,6 +34,7 @@ const App = () => {
 			{/* Public routes */}
 			<Route path="/login" element={<LoginPage />} />
 			<Route path="/signup" element={<SignupPage />} />
+			<Route path="/reset-password" element={<ResetPasswordPage />} />
 
 			{/* user routes */}
 			<Route element={<ProtectedRoute />}>

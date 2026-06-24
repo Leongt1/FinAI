@@ -1,4 +1,5 @@
-import type { LoginRequest, LoginResponse, SignupRequest } from "../types";
+import { faPassport } from "@fortawesome/free-solid-svg-icons";
+import type { LoginRequest, LoginResponse, ResetPasswordRequest, SignupRequest } from "../types";
 import api, { setAccessToken } from "./axios";
 
 // POST /auth/login
@@ -31,5 +32,18 @@ export const logout = async (): Promise<void> => {
 export const refresh = async (): Promise<LoginResponse> => {
 	const { data } = await api.post("/auth/refresh");
 	setAccessToken(data.access_token);
+	return data;
+};
+
+export const forgotPassword = async (email: string): Promise<string> => {
+	const { data} = await api.post<string>("/auth/forgot-password", { email });
+	return data;
+};
+
+export const resetPassword = async (token: string, password: string, confirm_password: string): Promise<string> => {
+	const { data } = await api.post<string>(`/auth/reset-password?token=${token}`, {
+		password,
+		confirm_password: confirm_password,
+	});
 	return data;
 };

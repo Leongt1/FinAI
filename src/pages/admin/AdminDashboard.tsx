@@ -2,10 +2,15 @@ import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/DashboardLayout";
 import TitleText from "../../components/TitleText";
 import { useUsers } from "../../hooks/useUsers";
+import ConfirmDialog from "../../components/ConfirmDialog";
+import type { User } from "../../types";
+import { useState } from "react";
 
 const AdminDashboard = () => {
 	const navigate = useNavigate();
 	const { users = [], isLoading, error, deleteUser, isDeleting } = useUsers();
+
+	const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
 	if (isLoading)
 		return (
@@ -80,7 +85,7 @@ const AdminDashboard = () => {
 								</button>
 								<button
 									type="button"
-									onClick={() => deleteUser(u.id)}
+									onClick={() => setUserToDelete(u)}
 									disabled={isDeleting}
 									className="text-expense hover:bg-expense-bg rounded-lg cursor-pointer px-3 py-1.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-expense"
 								>
@@ -91,6 +96,18 @@ const AdminDashboard = () => {
 					))}
 				</div>
 			</div>
+			<ConfirmDialog
+				isOpen={!!userToDelete}
+				title="Delete category?"
+				message={`Delete "${userToDelete?.name}"? Transactions using this category will be reassigned.`}
+				isLoading={isDeleting}
+				onCancel={() => setUserToDelete(null)}
+				onConfirm={() => {
+					if (!userToDelete) return;
+					deleteUser(userToDelete.id);
+					setUserToDelete(null);
+				}}
+			/>
 		</DashboardLayout>
 	);
 };

@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useAuthStore } from "../store/authStore";
+import ForgotPasswordModal from "../components/ForgotPasswordModal";
 
 const LoginPage = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [isForgotOpen, setIsForgotOpen] = useState(false);
 
 	const { handleLogin, isLoading, error } = useAuth();
 	const user = useAuthStore((s) => s.user);
@@ -54,9 +56,13 @@ const LoginPage = () => {
 						className="w-full rounded-lg border border-border text-sm p-2 px-4 mt-4 focus:outline-none focus:ring-2 focus:ring-border-strong text-text-muted"
 					/>
 					<div className="flex items-end justify-between flex-col my-4">
-						<span className="text-sm text-text-muted cursor-pointer hover:text-accent-glow">
-							Having trouble logging in?
-						</span>
+						<button
+							type="button"
+							onClick={() => setIsForgotOpen(true)}
+							className="text-sm text-text-muted cursor-pointer hover:text-accent-glow"
+						>
+							Forgot password?
+						</button>
 						<button
 							type="submit"
 							disabled={isLoading}
@@ -73,6 +79,7 @@ const LoginPage = () => {
 					</Link>
 				</p>
 			</div>
+			<ForgotPasswordModal isOpen={isForgotOpen} onClose={() => setIsForgotOpen(false)} />
 		</div>
 	);
 };

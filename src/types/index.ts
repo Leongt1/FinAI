@@ -106,3 +106,9 @@ export interface TransactionFilter {
 	date_from?: string;
 	date_to?: string;
 }
+
+export interface ResetPasswordRequest {
+	token: string;
+	password: string;
+	confirm_password: string;
+}

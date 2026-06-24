@@ -1,7 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import type { Gender } from "../types";
+import ForgotPasswordModal from "../components/ForgotPasswordModal";
 
 const SignupPage = () => {
 	const [name, setName] = useState("");
@@ -9,6 +10,8 @@ const SignupPage = () => {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [gender, setGender] = useState("");
+
+	const [isForgotOpen, setIsForgotOpen] = useState(false)
 
 	const [localError, setLocalError] = useState<string | null>(null);
 
@@ -100,9 +103,13 @@ const SignupPage = () => {
 						</option>
 					</select>
 					<div className="flex items-end justify-between flex-col my-4">
-						<span className="text-sm text-text-muted cursor-pointer hover:text-accent-glow">
+						<button 
+							type="button"
+							onClick={() => setIsForgotOpen(true)}
+							className="text-sm text-text-muted cursor-pointer hover:text-accent-glow"
+						>
 							Having trouble signing up?
-						</span>
+						</button>
 						<button
 							type="submit"
 							disabled={isLoading}
@@ -119,7 +126,9 @@ const SignupPage = () => {
 					</Link>
 				</p>
 			</div>
+			<ForgotPasswordModal isOpen={isForgotOpen} onClose={() => setIsForgotOpen(false)} />
 		</div>
+		
 	);
 };
 
