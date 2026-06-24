@@ -1,5 +1,4 @@
-import { faPassport } from "@fortawesome/free-solid-svg-icons";
-import type { LoginRequest, LoginResponse, ResetPasswordRequest, SignupRequest } from "../types";
+import type { LoginRequest, LoginResponse, SignupRequest } from "../types";
 import api, { setAccessToken } from "./axios";
 
 // POST /auth/login
