@@ -24,7 +24,7 @@ const App = () => {
 	if (isLoading) {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
-				<p className="text-grey-500">Loading...</p>
+				<p className="text-accent-glow text-2xl font-bold animate-pulse">Loading...</p>
 			</div>
 		);
 	}
