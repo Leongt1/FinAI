@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import type { Gender } from "../types";
-import ForgotPasswordModal from "../components/ForgotPasswordModal";
 
 const SignupPage = () => {
 	const [name, setName] = useState("");
@@ -10,8 +9,6 @@ const SignupPage = () => {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [gender, setGender] = useState("");
-
-	const [isForgotOpen, setIsForgotOpen] = useState(false)
 
 	const [localError, setLocalError] = useState<string | null>(null);
 
@@ -102,22 +99,15 @@ const SignupPage = () => {
 							Female
 						</option>
 					</select>
-					<div className="flex items-end justify-between flex-col my-4">
-						<button 
-							type="button"
-							onClick={() => setIsForgotOpen(true)}
-							className="text-sm text-text-muted cursor-pointer hover:text-accent-glow"
-						>
-							Having trouble signing up?
-						</button>
+					{/* <div className="flex items-end justify-between flex-col my-4"> */}
 						<button
 							type="submit"
 							disabled={isLoading}
-							className="w-full bg-accent-dim text-accent-glow rounded-lg p-3 mt-3 font-semibold hover:bg-accent transition-colors cursor-pointer"
+							className="w-full bg-accent-dim text-accent-glow rounded-lg p-3 my-4 font-semibold hover:bg-accent transition-colors cursor-pointer"
 						>
 							{isLoading ? "Signing up..." : "Sign up"}
 						</button>
-					</div>
+					{/* </div> */}
 				</form>
 				<p className="text-sm text-text-muted">
 					Already have an account?{" "}
@@ -126,7 +116,6 @@ const SignupPage = () => {
 					</Link>
 				</p>
 			</div>
-			<ForgotPasswordModal isOpen={isForgotOpen} onClose={() => setIsForgotOpen(false)} />
 		</div>
 		
 	);
