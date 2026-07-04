@@ -3,7 +3,7 @@ import DashboardLayout from "../components/DashboardLayout";
 import type { Transaction, TransactionFilter } from "../types";
 import { useTransactions } from "../hooks/useTransactions";
 import { useCategories } from "../hooks/useCategories";
-import TransactionModel from "../components/TransactionModel";
+import TransactionModal from "../components/TransactionModal";
 import CategoryDropdown from "../components/CategoryDropdown";
 import TitleText from "../components/TitleText";
 import ConfirmDialog from "../components/ConfirmDialog";
@@ -180,16 +180,6 @@ const TransactionPage = () => {
 							}
 						/>
 					</div>
-					{/* Middle */}
-					{/* <div className="flex items-center gap-2">
-						<div className="bg-gray-200 rounded-full px-2 pb-1 cursor-pointer hover:bg-gray-300 transition-colors">
-							←
-						</div>
-						<p className="text-gray-400 text-sm">0 - 10</p>
-						<div className="bg-gray-200 rounded-full px-2 pb-1 cursor-pointer hover:bg-gray-300 transition-colors">
-							→
-						</div>
-					</div> */}
 				</div>
 				{/* Month/Year navigation bar */}
 				<div className="bg-surface rounded-3xl mb-3 flex items-center px-4">
@@ -370,7 +360,7 @@ const TransactionPage = () => {
 					</table>
 				</div>
 			</div>
-			<TransactionModel
+			<TransactionModal
 				isOpen={isModelOpen}
 				onClose={handleClose}
 				categories={categories ?? []}

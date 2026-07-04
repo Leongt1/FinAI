@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteUser, getUsers, updateUser } from "../api/users";
-import type { UpdateUserRequest } from "../types";
+import { deleteUser, getUsers } from "../api/users";
 
 export const useUsers = () => {
 	const queryClient = useQueryClient();
@@ -24,24 +23,13 @@ export const useUsers = () => {
 		},
 	});
 
-	const updateMutation = useMutation({
-		mutationFn: ({ id, req }: { id: string; req: UpdateUserRequest }) =>
-			updateUser(id, req),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["users"] });
-		},
-	});
-
 	return {
 		users,
 		isLoading,
 		error,
 
 		deleteUser: (id: string) => deleteMutation.mutate(id),
-		updateMutation: (id: string, req: UpdateUserRequest) =>
-			updateMutation.mutate({ id, req }),
 
 		isDeleting: deleteMutation.isPending,
-		isUpdating: updateMutation.isPending,
 	};
 };

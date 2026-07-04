@@ -17,6 +17,11 @@ const SignupPage = () => {
 	async function handleSubmit(e: React.SyntheticEvent) {
 		e.preventDefault();
 
+		if (password.length < 8) {
+			setLocalError("Password must be at least 8 characters");
+			return;
+		}
+
 		if (password !== confirmPassword) {
 			setLocalError("Passwords do not match");
 			return;
@@ -27,7 +32,7 @@ const SignupPage = () => {
 			name,
 			email,
 			password,
-			role: "User",
+			confirm_password: confirmPassword,
 			gender: gender as Gender,
 			date_of_birth: null,
 		});
@@ -99,15 +104,13 @@ const SignupPage = () => {
 							Female
 						</option>
 					</select>
-					{/* <div className="flex items-end justify-between flex-col my-4"> */}
-						<button
-							type="submit"
-							disabled={isLoading}
-							className="w-full bg-accent-dim text-accent-glow rounded-lg p-3 my-4 font-semibold hover:bg-accent transition-colors cursor-pointer"
-						>
-							{isLoading ? "Signing up..." : "Sign up"}
-						</button>
-					{/* </div> */}
+					<button
+						type="submit"
+						disabled={isLoading}
+						className="w-full bg-accent-dim text-accent-glow rounded-lg p-3 my-4 font-semibold hover:bg-accent transition-colors cursor-pointer"
+					>
+						{isLoading ? "Signing up..." : "Sign up"}
+					</button>
 				</form>
 				<p className="text-sm text-text-muted">
 					Already have an account?{" "}

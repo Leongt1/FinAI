@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useCategories } from "../../hooks/useCategories";
 import { useTransactions } from "../../hooks/useTransactions";
-import { Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 type PieData = {name: string, amount: number, icon: string, fill: string}
 
@@ -62,13 +62,16 @@ const SpendingBreakdown = () => {
                             dataKey="amount"
                             nameKey="name"
                             innerRadius={55}
-                            outerRadius={85} 
+                            outerRadius={85}
                         >
-                            <Tooltip
-                                contentStyle={{ backgroundColor: "#162622", border: "1px solid #1e3530", borderRadius: "12px", color: "#dff2ea" }}
-                                cursor={{ fill: "#1e3530" }}
-                            />
+                            {breakdownData.map((item) => (
+                                <Cell key={item.name} fill={item.fill} />
+                            ))}
                         </Pie>
+                        <Tooltip
+                            contentStyle={{ backgroundColor: "#162622", border: "1px solid #1e3530", borderRadius: "12px", color: "#dff2ea" }}
+                            cursor={{ fill: "#1e3530" }}
+                        />
                     </PieChart>
                 </ResponsiveContainer>
                 <div className="flex flex-col gap-2 mt-2">

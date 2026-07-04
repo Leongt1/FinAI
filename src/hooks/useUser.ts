@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserById, updateUser } from "../api/users";
+import { useAuthStore } from "../store/authStore";
 import type { UpdateUserRequest } from "../types";
 
 export const useUser = (id: string) => {
@@ -17,8 +18,16 @@ export const useUser = (id: string) => {
 
 	const updateMutation = useMutation({
 		mutationFn: (req: UpdateUserRequest) => updateUser(id, req),
-		onSuccess: () => {
+		onSuccess: async () => {
 			queryClient.invalidateQueries({ queryKey: ["users", id] });
+
+			// keep the auth store in sync so Sidebar/Dashboard greetings
+			// reflect the change immediately
+			const fresh = await getUserById(id);
+			const { user: currentUser, setUser } = useAuthStore.getState();
+			if (currentUser?.id === id) {
+				setUser(fresh);
+			}
 		},
 	});
 

@@ -33,7 +33,7 @@ export interface SignupRequest {
 	name: string;
 	email: string;
 	password: string;
-	role: string;
+	confirm_password: string;
 	gender: string;
 	date_of_birth?: string | null;
 }
@@ -76,11 +76,6 @@ export interface CreateCategoryRequest {
 	icon?: string;
 }
 
-// Rename Category Request
-export interface RenameCategoryRequest {
-	name: string;
-}
-
 // Create Transaction Request
 export interface CreateTransactionRequest {
 	category_id: string;
@@ -105,10 +100,4 @@ export interface TransactionFilter {
 	type?: TransactionType;
 	date_from?: string;
 	date_to?: string;
-}
-
-export interface ResetPasswordRequest {
-	token: string;
-	password: string;
-	confirm_password: string;
 }

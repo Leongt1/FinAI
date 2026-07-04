@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { LoginResponse } from "../types";
+import { useAuthStore } from "../store/authStore";
 
 // base instance
 const api = axios.create({
@@ -45,14 +46,21 @@ api.interceptors.response.use(
 			originalRequest._retry = true;
 
 			try {
-				// Call the refresh endpoint
-				// Try to get a new access token using the refresh_token cookie
-				const { data } = await axios.post<LoginResponse>(
-					`${import.meta.env.VITE_API_URL}/auth/refresh`,
-					{},
-					{ withCredentials: true },
-				);
-				
+				// Share one in-flight refresh across concurrent 401s —
+				// the backend rotates the refresh cookie, so parallel
+				// refresh calls would invalidate each other
+				refreshPromise ??= axios
+					.post<LoginResponse>(
+						`${import.meta.env.VITE_API_URL}/auth/refresh`,
+						{},
+						{ withCredentials: true },
+					)
+					.finally(() => {
+						refreshPromise = null;
+					});
+
+				const { data } = await refreshPromise;
+
 				// Update the token in memory
 				setAccessToken(data.access_token);
 
@@ -62,8 +70,9 @@ api.interceptors.response.use(
 				// Retry the original request
 				return api(originalRequest);
 			} catch (refreshError) {
-				// If refresh fails, clear the token and redirect to login
+				// If refresh fails, clear all auth state and redirect to login
 				setAccessToken(null);
+				useAuthStore.getState().clear();
 				window.location.href = "/login";
 				return Promise.reject(refreshError);
 			}
@@ -72,6 +81,9 @@ api.interceptors.response.use(
 		return Promise.reject(error);
 	},
 );
+
+// Shared in-flight refresh request (null when none is running)
+let refreshPromise: Promise<{ data: LoginResponse }> | null = null;
 
 // Simple in-memory token storage
 // We keep it here instead of localStorage for security (avoids XSS attacks)
