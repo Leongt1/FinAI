@@ -15,8 +15,8 @@ const ResetPasswordPage = () => {
 
 	if (!token) {
 		return (
-			<div className="min-h-screen flex items-center justify-center">
-				<div className="bg-surface border border-border rounded-2xl p-10 max-w-md w-full text-center">
+			<div className="min-h-screen flex items-center justify-center px-4">
+				<div className="bg-surface border border-border rounded-2xl p-6 sm:p-10 max-w-md w-full text-center">
 					<p className="text-expense font-semibold mb-4">Invalid or missing reset token.</p>
 					<button
 						onClick={() => navigate("/login")}
@@ -55,8 +55,8 @@ const ResetPasswordPage = () => {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center">
-			<div className="bg-surface border border-border rounded-2xl shadow-md p-10 w-full max-w-md flex flex-col items-center">
+		<div className="min-h-screen flex items-center justify-center px-4">
+			<div className="bg-surface border border-border rounded-2xl shadow-md p-6 sm:p-10 w-full max-w-md flex flex-col items-center">
 				<h1 className="text-2xl font-bold text-text-muted">Set New Password</h1>
 				<p className="text-sm text-subtle py-3 text-center">
 					Choose a strong password for your account.
