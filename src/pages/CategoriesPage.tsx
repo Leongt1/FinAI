@@ -59,7 +59,7 @@ const CategoriesPage = () => {
 					{/* Title */}
 					<TitleText title="Categories" />
 					{/* Add transaction Btn */}
-					<div className="fixed right-10 bottom-10 flex items-center gap-2">
+					<div className="fixed right-4 bottom-4 sm:right-10 sm:bottom-10 z-20 flex items-center gap-2">
 						{showToolTip && (
 							<span className="text-accent-glow text-sm bg-surface-raised/90 px-2 py-1 rounded-lg border border-border-strong whitespace-nowrap shadow-md">
 								New Category

@@ -108,7 +108,7 @@ const TransactionPage = () => {
 				{/* Header */}
 				<TitleText title="Transactions" />
 				{/* Add transaction Btn */}
-				<div className="fixed right-10 bottom-10 flex items-center gap-2">
+				<div className="fixed right-4 bottom-4 sm:right-10 sm:bottom-10 z-20 flex items-center gap-2">
 					{showToolTip && (
 						<span className="text-accent-glow text-sm bg-surface-raised/90 px-2 py-1 rounded-lg border border-border-strong whitespace-nowrap shadow-md">
 							New Transaction
@@ -124,7 +124,7 @@ const TransactionPage = () => {
 					</button>
 				</div>
 				{/* Summary Cards */}
-				<div className="flex gap-6 justify-start">
+				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
 					<div className="bg-surface rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border border-border shadow-sm">
 						<p className="text-text-muted text-sm">Total Income</p>
 						<p className="font-bold text-2xl text-income">
@@ -150,9 +150,9 @@ const TransactionPage = () => {
 					</div>
 				</div>
 				{/* Filter section */}
-				<div className="bg-surface rounded-3xl p-2 flex justify-between mb-2 items-center">
+				<div className="bg-surface rounded-3xl p-2 flex flex-wrap justify-between mb-2 items-center gap-2">
 					{/* Left */}
-					<div className="flex items-center gap-4 justify-start">
+					<div className="flex flex-wrap items-center gap-2 sm:gap-4 justify-start">
 						<div className="flex items-center gap-2 bg-surface-raised rounded-full p-1">
 							{["All", "Expense", "Income"].map((tab) => (
 								<p
@@ -181,10 +181,10 @@ const TransactionPage = () => {
 						/>
 					</div>
 				</div>
-				{/* Month/Year navigation bar */}
-				<div className="bg-surface rounded-3xl mb-3 flex items-center px-4">
+				{/* Month/Year navigation bar — months scroll horizontally on small screens */}
+				<div className="bg-surface rounded-3xl mb-3 flex items-center px-4 overflow-x-auto">
 					{/* Year */}
-					<div className="flex items-center gap-1 pr-4 border-r border-border">
+					<div className="flex items-center gap-1 pr-4 border-r border-border shrink-0">
 						<button
 							onClick={() => {
 								const newYear = selectedYear - 1;
@@ -217,8 +217,8 @@ const TransactionPage = () => {
 						</button>
 					</div>
 
-					{/* Month tabs */}
-					<div className="flex flex-1">
+					{/* Month tabs — min-w-max keeps tabs full-size and lets the bar scroll */}
+					<div className="flex flex-1 min-w-max">
 						{monthNames.map((month, index) => {
 							const isActive = selectedMonth === index;
 							const isFuture =
@@ -235,7 +235,7 @@ const TransactionPage = () => {
 											...getMonthRange(selectedYear, index),
 										}));
 									}}
-									className={`flex-1 py-4 text-sm font-medium transition-colors relative ${isActive
+									className={`flex-1 py-4 px-3 text-sm font-medium transition-colors relative ${isActive
 											? "text-accent-glow font-bold"
 											: isFuture
 												? "text-subtle/70 cursor-not-allowed"
@@ -252,9 +252,9 @@ const TransactionPage = () => {
 						})}
 					</div>
 				</div>
-				{/* Transaction List */}
-				<div className="w-full bg-surface border border-border rounded-t-3xl">
-					<table className="w-full">
+				{/* Transaction List — table scrolls inside its card on small screens */}
+				<div className="w-full bg-surface border border-border rounded-t-3xl overflow-x-auto">
+					<table className="w-full min-w-[640px]">
 						<thead>
 							<tr className="border-b border-border">
 								<th className="text-left text-xs font-medium text-subtle uppercase p-4">

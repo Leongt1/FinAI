@@ -41,16 +41,16 @@ const AdminDashboard = () => {
 					{users.map((u) => (
 						<div
 							key={u.id}
-							className="p-3 bg-surface-raised rounded-xl border border-border flex items-center gap-4 hover:border-border-strong transition-colors"
+							className="p-3 bg-surface-raised rounded-xl border border-border flex flex-wrap items-center gap-3 sm:gap-4 hover:border-border-strong transition-colors"
 						>
 							{/* Avatar + name */}
-							<div className="flex items-center flex-1 gap-4">
+							<div className="flex items-center flex-1 gap-4 min-w-0">
 								<div className="w-10 h-10 rounded-full bg-accent-dim border border-border-strong flex items-center justify-center shrink-0">
 									<span className="text-accent-glow font-semibold text-sm">
 										{u.name.charAt(0).toUpperCase()}
 									</span>
 								</div>
-								<div>
+								<div className="min-w-0">
 									<button
 										type="button"
 										onClick={() => navigate(`/admin/users/${u.id}`)}
@@ -58,7 +58,7 @@ const AdminDashboard = () => {
 									>
 										{u.name}
 									</button>
-									<p className="text-subtle text-xs">{u.email}</p>
+									<p className="text-subtle text-xs truncate">{u.email}</p>
 								</div>
 							</div>
 

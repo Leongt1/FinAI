@@ -101,12 +101,12 @@ const TransactionModal = ({
 	return (
 		// backdrop
 		<div
-			className="fixed inset-0 bg-bg/70 flex items-center justify-center z-50"
+			className="fixed inset-0 bg-bg/70 flex items-center justify-center z-50 p-4"
 			onClick={onClose}
 		>
 			{/* model */}
 			<div
-				className="bg-surface rounded-3xl p-8 w-full max-w-md shadow-xl"
+				className="bg-surface rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-xl max-h-[90vh] overflow-y-auto"
 				onClick={(e) => e.stopPropagation()}
 			>
 				{/* header */}
