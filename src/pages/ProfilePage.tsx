@@ -66,7 +66,7 @@ const ProfilePage = () => {
 				{/* Header */}
 				<TitleText title="Profile" />
 				{/* Profile Form */}
-				<div className="flex gap-4 bg-surface rounded-3xl p-6 border border-border">
+				<div className="flex flex-col lg:flex-row gap-4 bg-surface rounded-3xl p-4 sm:p-6 border border-border">
 					{/* Left */}
 					<form onSubmit={handleSubmit} className="w-full flex-1">
 						<div className="flex flex-col w-full gap-4 justify-between rounded-2xl p-4 border border-border">
@@ -150,9 +150,9 @@ const ProfilePage = () => {
 						</div>
 					</form>
 
-					{/* Right */}
-					<div className="flex flex-col items-center justify-center gap-4 flex-1">
-						<div className="w-50 h-50 bg-gray-500"></div>
+					{/* Right — avatar placeholder, hidden on small screens */}
+					<div className="hidden lg:flex flex-col items-center justify-center gap-4 flex-1">
+						<div className="w-50 h-50 bg-surface-raised border border-border rounded-2xl"></div>
 					</div>
 				</div>
 			</div>
