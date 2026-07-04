@@ -1,7 +1,7 @@
 import DashboardLayout from "../components/DashboardLayout";
 import { useAuthStore } from "../store/authStore";
-import CalendarInput from "../components/CalenderInput";
-import { useState, useEffect } from "react";
+import CalendarInput from "../components/CalendarInput";
+import { useState } from "react";
 import type { SyntheticEvent } from "react";
 import { useUser } from "../hooks/useUser";
 import TitleText from "../components/TitleText";
@@ -12,19 +12,23 @@ const ProfilePage = () => {
 
 	const [name, setName] = useState(currentUser?.name || "");
 	const [email, setEmail] = useState(currentUser?.email || "");
-	const [dateOfBirth, setDateOfBirth] = useState<string | null>(currentUser?.date_of_birth!);
+	const [dateOfBirth, setDateOfBirth] = useState<string | null>(currentUser?.date_of_birth ?? null);
 	const [gender, setGender] = useState(currentUser?.gender || "");
 
 	const [isEditing, setIsEditing] = useState(false);
 
-	useEffect(() => {
+	// sync form state during render when the store user changes
+	// (session restore or profile update) instead of via an effect
+	const [prevUser, setPrevUser] = useState(currentUser);
+	if (currentUser !== prevUser) {
+		setPrevUser(currentUser);
 		if (currentUser) {
 			setName(currentUser.name || "");
 			setEmail(currentUser.email || "");
 			setDateOfBirth(currentUser.date_of_birth || null);
 			setGender(currentUser.gender || "");
 		}
-	}, [currentUser]);
+	}
 
 	const handleCancel = () => {
 		setIsEditing(false);

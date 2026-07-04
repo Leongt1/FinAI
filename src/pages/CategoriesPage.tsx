@@ -50,7 +50,7 @@ const CategoriesPage = () => {
 		if (isAddOpen) {
 			bottomRef.current?.scrollIntoView({ behavior: "smooth" });
 		}
-	}, [categories?.length]);
+	}, [isAddOpen]);
 
 	return (
 		<DashboardLayout>

@@ -98,8 +98,8 @@ const AdminDashboard = () => {
 			</div>
 			<ConfirmDialog
 				isOpen={!!userToDelete}
-				title="Delete category?"
-				message={`Delete "${userToDelete?.name}"? Transactions using this category will be reassigned.`}
+				title="Delete user?"
+				message={`Delete "${userToDelete?.name}"? This will permanently remove the user and all of their data.`}
 				isLoading={isDeleting}
 				onCancel={() => setUserToDelete(null)}
 				onConfirm={() => {

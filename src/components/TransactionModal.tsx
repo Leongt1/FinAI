@@ -5,23 +5,23 @@ import type {
 	Transaction,
 	UpdateTransactionRequest,
 } from "../types";
-import { useEffect, useState } from "react";
-import CalendarInput from "./CalenderInput";
+import { useState } from "react";
+import CalendarInput from "./CalendarInput";
 import CategoryDropdown from "./CategoryDropdown";
 
-interface TransactionModelProps {
+interface TransactionModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	categories?: Category[];
 	transaction?: Transaction;
 }
 
-const TransactionModel = ({
+const TransactionModal = ({
 	isOpen,
 	onClose,
 	categories = [],
 	transaction,
-}: TransactionModelProps) => {
+}: TransactionModalProps) => {
 	const isEditMode = !!transaction;
 	const { createTransaction, updateTransaction, isCreating, isUpdating } =
 		useTransactions();
@@ -34,7 +34,14 @@ const TransactionModel = ({
 	const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
 	const [error, setError] = useState<string | null>(null);
 
-	useEffect(() => {
+	// sync form state during render when the modal opens or the
+	// transaction changes (avoids a cascading setState-in-effect)
+	const [prevSync, setPrevSync] = useState<{
+		tx?: Transaction;
+		open: boolean;
+	}>({ open: false });
+	if (prevSync.tx !== transaction || prevSync.open !== isOpen) {
+		setPrevSync({ tx: transaction, open: isOpen });
 		if (transaction) {
 			setCategoryID(transaction.category_id);
 			setAmount(transaction.amount.toString());
@@ -48,7 +55,7 @@ const TransactionModel = ({
 			setType("Expense");
 			setDate(new Date().toISOString().split("T")[0]);
 		}
-	}, [transaction, isOpen]);
+	}
 
 	const handleSubmit = (e: React.SyntheticEvent) => {
 		e.preventDefault();
@@ -145,7 +152,7 @@ const TransactionModel = ({
 					</div>
 					{/* category */}
 					<CategoryDropdown
-						categories={categories!?.filter((c) => !c.hidden)}
+						categories={categories.filter((c) => !c.hidden)}
 						value={categoryID}
 						onChange={(value) => setCategoryID(value)}
 						placeholder="Select category"
@@ -200,4 +207,4 @@ const TransactionModel = ({
 	);
 };
 
-export default TransactionModel;
+export default TransactionModal;

@@ -55,13 +55,14 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		onMutate: async (id: string) => {
 			await queryClient.cancelQueries({ queryKey: ["transactions"] });
 
-			const prevTransactions = 
-				queryClient.getQueriesData<Transaction[]>({ 
-					queryKey: ["transactions"] 
+			const prevTransactions =
+				queryClient.getQueriesData<Transaction[]>({
+					queryKey: ["transactions"]
 			});
+			// only touch list caches — ["transactions", id] holds a single object
 			queryClient.setQueriesData<Transaction[]>(
-				{ queryKey: ["transactions"] }, 
-				(old = []) => old.filter((tx) => tx.id !== id)
+				{ queryKey: ["transactions"] },
+				(old) => (Array.isArray(old) ? old.filter((tx) => tx.id !== id) : old)
 			)
 
 			return { prevTransactions };
@@ -73,6 +74,7 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
+			queryClient.invalidateQueries({ queryKey: ["categories"] });
 		},
 	});
 
@@ -84,25 +86,12 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		createTransaction: (
 			input: CreateTransactionRequest,
 			options?: { onSuccess?: () => void },
-		) => createMutation.mutate(input, { 
-			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: ["transactions"] });
-				queryClient.invalidateQueries({ queryKey: ["categories"] });
-				options?.onSuccess?.();
-			} ,
-		}),
+		) => createMutation.mutate(input, { onSuccess: options?.onSuccess }),
 		updateTransaction: (
 			id: string,
 			input: UpdateTransactionRequest,
 			options?: { onSuccess?: () => void },
-		) =>
-			updateMutation.mutate({ id, input }, { 
-				onSuccess: () => {
-					queryClient.invalidateQueries({ queryKey: ["transactions"] });
-					queryClient.invalidateQueries({ queryKey: ["categories"] });
-					options?.onSuccess?.();
-				},
-			 }),
+		) => updateMutation.mutate({ id, input }, { onSuccess: options?.onSuccess }),
 		deleteTransaction: (id: string) => deleteMutation.mutate(id),
 
 		isCreating: createMutation.isPending,

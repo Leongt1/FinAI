@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../store/authStore";
 import { login, logout, refresh, signup } from "../api/auth";
 import { getUserById } from "../api/users";
@@ -10,6 +11,7 @@ export const useAuth = () => {
 	const [error, setError] = useState<string | null>(null);
 
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const { setUser, setIsLoading: setStoreLoading, clear } = useAuthStore();
 
 	// To restore session on app start-up
@@ -20,7 +22,7 @@ export const useAuth = () => {
 			const payload = parseJwt(data.access_token);
 			const user = await getUserById(payload.user_id);
 			setUser(user);
-		} catch (error) {
+		} catch {
 			clear();
 		} finally {
 			setStoreLoading(false);
@@ -45,8 +47,14 @@ export const useAuth = () => {
 			// set user
 			setUser(user);
 			navigate("/dashboard");
-		} catch (error) {
-			setError("Invalid email or password");
+		} catch (err: unknown) {
+			if (isAxiosError(err) && err.response?.status === 401) {
+				setError("Invalid email or password");
+			} else if (isAxiosError(err) && err.response?.data?.error) {
+				setError(err.response.data.error);
+			} else {
+				setError("Login failed. Please try again.");
+			}
 		} finally {
 			setIsLoading(false);
 		}
@@ -77,12 +85,10 @@ export const useAuth = () => {
 		setIsLoading(true);
 		try {
 			await logout(); // clears cookie in backend, and clears token in axios
-			clear(); // clear state stored in zustand
-			navigate("/login");
-		} catch (error) {
-			clear(); // even on failure, clear cookie and redirect
-			navigate("/login");
 		} finally {
+			clear(); // clear state stored in zustand
+			queryClient.clear(); // drop cached data so it can't leak into the next session
+			navigate("/login");
 			setIsLoading(false);
 		}
 	};
@@ -104,7 +110,13 @@ export const useAuth = () => {
 // We only need the payload (middle part)
 // --------------------------------------------------
 function parseJwt(token: string): { user_id: string; role: string } {
-	const base64 = token.split(".")[1]; // get the payload part
+	// JWT payloads are base64url encoded — convert to standard base64
+	// (replace URL-safe chars, restore padding) before atob
+	const base64url = token.split(".")[1]; // get the payload part
+	const base64 = base64url
+		.replace(/-/g, "+")
+		.replace(/_/g, "/")
+		.padEnd(Math.ceil(base64url.length / 4) * 4, "=");
 	const decoded = atob(base64); // decode base64 to string
 	return JSON.parse(decoded); // parse JSON string to object
 }
@@ -112,7 +124,7 @@ function parseJwt(token: string): { user_id: string; role: string } {
 // Helper — check if an error is an Axios error
 // so we can safely access err.response
 function isAxiosError(err: unknown): err is {
-	response?: { data?: { error?: string } };
+	response?: { status?: number; data?: { error?: string } };
 } {
 	return typeof err === "object" && err !== null && "response" in err;
 }
