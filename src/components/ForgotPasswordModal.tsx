@@ -38,7 +38,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }: ForgotPasswordModalProps) => {
 
 	return (
 		<div
-			className="fixed inset-0 bg-bg/70 z-50 flex items-center justify-center"
+			className="fixed inset-0 bg-bg/70 z-50 flex items-center justify-center p-4"
 			onClick={handleClose}
 		>
 			<div

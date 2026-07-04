@@ -2,7 +2,12 @@ import { NavLink } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useAuth } from "../hooks/useAuth";
 
-const Sidebar = () => {
+interface SidebarProps {
+	isOpen: boolean;
+	onClose: () => void;
+}
+
+const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 	const { handleLogout } = useAuth();
 	const currentUser = useAuthStore((s) => s.user);
 
@@ -13,32 +18,47 @@ const Sidebar = () => {
 	};
 
 	return (
-		<div className="w-64 bg-surface border border-border text-foreground min-h-screen rounded-2xl flex flex-col items-start p-4 mr-4">
+		<div
+			className={`w-64 bg-surface border border-border text-foreground flex flex-col items-start p-4
+				fixed inset-y-0 left-0 z-50 transform transition-transform duration-200
+				${isOpen ? "translate-x-0" : "-translate-x-full"}
+				lg:static lg:z-auto lg:translate-x-0 lg:min-h-screen lg:rounded-2xl lg:shrink-0`}
+		>
 			{/* Logo */}
-			<div className="border-b-2 border-border pb-4 mb-4 w-full px-2">
-				<span className="text-accent-glow text-2xl font-semibold tracking-widest uppercase">Fin</span>
-				<span className="text-foreground text-2xl font-bold">AI</span>
+			<div className="border-b-2 border-border pb-4 mb-4 w-full px-2 flex items-center justify-between">
+				<div>
+					<span className="text-accent-glow text-2xl font-semibold tracking-widest uppercase">Fin</span>
+					<span className="text-foreground text-2xl font-bold">AI</span>
+				</div>
+				{/* Close button — mobile drawer only */}
+				<button
+					onClick={onClose}
+					aria-label="Close menu"
+					className="lg:hidden text-text-muted hover:text-accent-glow p-1 cursor-pointer"
+				>
+					✕
+				</button>
 			</div>
 
 			{/* Navigation links */}
 			<nav className="flex flex-col gap-3 items-center w-full">
-				<NavLink to={"/dashboard"} className={navLinkClass}>
+				<NavLink to={"/dashboard"} className={navLinkClass} onClick={onClose}>
 					Dashboard
 				</NavLink>
-				<NavLink to={"/transactions"} className={navLinkClass}>
+				<NavLink to={"/transactions"} className={navLinkClass} onClick={onClose}>
 					Transactions
 				</NavLink>
 				{/* <NavLink to="/budget" className={navLinkClass}>
 					Budget
 				</NavLink> */}
-				<NavLink to="/categories" className={navLinkClass}>
+				<NavLink to="/categories" className={navLinkClass} onClick={onClose}>
 					Categories
 				</NavLink>
-				<NavLink to="/profile" className={navLinkClass}>
+				<NavLink to="/profile" className={navLinkClass} onClick={onClose}>
 					Profile
 				</NavLink>
 				{currentUser?.role === "Admin" && (
-					<NavLink to={"/admin/users"} className={navLinkClass}>
+					<NavLink to={"/admin/users"} className={navLinkClass} onClick={onClose}>
 						Users
 					</NavLink>
 				)}

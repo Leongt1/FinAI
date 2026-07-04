@@ -79,7 +79,7 @@ const DashboardPage = () => {
 				<p className="text-text-muted text-sm mt-1">{today}</p>
 			</div>
 			{/* Summary Cards */}
-			<div className="grid grid-cols-4 gap-4 mb-8">
+			<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
 				<SummaryCard title="This month balance" type="balance"
                     amount={stats ? fmt(stats.balance.amount) : "—"}
                     change={stats?.balance.change ?? "..."}
@@ -97,12 +97,10 @@ const DashboardPage = () => {
                     change={stats?.savings.change ?? "..."}
                     isPositive={stats?.savings.isPositive ?? true} />
 			</div>
-			{/* Middle: charts and budgets */}
-			<div className="grid grid-cols-3 gap-4 mb-4 items-stretch">
-				{/* 2/3 width occupied */}
-				<div className="col-span-2 h-full">{/* Money Flow Chart */}<MoneyFlowChart /></div>
-				{/* 1/3 width occupied */}
-				<div className="col-span-1 h-full"><SpendingBreakdown /></div>
+			{/* Middle: charts and budgets — stacked on mobile, 2/3 + 1/3 on lg */}
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4 items-stretch">
+				<div className="lg:col-span-2 h-full">{/* Money Flow Chart */}<MoneyFlowChart /></div>
+				<div className="lg:col-span-1 h-full"><SpendingBreakdown /></div>
 			</div>
 			{/* Recent Transactions */}
 			<RecentTransactions />

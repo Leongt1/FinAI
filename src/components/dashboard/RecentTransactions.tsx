@@ -22,7 +22,8 @@ const RecentTransactions = () => {
 					View all
 				</button>
 			</div>
-			<table className="w-full">
+			<div className="overflow-x-auto">
+			<table className="w-full min-w-[480px]">
 				<thead>
 					<tr className="border-b border-border">
 						<th className="text-left text-xs font-medium text-subtle uppercase pb-3">
@@ -90,6 +91,7 @@ const RecentTransactions = () => {
 					})}
 				</tbody>
 			</table>
+			</div>
 		</div>
 	);
 };

@@ -40,10 +40,10 @@ const SignupPage = () => {
 
 	return (
 		<div
-			className="min-h-screen bg-bg flex items-center justify-center bg-cover bg-center bg-no-repeat"
+			className="min-h-screen bg-bg flex items-center justify-center bg-cover bg-center bg-no-repeat px-4"
 		>
 			{/* Card */}
-			<div className="bg-surface rounded-2xl shadow-md p-10 w-full max-w-md flex flex-col items-center justify-center border border-border">
+			<div className="bg-surface rounded-2xl shadow-md p-6 sm:p-10 w-full max-w-md flex flex-col items-center justify-center border border-border">
 				<h1 className="text-2xl font-bold text-text-muted">Signup</h1>
 				<p className="text-sm text-subtle py-3">
 					Enter your details to create a new account
