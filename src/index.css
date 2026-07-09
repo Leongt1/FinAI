@@ -39,6 +39,13 @@
 		color: theme('color-foreground');
 		min-height: 100vh;
 	}
+
+	/* Themed scrollbars everywhere (page, modals, dropdowns, tables).
+	   Standard properties cover Chrome/Edge/Firefox; Safari keeps native. */
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: theme('color-border-strong') transparent;
+	}
 }
 
 /* Datepicker Styles - overrides */
