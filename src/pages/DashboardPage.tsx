@@ -6,6 +6,8 @@ import { useAuthStore } from "../store/authStore";
 import { useTransactions } from "../hooks/useTransactions";
 import { useMemo } from "react";
 import SpendingBreakdown from "../components/dashboard/SpendingBreakdown";
+import BudgetOverview from "../components/dashboard/BudgetOverview";
+import { formatCurrency } from "../utils/formatCurrency";
 
 const DashboardPage = () => {
 	const currentUser = useAuthStore((s) => s.user);
@@ -67,7 +69,7 @@ const DashboardPage = () => {
 
 	}, [transactions]);
 
-	const fmt = (n: number) => "₹" + Math.abs(n).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+	const fmt = (n: number) => formatCurrency(n);
 
 	return (
 		<DashboardLayout>
@@ -102,8 +104,11 @@ const DashboardPage = () => {
 				<div className="lg:col-span-2 h-full">{/* Money Flow Chart */}<MoneyFlowChart /></div>
 				<div className="lg:col-span-1 h-full"><SpendingBreakdown /></div>
 			</div>
-			{/* Recent Transactions */}
-			<RecentTransactions />
+			{/* Bottom: budgets and recent transactions — stacked on mobile, 1/3 + 2/3 on lg */}
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
+				<div className="lg:col-span-1 h-full"><BudgetOverview /></div>
+				<div className="lg:col-span-2 h-full"><RecentTransactions /></div>
+			</div>
 		</DashboardLayout>
 	);
 };

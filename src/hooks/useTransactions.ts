@@ -31,6 +31,7 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
+			queryClient.invalidateQueries({ queryKey: ["budgets"] });
 		},
 	});
 
@@ -46,6 +47,7 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
+			queryClient.invalidateQueries({ queryKey: ["budgets"] });
 		},
 	});
 
@@ -75,6 +77,7 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
+			queryClient.invalidateQueries({ queryKey: ["budgets"] });
 		},
 	});
 

@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useCategories } from "../../hooks/useCategories";
 import { useTransactions } from "../../hooks/useTransactions";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 type PieData = {name: string, amount: number, icon: string, fill: string}
 
@@ -81,7 +82,7 @@ const SpendingBreakdown = () => {
                         <div style={{ width: 10, height: 10, borderRadius: 2, background: item.fill }} />
                         <span className="text-sm text-text-muted">{item.icon} {item.name}</span>
                     </div>
-                    <span className="text-sm text-text-muted">₹{item.amount.toFixed(0)}</span>
+                    <span className="text-sm text-text-muted">{formatCurrency(item.amount, { decimals: 0 })}</span>
                 </div>
             ))}
         </div>

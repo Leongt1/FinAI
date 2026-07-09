@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useTransactions } from "../../hooks/useTransactions";
 import { useCategories } from "../../hooks/useCategories";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 const RecentTransactions = () => {
 	const navigate = useNavigate();
@@ -84,7 +85,8 @@ const RecentTransactions = () => {
 										tx.type === "Income" ? "text-income" : "text-expense"
 									}`}
 								>
-									{tx.type === "Income" ? "+" : "-"}₹{tx.amount.toFixed(2)}
+									{tx.type === "Income" ? "+" : "-"}
+									{formatCurrency(tx.amount)}
 								</td>
 							</tr>
 						);

@@ -12,6 +12,7 @@ import TransactionPage from "./pages/TransactionPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import BudgetsPage from "./pages/BudgetsPage";
 
 const App = () => {
 	const { restoreSession } = useAuth();
@@ -41,6 +42,7 @@ const App = () => {
 				<Route path="/dashboard" element={<DashboardPage />} />
 				<Route path="/profile" element={<ProfilePage />} />
 				<Route path="/transactions" element={<TransactionPage />} />
+				<Route path="/budget" element={<BudgetsPage />} />
 				<Route path="/categories" element={<CategoriesPage />} />
 			</Route>
 
