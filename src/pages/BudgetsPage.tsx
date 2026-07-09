@@ -3,6 +3,7 @@ import BudgetModal from "../components/BudgetModal";
 import BudgetProgressBar from "../components/BudgetProgressBar";
 import ConfirmDialog from "../components/ConfirmDialog";
 import DashboardLayout from "../components/DashboardLayout";
+import TitleText from "../components/TitleText";
 import { useBudgets } from "../hooks/useBudgets";
 import { useCategories } from "../hooks/useCategories";
 import type { Budget } from "../types";
@@ -19,6 +20,7 @@ const BudgetsPage = () => {
 		undefined,
 	);
 	const [budgetToDelete, setBudgetToDelete] = useState<Budget | null>(null);
+	const [showToolTip, setShowToolTip] = useState(false);
 
 	const openCreate = () => {
 		setBudgetToEdit(undefined);
@@ -48,13 +50,21 @@ const BudgetsPage = () => {
 	return (
 		<DashboardLayout>
 			{/* Header */}
-			<div className="flex items-center justify-between mb-8">
-				<h1 className="text-2xl font-bold text-foreground">Budgets</h1>
+			<TitleText title="Budgets" />
+			{/* Add budget Btn */}
+			<div className="fixed right-4 bottom-4 sm:right-10 sm:bottom-10 z-20 flex items-center gap-2">
+				{showToolTip && (
+					<span className="text-accent-glow text-sm bg-surface-raised/90 px-2 py-1 rounded-lg border border-border-strong whitespace-nowrap shadow-md">
+						New Budget
+					</span>
+				)}
 				<button
 					onClick={openCreate}
-					className="bg-accent text-accent-glow rounded-xl px-4 py-2 text-xl font-semibold hover:bg-accent-glow hover:text-accent transition-all cursor-pointer"
+					onMouseEnter={() => setShowToolTip(true)}
+					onMouseLeave={() => setShowToolTip(false)}
+					className="bg-accent-dim w-12 h-12 text-accent-glow rounded-lg p-2 mt-3 font-semibold hover:bg-accent transition-colors cursor-pointer"
 				>
-					+
+					<span className="text-2xl mb-1 font-semibold text-accent-glow leading-none">+</span>
 				</button>
 			</div>
 
@@ -62,7 +72,7 @@ const BudgetsPage = () => {
 			{isLoading ? (
 				<p className="text-text-muted animate-pulse">Loading budgets...</p>
 			) : !budgets || budgets.length === 0 ? (
-				<div className="bg-surface rounded-2xl border border-border p-10 text-center">
+				<div className="bg-surface rounded-3xl border border-border p-10 text-center shadow-md">
 					<p className="text-text-muted mb-2">No budgets yet.</p>
 					<p className="text-subtle text-sm">
 						Create a spending limit or a savings goal to start tracking.
@@ -76,7 +86,7 @@ const BudgetsPage = () => {
 						return (
 							<div
 								key={budget.id}
-								className="bg-surface rounded-2xl border border-border p-6 flex flex-col gap-4"
+								className="bg-surface rounded-3xl border border-border p-6 flex flex-col gap-4 shadow-md hover:shadow-lg transition-shadow"
 							>
 								{/* title row */}
 								<div className="flex items-start justify-between gap-2">

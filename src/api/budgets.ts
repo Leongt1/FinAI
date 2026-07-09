@@ -7,7 +7,7 @@ import type {
 import api from "./axios";
 
 // Unlike /transactions, the budgets endpoints wrap payloads in an
-// envelope ({message, budgets|budget|status}) — unwrap here so hooks
+// envelope ({message, budgets|budget|status}) - unwrap here so hooks
 // and components only ever see the plain types.
 
 export const listBudgets = async (): Promise<Budget[]> => {
