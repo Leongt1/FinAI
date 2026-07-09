@@ -56,10 +56,10 @@ const CategoryDropdown = ({
 			{/* dropdown list */}
 			{isOpen && (
 				<div
-					className="absolute top-full left-0 mt-1 bg-surface border border-border rounded-2xl shadow-md z-50 p-3"
+					className="absolute top-full left-0 mt-1 bg-surface border border-border rounded-2xl shadow-md z-50 p-3 w-full min-w-64 max-w-[calc(100vw-2rem)] max-h-72 overflow-y-auto"
 					onClick={(e) => e.stopPropagation()}
 				>
-					<div className="flex flex-wrap gap-2 w-120">
+					<div className="flex flex-wrap gap-2">
 						{/* all option */}
 						<div
 							onClick={() => {
