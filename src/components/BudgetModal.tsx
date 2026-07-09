@@ -210,7 +210,7 @@ const BudgetModal = ({
 										: "text-subtle hover:text-text-muted"
 								}`}
 							>
-								{k === "expense" ? "Spending limit" : "Savings goal"}
+								{k === "expense" ? "Spending" : "Savings"}
 							</button>
 						))}
 					</div>
@@ -290,7 +290,7 @@ const BudgetModal = ({
 										: "text-subtle hover:text-text-muted"
 								}`}
 							>
-								{t === "overall" ? "All spending" : "Specific categories"}
+								{t === "overall" ? "All spending" : "By category"}
 							</button>
 						))}
 					</div>
