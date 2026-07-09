@@ -14,7 +14,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 	const navLinkClass = ({ isActive }: { isActive: boolean }) => {
 		return isActive
 			? "flex items-center p-3 m-1 rounded-xl w-full bg-accent-dim border border-border-strong text-accent-glow transition-colors cursor-pointer"
-			: "flex items-center p-3 m-1 rounded-xl w-full text-muted hover:text-foreground hover:bg-surface-raised transition-all cursor-pointer";
+			: "flex items-center p-3 m-1 rounded-xl w-full text-text-muted hover:text-foreground hover:bg-surface-raised transition-all cursor-pointer";
 	};
 
 	return (
@@ -22,7 +22,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 			className={`w-64 bg-surface border border-border text-foreground flex flex-col items-start p-4
 				fixed inset-y-0 left-0 z-50 transform transition-transform duration-200
 				${isOpen ? "translate-x-0" : "-translate-x-full"}
-				lg:static lg:z-auto lg:translate-x-0 lg:min-h-screen lg:rounded-2xl lg:shrink-0`}
+				lg:static lg:z-auto lg:translate-x-0 lg:h-full lg:rounded-2xl lg:shrink-0`}
 		>
 			{/* Logo */}
 			<div className="border-b-2 border-border pb-4 mb-4 w-full px-2 flex items-center justify-between">

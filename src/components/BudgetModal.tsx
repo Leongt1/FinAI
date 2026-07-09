@@ -192,7 +192,7 @@ const BudgetModal = ({
 
 				{/* form */}
 				<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-					{/* kind toggle — immutable after creation (backend) */}
+					{/* kind toggle - immutable after creation (backend) */}
 					<div className="flex bg-bg rounded-full p-1 h-14 border border-border">
 						{(["expense", "savings"] as BudgetKind[]).map((k) => (
 							<button
@@ -295,7 +295,7 @@ const BudgetModal = ({
 						))}
 					</div>
 
-					{/* category pills — category-scoped budgets only */}
+					{/* category pills - category-scoped budgets only */}
 					{type === "category" && (
 						<div className="flex flex-wrap gap-2">
 							{visibleCategories.map((c) => (

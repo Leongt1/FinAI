@@ -234,8 +234,8 @@ const CategoriesPage = () => {
 					))}
 					{/* Add Category */}
 					{addError && (
-						<div className="flex items-center justify-between bg-white/90 rounded-3xl px-6 py-4">
-							<p className="text-expense">{addError}</p>
+						<div className="flex items-center justify-between bg-expense-bg border border-expense rounded-3xl px-6 py-4">
+							<p className="text-expense text-sm">{addError}</p>
 						</div>
 					)}
 					{isAddOpen && (
