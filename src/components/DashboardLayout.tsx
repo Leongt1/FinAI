@@ -9,7 +9,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 	return (
-		<div className="flex min-h-screen p-3 sm:p-4 gap-4">
+		// app shell: exactly viewport height, never grows - only <main> scrolls
+		// (dvh, not vh: on phones the URL bar overlaps 100vh)
+		<div className="flex h-dvh overflow-hidden p-3 sm:p-4 gap-4">
 			{/* Mobile top bar */}
 			<header className="lg:hidden fixed top-0 inset-x-0 z-30 flex items-center gap-3 bg-surface border-b border-border px-4 py-3">
 				<button
