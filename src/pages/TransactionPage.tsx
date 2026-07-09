@@ -7,6 +7,7 @@ import TransactionModal from "../components/TransactionModal";
 import CategoryDropdown from "../components/CategoryDropdown";
 import TitleText from "../components/TitleText";
 import ConfirmDialog from "../components/ConfirmDialog";
+import { formatCurrency } from "../utils/formatCurrency";
 
 const getMonthRange = (year: number, month: number) => {
 	const from = new Date(year, month, 1);
@@ -128,13 +129,13 @@ const TransactionPage = () => {
 					<div className="bg-surface rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border border-border shadow-sm">
 						<p className="text-text-muted text-sm">Total Income</p>
 						<p className="font-bold text-2xl text-income">
-							₹{summary.income.toFixed(2)}
+							{formatCurrency(summary.income)}
 						</p>
 					</div>
 					<div className="bg-surface rounded-3xl p-6 px-10 mb-4 flex flex-col items-start justify-between border border-border shadow-sm">
 						<p className="text-text-muted text-sm">Total Expense</p>
 						<p className="font-bold text-2xl text-expense">
-							₹{summary.expense.toFixed(2)}
+							{formatCurrency(summary.expense)}
 						</p>
 					</div>
 					<div
@@ -145,7 +146,7 @@ const TransactionPage = () => {
 							className={`font-bold text-2xl ${summary.net >= 0 ? "text-text-muted" : "text-expense"
 								}`}
 						>
-							{summary.net >= 0 ? "+" : "-"}₹{Math.abs(summary.net).toFixed(2)}
+							{formatCurrency(summary.net, { sign: true })}
 						</p>
 					</div>
 				</div>
@@ -336,7 +337,8 @@ const TransactionPage = () => {
 											className={`py-4 text-sm font-semibold ${tx.type === "Income" ? "text-income" : "text-expense"
 												}`}
 										>
-											{tx.type === "Income" ? "+" : "-"}₹{tx.amount.toFixed(2)}
+											{tx.type === "Income" ? "+" : "-"}
+											{formatCurrency(tx.amount)}
 										</td>
 										<td className="py-4 text-sm text-text-muted flex gap-4">
 											<button
@@ -369,7 +371,7 @@ const TransactionPage = () => {
 			<ConfirmDialog
 				isOpen={!!transactionToDelete}
 				title="Delete transaction?"
-				message={`Delete ${getTransactionCategoryName(transactionToDelete)} transaction for ₹${transactionToDelete?.amount.toFixed(2) ?? "0.00"}?`}
+				message={`Delete ${getTransactionCategoryName(transactionToDelete)} transaction for ${formatCurrency(transactionToDelete?.amount ?? 0)}?`}
 				isLoading={isDeleting}
 				onCancel={() => setTransactionToDelete(null)}
 				onConfirm={() => {

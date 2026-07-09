@@ -27,6 +27,8 @@
 	--color-income-bg:     #0f2720;
 	--color-expense:       #e05c5c;
 	--color-expense-bg:    #2a0f0f;
+	--color-warning:       #d9a23c;
+	--color-warning-bg:    #2a220f;
 
 	--font-sans: 'Fira Code', monospace;
 }
@@ -36,6 +38,13 @@
 		background-color: theme('color-bg');
 		color: theme('color-foreground');
 		min-height: 100vh;
+	}
+
+	/* Themed scrollbars everywhere (page, modals, dropdowns, tables).
+	   Standard properties cover Chrome/Edge/Firefox; Safari keeps native. */
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: theme('color-border-strong') transparent;
 	}
 }
 

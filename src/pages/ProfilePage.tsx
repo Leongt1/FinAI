@@ -133,7 +133,7 @@ const ProfilePage = () => {
 								<button
 									type="submit"
 									disabled={isUpdating}
-									className={`border w-24 h-10 font-semibold rounded-lg text-sm p-2 px-4 transition-colors duration-300 ${isUpdating ? "bg-blue-300 text-white cursor-not-allowed border-none" : "text-text-muted hover:bg-surface-raised hover:text-accent-glow border-2 border-border hover:border-border-strong cursor-pointer transition-colors"}`}
+									className={`border w-24 h-10 font-semibold rounded-lg text-sm p-2 px-4 transition-colors duration-300 ${isUpdating ? "bg-accent-dim text-accent-glow opacity-50 cursor-not-allowed border-none" : "text-text-muted hover:bg-surface-raised hover:text-accent-glow border-2 border-border hover:border-border-strong cursor-pointer transition-colors"}`}
 								>
 									{isUpdating ? "Saving..." : isEditing ? "Save" : "Edit"}
 								</button>
