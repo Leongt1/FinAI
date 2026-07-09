@@ -101,3 +101,59 @@ export interface TransactionFilter {
 	date_from?: string;
 	date_to?: string;
 }
+
+// Budget
+export type BudgetType = "overall" | "category";
+export type BudgetKind = "expense" | "savings";
+export type PeriodUnit = "day" | "week" | "month" | "year";
+export type BudgetHealthStatus = "healthy" | "warning" | "exceeded" | "achieved";
+
+export interface Budget {
+	id: string;
+	user_id: string;
+	name: string;
+	type: BudgetType;
+	kind: BudgetKind;
+	amount: number;
+	period_unit: PeriodUnit;
+	period_value: number;
+	start_date: string;
+	created_at: string;
+	updated_at: string;
+	category_ids?: string[];
+}
+
+// Budget Status (GET /budgets/:id/status)
+export interface BudgetStatus {
+	budget_id: string;
+	name: string;
+	budget_amount: number;
+	spent: number;
+	remaining: number;
+	progress_percent: number;
+	status: BudgetHealthStatus;
+	period_start: string;
+	period_end: string;
+}
+
+// Create Budget Request
+export interface CreateBudgetRequest {
+	name: string;
+	type: BudgetType;
+	kind: BudgetKind;
+	amount: number;
+	period_unit: PeriodUnit;
+	period_value: number;
+	start_date: string;
+	category_ids?: string[];
+}
+
+// Update Budget Request (kind is immutable on the backend)
+export interface UpdateBudgetRequest {
+	name?: string;
+	type?: BudgetType;
+	amount?: number;
+	period_unit?: PeriodUnit;
+	period_value?: number;
+	start_date?: string;
+}

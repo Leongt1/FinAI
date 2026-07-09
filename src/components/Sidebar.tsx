@@ -48,9 +48,9 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 				<NavLink to={"/transactions"} className={navLinkClass} onClick={onClose}>
 					Transactions
 				</NavLink>
-				{/* <NavLink to="/budget" className={navLinkClass}>
+				<NavLink to="/budget" className={navLinkClass} onClick={onClose}>
 					Budget
-				</NavLink> */}
+				</NavLink>
 				<NavLink to="/categories" className={navLinkClass} onClick={onClose}>
 					Categories
 				</NavLink>
