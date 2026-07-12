@@ -17,6 +17,7 @@ import type {
 	TransactionFilter,
 	UpdateTransactionRequest,
 } from "../types";
+import { toast } from "../store/toastStore";
 
 // Server-side paged slice of the transactions list. Mutations still live in
 // useTransactions; its invalidations on ["transactions"] cover these keys too.
@@ -54,7 +55,9 @@ export const useTransactions = (filters?: TransactionFilter) => {
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 			queryClient.invalidateQueries({ queryKey: ["budgets"] });
+			toast.success("Transaction added");
 		},
+		onError: () => toast.error("Couldn't add transaction - try again later"),
 	});
 
 	// update mutation
@@ -70,7 +73,9 @@ export const useTransactions = (filters?: TransactionFilter) => {
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 			queryClient.invalidateQueries({ queryKey: ["budgets"] });
+			toast.success("Transaction updated");
 		},
+		onError: () => toast.error("Couldn't update transaction - try again later"),
 	});
 
 	// delete mutation
@@ -91,10 +96,12 @@ export const useTransactions = (filters?: TransactionFilter) => {
 
 			return { prevTransactions };
 		},
+		onSuccess: () => toast.success("Transaction deleted"),
 		onError: (_err, _vars, context) => {
 			context?.prevTransactions.forEach(([queryKey, data]) => {
 				queryClient.setQueryData(queryKey, data)
 			});
+			toast.error("Couldn't delete transaction - try again later");
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });

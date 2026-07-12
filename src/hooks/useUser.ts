@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserById, updateUser } from "../api/users";
 import { useAuthStore } from "../store/authStore";
+import { toast } from "../store/toastStore";
 import type { UpdateUserRequest } from "../types";
 
 export const useUser = (id: string) => {
@@ -28,7 +29,9 @@ export const useUser = (id: string) => {
 			if (currentUser?.id === id) {
 				setUser(fresh);
 			}
+			toast.success("Profile updated");
 		},
+		onError: () => toast.error("Couldn't update profile - try again later"),
 	});
 
 	return {
