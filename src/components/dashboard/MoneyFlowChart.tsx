@@ -50,6 +50,21 @@ const MoneyFlowChart = () => {
 			});
 	}, [transactions]);
 
+	if (transactions && monthlyData.length === 0) {
+		return (
+			<div className="bg-surface rounded-2xl border border-border p-6 h-full">
+				<h2 className="text-lg font-semibold text-foreground mb-6">Money Flow</h2>
+				<div className="h-[300px] flex flex-col items-center justify-center gap-2 text-center">
+					<p className="text-text-muted text-sm">No transactions yet.</p>
+					<p className="text-subtle text-sm">
+						Add your first income or expense and your monthly money flow will
+						show up here.
+					</p>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className="bg-surface rounded-2xl border border-border p-6 h-full">
 			<h2 className="text-lg font-semibold text-foreground mb-6">Money Flow</h2>
