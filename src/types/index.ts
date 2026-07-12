@@ -102,6 +102,14 @@ export interface TransactionFilter {
 	date_to?: string;
 }
 
+// Paginated transactions envelope (GET /transactions?limit=&offset=)
+export interface PaginatedTransactions {
+	transactions: Transaction[];
+	total: number;
+	limit: number;
+	offset: number;
+}
+
 // Budget
 export type BudgetType = "overall" | "category";
 export type BudgetKind = "expense" | "savings";
