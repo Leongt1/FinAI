@@ -27,7 +27,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 					</svg>
 				</button>
 				<div>
-					<span className="text-accent-glow text-lg font-semibold tracking-widest uppercase">Fin</span>
+					<span className="text-accent-glow text-lg font-semibold tracking-widest">Fin</span>
 					<span className="text-foreground text-lg font-bold">AI</span>
 				</div>
 			</header>
