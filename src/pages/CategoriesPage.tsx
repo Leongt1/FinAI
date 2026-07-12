@@ -92,7 +92,7 @@ const CategoriesPage = () => {
 					{categories?.map((cat) => (
 						<div
 							key={cat.id}
-							className={`flex flex-col items-center justify-between gap-2 bg-surface border border-border rounded-3xl p-6 shadow-md hover:shadow-lg transition-shadow ${cat.hidden ? "opacity-50" : ""}`}
+							className={`flex flex-col items-center justify-between gap-2 bg-surface border rounded-3xl p-6 shadow-md hover:shadow-lg transition-shadow ${cat.hidden ? "border-dashed border-border-strong" : "border-border"}`}
 						>
 							{renameError && editingId === cat.id && (
 								<p className="text-expense p-1 bg-expense-bg rounded-lg mb-2 text-sm border border-expense">
@@ -140,7 +140,7 @@ const CategoriesPage = () => {
 									</>
 								) : (
 									<>
-										<span className="text-lg">{cat.icon}</span>
+										<span className={`text-lg ${cat.hidden ? "opacity-60 grayscale" : ""}`}>{cat.icon}</span>
 										<p
 											className={`text-sm font-medium ${
 												cat.hidden
@@ -153,7 +153,7 @@ const CategoriesPage = () => {
 									</>
 								)}
 								{cat.hidden && (
-									<span className="text-xs bg-surface-raised text-text-muted px-2 py-0.5 border border-border rounded-full opacity-100">
+									<span className="text-xs bg-surface-raised text-text-muted px-2 py-0.5 border border-border rounded-full">
 										Hidden
 									</span>
 								)}
