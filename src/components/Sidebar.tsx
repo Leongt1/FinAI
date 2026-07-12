@@ -56,6 +56,9 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 				<NavLink to="/categories" className={navLinkClass} onClick={onClose}>
 					Categories
 				</NavLink>
+				<NavLink to="/assistant" className={navLinkClass} onClick={onClose}>
+					AI Assistant
+				</NavLink>
 				<NavLink to="/profile" className={navLinkClass} onClick={onClose}>
 					Profile
 				</NavLink>
