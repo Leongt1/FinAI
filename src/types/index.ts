@@ -110,6 +110,27 @@ export interface PaginatedTransactions {
 	offset: number;
 }
 
+// AI assistant
+export interface AIChatTurn {
+	role: "user" | "assistant";
+	content: string;
+}
+
+export interface AIChatRequest {
+	message: string;
+	history?: AIChatTurn[];
+}
+
+export interface AIChatResponse {
+	reply: string;
+	actions: string[];
+	credits_remaining: number;
+}
+
+export interface AICreditsResponse {
+	credits: number;
+}
+
 // Budget
 export type BudgetType = "overall" | "category";
 export type BudgetKind = "expense" | "savings";
