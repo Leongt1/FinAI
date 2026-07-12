@@ -13,6 +13,7 @@ import CategoriesPage from "./pages/CategoriesPage";
 import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import BudgetsPage from "./pages/BudgetsPage";
+import ToastContainer from "./components/ToastContainer";
 
 const App = () => {
 	const { restoreSession } = useAuth();
@@ -31,6 +32,8 @@ const App = () => {
 	}
 
 	return (
+		<>
+		<ToastContainer />
 		<Routes>
 			{/* Public routes */}
 			<Route path="/login" element={<LoginPage />} />
@@ -55,6 +58,7 @@ const App = () => {
 			{/* Error routes */}
 			<Route path="*" element={<Navigate to="/login" replace />} />
 		</Routes>
+		</>
 	);
 };
 
