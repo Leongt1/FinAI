@@ -1,8 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+	keepPreviousData,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from "@tanstack/react-query";
 import {
 	createTransaction,
 	deleteTransaction,
 	listTransactions,
+	listTransactionsPage,
 	updateTransaction,
 } from "../api/transactions";
 import type {
@@ -11,6 +17,22 @@ import type {
 	TransactionFilter,
 	UpdateTransactionRequest,
 } from "../types";
+
+// Server-side paged slice of the transactions list. Mutations still live in
+// useTransactions; its invalidations on ["transactions"] cover these keys too.
+export const useTransactionsPage = (
+	filters: TransactionFilter | undefined,
+	page: number,
+	pageSize: number,
+) => {
+	const { data, isLoading, error, isFetching } = useQuery({
+		queryKey: ["transactions", "page", filters ?? {}, page, pageSize],
+		queryFn: () => listTransactionsPage(filters, pageSize, page * pageSize),
+		placeholderData: keepPreviousData,
+	});
+
+	return { pageData: data, isLoading, error, isFetching };
+};
 
 export const useTransactions = (filters?: TransactionFilter) => {
 	const queryClient = useQueryClient();

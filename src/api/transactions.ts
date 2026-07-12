@@ -1,5 +1,6 @@
 import type {
 	CreateTransactionRequest,
+	PaginatedTransactions,
 	Transaction,
 	TransactionFilter,
 	UpdateTransactionRequest,
@@ -11,6 +12,17 @@ export const listTransactions = async (
 ): Promise<Transaction[]> => {
 	const { data } = await api.get<Transaction[]>("/transactions/", {
 		params: filters,
+	});
+	return data;
+};
+
+export const listTransactionsPage = async (
+	filters: TransactionFilter | undefined,
+	limit: number,
+	offset: number,
+): Promise<PaginatedTransactions> => {
+	const { data } = await api.get<PaginatedTransactions>("/transactions/", {
+		params: { ...filters, limit, offset },
 	});
 	return data;
 };
