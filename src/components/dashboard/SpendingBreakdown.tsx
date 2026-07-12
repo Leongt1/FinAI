@@ -3,6 +3,7 @@ import { useCategories } from "../../hooks/useCategories";
 import { useTransactions } from "../../hooks/useTransactions";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { formatCurrency } from "../../utils/formatCurrency";
+import { useThemeColors } from "../../hooks/useThemeColors";
 
 type PieData = {name: string, amount: number, icon: string, fill: string}
 
@@ -23,6 +24,7 @@ const SpendingBreakdown = () => {
         month: "long"
     })
     const { categories } = useCategories();
+    const colors = useThemeColors();
     const { transactions } = useTransactions({
         type: "Expense",
         ...getMonthRange(now.getFullYear(), now.getMonth())
@@ -70,8 +72,8 @@ const SpendingBreakdown = () => {
                             ))}
                         </Pie>
                         <Tooltip
-                            contentStyle={{ backgroundColor: "#162622", border: "1px solid #1e3530", borderRadius: "12px", color: "#dff2ea" }}
-                            cursor={{ fill: "#1e3530" }}
+                            contentStyle={{ backgroundColor: colors.surfaceRaised, border: `1px solid ${colors.border}`, borderRadius: "12px", color: colors.foreground }}
+                            cursor={{ fill: colors.border }}
                         />
                     </PieChart>
                 </ResponsiveContainer>

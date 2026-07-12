@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useAuth } from "../hooks/useAuth";
+import { useThemeStore } from "../store/themeStore";
 
 interface SidebarProps {
 	isOpen: boolean;
@@ -10,6 +11,7 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 	const { handleLogout } = useAuth();
 	const currentUser = useAuthStore((s) => s.user);
+	const { theme, toggleTheme } = useThemeStore();
 
 	const navLinkClass = ({ isActive }: { isActive: boolean }) => {
 		return isActive
@@ -64,8 +66,15 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 				)}
 			</nav>
 
-			{/* Logout button */}
+			{/* Theme toggle + Logout */}
 			<div className="mt-auto border-t-2 border-border pt-4 w-full">
+				<button
+					onClick={toggleTheme}
+					className="w-full p-3 m-1 rounded-xl text-text-muted hover:text-foreground hover:bg-surface-raised border border-transparent transition-all font-medium cursor-pointer flex items-center justify-center gap-2"
+				>
+					<span aria-hidden="true">{theme === "dark" ? "☀" : "☾"}</span>
+					{theme === "dark" ? "Light mode" : "Dark mode"}
+				</button>
 				<button
 					onClick={handleLogout}
 					className="w-full p-3 m-1 rounded-xl text-expense hover:bg-expense-bg border border-transparent hover:border-expense/30 transition-all font-medium cursor-pointer"
