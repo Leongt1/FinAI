@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../store/authStore";
+import { toast } from "../store/toastStore";
 import { login, logout, refresh, signup } from "../api/auth";
 import { getUserById } from "../api/users";
 import type { LoginRequest, SignupRequest } from "../types";
@@ -46,6 +47,7 @@ export const useAuth = () => {
 
 			// set user
 			setUser(user);
+			toast.success(`Logged in as ${user.name}`);
 			navigate("/dashboard");
 		} catch (err: unknown) {
 			if (isAxiosError(err) && err.response?.status === 401) {
@@ -68,6 +70,7 @@ export const useAuth = () => {
 			// signup - get access token, set refresh token in cookie
 			await signup(req);
 
+			toast.success("Account created - log in to get started");
 			// navigate to login
 			navigate("/login");
 		} catch (err: unknown) {
@@ -88,6 +91,7 @@ export const useAuth = () => {
 		} finally {
 			clear(); // clear state stored in zustand
 			queryClient.clear(); // drop cached data so it can't leak into the next session
+			toast.success("Logged out");
 			navigate("/login");
 			setIsLoading(false);
 		}
