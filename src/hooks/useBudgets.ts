@@ -18,6 +18,7 @@ import type {
 	CreateBudgetRequest,
 	UpdateBudgetRequest,
 } from "../types";
+import { toast } from "../store/toastStore";
 
 export const useBudgets = () => {
 	const queryClient = useQueryClient();
@@ -51,7 +52,11 @@ export const useBudgets = () => {
 	// create budget
 	const createMutation = useMutation({
 		mutationFn: (input: CreateBudgetRequest) => createBudget(input),
-		onSuccess: invalidateBudgets,
+		onSuccess: () => {
+			invalidateBudgets();
+			toast.success("Budget created");
+		},
+		onError: () => toast.error("Couldn't create budget - try again later"),
 	});
 
 	// update budget
@@ -63,13 +68,21 @@ export const useBudgets = () => {
 			id: string;
 			input: UpdateBudgetRequest;
 		}) => updateBudget(id, input),
-		onSuccess: invalidateBudgets,
+		onSuccess: () => {
+			invalidateBudgets();
+			toast.success("Budget updated");
+		},
+		onError: () => toast.error("Couldn't update budget - try again later"),
 	});
 
 	// delete budget
 	const deleteMutation = useMutation({
 		mutationFn: (id: string) => deleteBudget(id),
-		onSuccess: invalidateBudgets,
+		onSuccess: () => {
+			invalidateBudgets();
+			toast.success("Budget deleted");
+		},
+		onError: () => toast.error("Couldn't delete budget - try again later"),
 	});
 
 	// attach / detach categories (async so callers can await a batch

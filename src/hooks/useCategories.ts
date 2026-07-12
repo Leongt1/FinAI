@@ -8,6 +8,7 @@ import {
 	unhideCategory,
 } from "../api/categories";
 import type { Category, CreateCategoryRequest } from "../types";
+import { toast } from "../store/toastStore";
 
 export const useCategories = () => {
 	const queryClient = useQueryClient();
@@ -27,7 +28,9 @@ export const useCategories = () => {
 		mutationFn: (input: CreateCategoryRequest) => createCategory(input),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
+			toast.success("Category created");
 		},
+		onError: () => toast.error("Couldn't create category - try again later"),
 	});
 
 	type renameMutationProps = {
@@ -53,8 +56,10 @@ export const useCategories = () => {
 
 			return { prevCategories }
 		},
+		onSuccess: () => toast.success("Category renamed"),
 		onError: (_err, _vars, context) => {
 			queryClient.setQueryData(["categories"], context?.prevCategories)
+			toast.error("Couldn't rename category - try again later");
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -76,6 +81,7 @@ export const useCategories = () => {
 		},
 		onError: (_err, _var, context) => {
 			queryClient.setQueryData(["categories"], context?.prevCategories)
+			toast.error("Couldn't hide category - try again later");
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -97,6 +103,7 @@ export const useCategories = () => {
 		},
 		onError: (_err, _vars, context) => {
 			queryClient.setQueryData(["categories"], context?.prevCategories )
+			toast.error("Couldn't unhide category - try again later");
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -108,7 +115,9 @@ export const useCategories = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
+			toast.success("Category deleted");
 		},
+		onError: () => toast.error("Couldn't delete category - try again later"),
 	})
 
 	return {
