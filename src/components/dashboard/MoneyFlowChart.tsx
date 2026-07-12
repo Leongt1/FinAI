@@ -9,10 +9,12 @@ import {
 	YAxis,
 } from "recharts";
 import { useTransactions } from "../../hooks/useTransactions";
+import { useThemeColors } from "../../hooks/useThemeColors";
 import { useMemo } from "react";
 
 const MoneyFlowChart = () => {
 	const { transactions } = useTransactions();
+	const colors = useThemeColors();
 
 	const monthlyData = useMemo(() => {
 		if (!transactions) return [];
@@ -53,23 +55,23 @@ const MoneyFlowChart = () => {
 			<h2 className="text-lg font-semibold text-foreground mb-6">Money Flow</h2>
 			<ResponsiveContainer width="100%" height={300}>
 				<BarChart data={monthlyData}>
-					<CartesianGrid strokeDasharray="3 3" stroke="#1e3530" vertical={false} />
-					<XAxis dataKey="month" tick={{ fontSize: 11, fill: "#7aaa96" }} axisLine={false} tickLine={false} />
-					<YAxis tick={{ fontSize: 11, fill: "#7aaa96" }} axisLine={false} tickLine={false} />
+					<CartesianGrid strokeDasharray="3 3" stroke={colors.border} vertical={false} />
+					<XAxis dataKey="month" tick={{ fontSize: 11, fill: colors.textMuted }} axisLine={false} tickLine={false} />
+					<YAxis tick={{ fontSize: 11, fill: colors.textMuted }} axisLine={false} tickLine={false} />
 					<Tooltip
-						contentStyle={{ backgroundColor: "#162622", border: "1px solid #1e3530", borderRadius: "12px", color: "#dff2ea" }}
-						cursor={{ fill: "#1e3530" }}
+						contentStyle={{ backgroundColor: colors.surfaceRaised, border: `1px solid ${colors.border}`, borderRadius: "12px", color: colors.foreground }}
+						cursor={{ fill: colors.border }}
 					/>
-					<Legend wrapperStyle={{ fontSize: "12px", color: "#7aaa96" }} />
+					<Legend wrapperStyle={{ fontSize: "12px", color: colors.textMuted }} />
 					<Bar
 						dataKey="income"
-						fill="#408A71"
+						fill={colors.income}
 						radius={[4, 4, 0, 0]}
 						name="Income"
 					/>
 					<Bar
 						dataKey="expense"
-						fill="#e05c5c"
+						fill={colors.expense}
 						radius={[4, 4, 0, 0]}
 						name="Expense"
 					/>

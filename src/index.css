@@ -47,10 +47,39 @@
 	}
 }
 
+/* Light theme - Tailwind v4 utilities resolve to var(--color-*), so
+   overriding the variables under html.light re-skins every component.
+   Palette: off-white surfaces, green accents, red for expense. */
+.light {
+	--color-bg: #eef2ef;
+	--color-surface: #f9fbf9;
+	--color-surface-raised: #e2eae5;
+
+	--color-border: #d3dfd8;
+	--color-border-strong: #9fc2b1;
+
+	--color-accent: #2e7d5f;
+	--color-accent-dim: #cde7db;
+	--color-accent-glow: #1b5e44;
+
+	--color-foreground: #14251f;
+	--color-text-muted: #38584b;
+	--color-subtle: #85a294;
+
+	--color-income: #2e7d5f;
+	--color-income-bg: #ddf0e6;
+	--color-expense: #c43d3d;
+	--color-expense-bg: #fbe7e7;
+	--color-warning: #96690a;
+	--color-warning-bg: #f5ecd4;
+}
+
 @layer base {
+	/* var(), not theme(): theme() inlines the dark hex at build time, which
+	   would pin these even when html.light overrides the variables */
 	html, body, #root {
-		background-color: theme('color-bg');
-		color: theme('color-foreground');
+		background-color: var(--color-bg);
+		color: var(--color-foreground);
 		min-height: 100vh;
 	}
 
@@ -58,26 +87,29 @@
 	   Standard properties cover Chrome/Edge/Firefox; Safari keeps native. */
 	* {
 		scrollbar-width: thin;
-		scrollbar-color: theme('color-border-strong') transparent;
+		scrollbar-color: var(--color-border-strong) transparent;
 	}
 }
 
-/* Datepicker Styles - overrides */
+/* Datepicker Styles - overrides (theme tokens so both themes work) */
 .react-datepicker {
-	border: 1px solid #e5e7eb !important;
+	border: 1px solid var(--color-border-strong) !important;
 	border-radius: 1rem !important;
 	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
 	font-family: inherit !important;
 	overflow: hidden !important;
+	background-color: var(--color-surface) !important;
+	color: var(--color-foreground) !important;
 }
 
 .react-datepicker__header {
-	background-color: white !important;
-	border-bottom: 1px solid #f3f4f6 !important;
+	background-color: var(--color-surface) !important;
+	border-bottom: 1px solid var(--color-border) !important;
 }
 
 .react-datepicker__day--selected {
-	background-color: #28b65c !important;
+	background-color: var(--color-accent) !important;
+	color: var(--color-bg) !important;
 	border-radius: 9999px !important;
 }
 
@@ -92,26 +124,29 @@
 	border-radius: 9999px !important;
 }
 
+.react-datepicker__day {
+	color: var(--color-foreground) !important;
+}
+
+.react-datepicker__day-name {
+	color: var(--color-text-muted) !important;
+}
+
 .react-datepicker__day:hover {
-	background-color: #28b65c !important;
+	background-color: var(--color-accent) !important;
 	border-radius: 9999px !important;
-	color: #000000 !important;
+	color: var(--color-bg) !important;
 }
 
 .react-datepicker__day--today {
-	border: 2px solid #28b65c !important;
+	border: 2px solid var(--color-accent) !important;
 	border-radius: 9999px !important;
-	color: #000000 !important;
 	font-weight: 600 !important;
-}
-
-.react-datepicker__day--today:hover {
-	color: #ffffff !important;
 }
 
 .react-datepicker__current-month {
 	font-weight: 600 !important;
-	color: #111827 !important;
+	color: var(--color-foreground) !important;
 }
 
 .react-datepicker__month {
@@ -124,7 +159,7 @@
 }
 
 .react-datepicker__navigation-icon::before {
-	border-color: #6b7280 !important;
+	border-color: var(--color-text-muted) !important;
 }
 
 .react-datepicker__navigation-icon--previous::before,
@@ -133,5 +168,5 @@
 }
 
 .react-datepicker__day--outside-month {
-	color: #d1d5db !important;
+	color: var(--color-subtle) !important;
 }
