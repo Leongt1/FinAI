@@ -274,14 +274,9 @@ const CategoriesPage = () => {
 								<button
 									onClick={() => {
 										if (!newName.trim()) return;
-										createCategory(
-											{ icon: newIcon, name: newName },
-											{
-												onSuccess: () => {
-													handleAddClose();
-												},
-											},
-										);
+										// optimistic: temp card shows immediately, rolls back on error
+										createCategory({ icon: newIcon, name: newName });
+										handleAddClose();
 									}}
 									disabled={isCreating}
 									className="text-text-muted hover:bg-surface-raised rounded-xl cursor-pointer p-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-border"

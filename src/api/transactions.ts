@@ -30,7 +30,11 @@ export const listTransactionsPage = async (
 export const createTransaction = async (
 	input: CreateTransactionRequest,
 ): Promise<void> => {
-	await api.post("/transactions/", input);
+	// one key per create: the backend replays the first response if the same
+	// request is retried (double click, network retry, post-refresh retry)
+	await api.post("/transactions/", input, {
+		headers: { "Idempotency-Key": crypto.randomUUID() },
+	});
 };
 
 export const getTransactionByID = async (id: string): Promise<Transaction> => {

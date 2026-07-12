@@ -26,11 +26,29 @@ export const useCategories = () => {
 	// create category
 	const createMutation = useMutation({
 		mutationFn: (input: CreateCategoryRequest) => createCategory(input),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["categories"] });
-			toast.success("Category created");
+		onMutate: async (input) => {
+			await queryClient.cancelQueries({ queryKey: ["categories"] });
+			const prevCategories = queryClient.getQueryData<Category[]>(["categories"]);
+			const temp: Category = {
+				id: `temp-${Date.now()}`,
+				name: input.name,
+				icon: input.icon ?? "",
+				hidden: false,
+			};
+			queryClient.setQueryData(["categories"], (old: Category[] = []) => [
+				...old,
+				temp,
+			]);
+			return { prevCategories };
 		},
-		onError: () => toast.error("Couldn't create category - try again later"),
+		onSuccess: () => toast.success("Category created"),
+		onError: (_err, _vars, context) => {
+			queryClient.setQueryData(["categories"], context?.prevCategories);
+			toast.error("Couldn't create category - try again later");
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ["categories"] });
+		},
 	});
 
 	type renameMutationProps = {
@@ -112,12 +130,23 @@ export const useCategories = () => {
 
 	const deleteMutation = useMutation({
 		mutationFn: (id: string) => deleteCategory(id),
-		onSuccess: () => {
+		onMutate: async (id: string) => {
+			await queryClient.cancelQueries({ queryKey: ["categories"] });
+			const prevCategories = queryClient.getQueryData<Category[]>(["categories"]);
+			queryClient.setQueryData(["categories"], (old: Category[] = []) =>
+				old.filter((cat) => cat.id !== id),
+			);
+			return { prevCategories };
+		},
+		onSuccess: () => toast.success("Category deleted"),
+		onError: (_err, _vars, context) => {
+			queryClient.setQueryData(["categories"], context?.prevCategories);
+			toast.error("Couldn't delete category - try again later");
+		},
+		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 			queryClient.invalidateQueries({ queryKey: ["transactions"] });
-			toast.success("Category deleted");
 		},
-		onError: () => toast.error("Couldn't delete category - try again later"),
 	})
 
 	return {

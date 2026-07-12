@@ -138,7 +138,9 @@ const BudgetModal = ({
 				period_value: periodVal,
 				start_date: startDate,
 			};
-			updateBudget(budget!.id, input, { onSuccess: () => onClose() });
+			// optimistic patch already applied - close now, rollback+toast on error
+			updateBudget(budget!.id, input);
+			onClose();
 		} else {
 			const input: CreateBudgetRequest = {
 				name: name.trim(),
@@ -150,7 +152,9 @@ const BudgetModal = ({
 				start_date: startDate,
 				...(type === "category" && { category_ids: selectedCategoryIDs }),
 			};
-			createBudget(input, { onSuccess: () => onClose() });
+			// optimistic temp card shows immediately - close now
+			createBudget(input);
+			onClose();
 		}
 	};
 
