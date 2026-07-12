@@ -27,7 +27,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 			{/* Logo */}
 			<div className="border-b-2 border-border pb-4 mb-4 w-full px-2 flex items-center justify-between">
 				<div>
-					<span className="text-accent-glow text-2xl font-semibold tracking-widest uppercase">Fin</span>
+					<span className="text-accent-glow text-2xl font-semibold tracking-widest">Fin</span>
 					<span className="text-foreground text-2xl font-bold">AI</span>
 				</div>
 				{/* Close button — mobile drawer only */}
