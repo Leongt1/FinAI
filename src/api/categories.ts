@@ -9,7 +9,9 @@ export const listCategories = async (): Promise<Category[]> => {
 export const createCategory = async (
 	createInput: CreateCategoryRequest,
 ): Promise<void> => {
-	await api.post("/categories/", createInput);
+	await api.post("/categories/", createInput, {
+		headers: { "Idempotency-Key": crypto.randomUUID() },
+	});
 };
 
 export const renameCategory = async (
