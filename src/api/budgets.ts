@@ -30,7 +30,9 @@ export const getBudgetStatus = async (id: string): Promise<BudgetStatus> => {
 export const createBudget = async (
 	input: CreateBudgetRequest,
 ): Promise<Budget> => {
-	const { data } = await api.post<{ budget: Budget }>("/budgets/", input);
+	const { data } = await api.post<{ budget: Budget }>("/budgets/", input, {
+		headers: { "Idempotency-Key": crypto.randomUUID() },
+	});
 	return data.budget;
 };
 

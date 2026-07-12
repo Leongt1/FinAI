@@ -71,6 +71,8 @@ const TransactionModal = ({
 			return;
 		}
 
+		// optimistic: the mutation patches the cache immediately (and rolls
+		// back with a toast on failure), so the modal can close right away
 		if (isEditMode) {
 			const input: UpdateTransactionRequest = {
 				category_id: categoryID,
@@ -79,9 +81,7 @@ const TransactionModal = ({
 				type,
 				date: new Date(date).toISOString(),
 			};
-			updateTransaction(transaction!.id, input, {
-				onSuccess: () => onClose(),
-			});
+			updateTransaction(transaction!.id, input);
 		} else {
 			const input: CreateTransactionRequest = {
 				category_id: categoryID,
@@ -90,10 +90,9 @@ const TransactionModal = ({
 				type,
 				date: new Date(date).toISOString(),
 			};
-			createTransaction(input, {
-				onSuccess: () => onClose(),
-			});
+			createTransaction(input);
 		}
+		onClose();
 	};
 
 	if (!isOpen) return null;

@@ -14,11 +14,13 @@ import {
 	updateBudget,
 } from "../api/budgets";
 import type {
+	Budget,
 	BudgetStatus,
 	CreateBudgetRequest,
 	UpdateBudgetRequest,
 } from "../types";
 import { toast } from "../store/toastStore";
+import { useAuthStore } from "../store/authStore";
 
 export const useBudgets = () => {
 	const queryClient = useQueryClient();
@@ -33,12 +35,15 @@ export const useBudgets = () => {
 		queryFn: listBudgets,
 	});
 
-	// live status per budget (progress %, spent, healthy/warning/exceeded/achieved)
+	// live status per budget (progress %, spent, healthy/warning/exceeded/achieved).
+	// optimistic temp budgets have no server id yet - no status to fetch.
 	const statusResults = useQueries({
-		queries: (budgets ?? []).map((b) => ({
-			queryKey: ["budgets", b.id, "status"],
-			queryFn: () => getBudgetStatus(b.id),
-		})),
+		queries: (budgets ?? [])
+			.filter((b) => !b.id.startsWith("temp-"))
+			.map((b) => ({
+				queryKey: ["budgets", b.id, "status"],
+				queryFn: () => getBudgetStatus(b.id),
+			})),
 	});
 
 	const statuses: Record<string, BudgetStatus> = {};
@@ -49,17 +54,48 @@ export const useBudgets = () => {
 	const invalidateBudgets = () =>
 		queryClient.invalidateQueries({ queryKey: ["budgets"] });
 
-	// create budget
+	// snapshot + optimistic transform of the budgets list cache only
+	// (status caches are keyed ["budgets", id, "status"], so restrict to exact key)
+	const patchBudgetList = async (transform: (old: Budget[]) => Budget[]) => {
+		await queryClient.cancelQueries({ queryKey: ["budgets"], exact: true });
+		const prevBudgets = queryClient.getQueryData<Budget[]>(["budgets"]);
+		queryClient.setQueryData(["budgets"], (old: Budget[] = []) => transform(old));
+		return { prevBudgets };
+	};
+
+	const rollbackBudgets = (context?: { prevBudgets?: Budget[] }) =>
+		queryClient.setQueryData(["budgets"], context?.prevBudgets);
+
+	// create budget - optimistic temp card until the server answers
 	const createMutation = useMutation({
 		mutationFn: (input: CreateBudgetRequest) => createBudget(input),
-		onSuccess: () => {
-			invalidateBudgets();
-			toast.success("Budget created");
+		onMutate: async (input) => {
+			const now = new Date().toISOString();
+			const temp: Budget = {
+				id: `temp-${Date.now()}`,
+				user_id: useAuthStore.getState().user?.id ?? "",
+				name: input.name,
+				type: input.type,
+				kind: input.kind,
+				amount: input.amount,
+				period_unit: input.period_unit,
+				period_value: input.period_value,
+				start_date: input.start_date,
+				created_at: now,
+				updated_at: now,
+				category_ids: input.category_ids,
+			};
+			return patchBudgetList((old) => [...old, temp]);
 		},
-		onError: () => toast.error("Couldn't create budget - try again later"),
+		onSuccess: () => toast.success("Budget created"),
+		onError: (_err, _vars, context) => {
+			rollbackBudgets(context);
+			toast.error("Couldn't create budget - try again later");
+		},
+		onSettled: invalidateBudgets,
 	});
 
-	// update budget
+	// update budget - optimistic in-place patch
 	const updateMutation = useMutation({
 		mutationFn: ({
 			id,
@@ -68,21 +104,32 @@ export const useBudgets = () => {
 			id: string;
 			input: UpdateBudgetRequest;
 		}) => updateBudget(id, input),
-		onSuccess: () => {
-			invalidateBudgets();
-			toast.success("Budget updated");
+		onMutate: async ({ id, input }) => {
+			const patch = Object.fromEntries(
+				Object.entries(input).filter(([, v]) => v !== undefined),
+			) as Partial<Budget>;
+			return patchBudgetList((old) =>
+				old.map((b) => (b.id === id ? { ...b, ...patch } : b)),
+			);
 		},
-		onError: () => toast.error("Couldn't update budget - try again later"),
+		onSuccess: () => toast.success("Budget updated"),
+		onError: (_err, _vars, context) => {
+			rollbackBudgets(context);
+			toast.error("Couldn't update budget - try again later");
+		},
+		onSettled: invalidateBudgets,
 	});
 
-	// delete budget
+	// delete budget - optimistic removal
 	const deleteMutation = useMutation({
 		mutationFn: (id: string) => deleteBudget(id),
-		onSuccess: () => {
-			invalidateBudgets();
-			toast.success("Budget deleted");
+		onMutate: (id: string) => patchBudgetList((old) => old.filter((b) => b.id !== id)),
+		onSuccess: () => toast.success("Budget deleted"),
+		onError: (_err, _vars, context) => {
+			rollbackBudgets(context);
+			toast.error("Couldn't delete budget - try again later");
 		},
-		onError: () => toast.error("Couldn't delete budget - try again later"),
+		onSettled: invalidateBudgets,
 	});
 
 	// attach / detach categories (async so callers can await a batch
