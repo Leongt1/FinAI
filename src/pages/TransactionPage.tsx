@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import type { Transaction, TransactionFilter } from "../types";
-import { useTransactions } from "../hooks/useTransactions";
+import { useTransactions, useTransactionsPage } from "../hooks/useTransactions";
 import { useCategories } from "../hooks/useCategories";
 import TransactionModal from "../components/TransactionModal";
 import CategoryDropdown from "../components/CategoryDropdown";
@@ -35,12 +35,21 @@ const monthNames = [
 	"Dec",
 ];
 
+const PAGE_SIZE = 10;
+
 const TransactionPage = () => {
 	const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
 	const [selectedYear, setSelectedYear] = useState(now.getFullYear());
-	const [filters, setFilters] = useState<TransactionFilter>(
+	const [filters, setFiltersState] = useState<TransactionFilter>(
 		getMonthRange(now.getFullYear(), now.getMonth()),
 	);
+	const [page, setPage] = useState(0);
+
+	// every filter change restarts paging from the first page
+	const setFilters = (updater: (prev: TransactionFilter) => TransactionFilter) => {
+		setPage(0);
+		setFiltersState(updater);
+	};
 
 	const [activeTab, setActiveTab] = useState<"All" | "Income" | "Expense">(
 		"All",
@@ -54,9 +63,27 @@ const TransactionPage = () => {
 
 	const [showToolTip, setShowToolTip] = useState(false);
 
-	const { transactions, isLoading, error, deleteTransaction, isDeleting } =
+	// full filtered list: summary cards need totals across the whole filter range
+	const { transactions, deleteTransaction, isDeleting } =
 		useTransactions(filters);
+	// paged slice for the table
+	const { pageData, isLoading, error } = useTransactionsPage(
+		filters,
+		page,
+		PAGE_SIZE,
+	);
 	const { categories } = useCategories();
+
+	const total = pageData?.total ?? 0;
+	const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+	// if a delete empties the current page (or filters shrink the set),
+	// clamp back to the last page - render-time adjustment, no effect needed
+	if (pageData && page > 0 && page >= totalPages) {
+		setPage(totalPages - 1);
+	}
+
+	const pageRows = pageData?.transactions;
 
 	const summary = useMemo(() => {
 		if (!transactions) return { income: 0, expense: 0, net: 0 };
@@ -299,7 +326,7 @@ const TransactionPage = () => {
 									</td>
 								</tr>
 							)}
-							{!isLoading && !error && transactions?.length === 0 && (
+							{!isLoading && !error && pageRows?.length === 0 && (
 								<tr className="hover:bg-surface-raised transition-colors py-1 px-4">
 									<td
 										colSpan={6}
@@ -310,7 +337,7 @@ const TransactionPage = () => {
 								</tr>
 							)}
 
-							{transactions?.map((tx) => {
+							{pageRows?.map((tx) => {
 								const category = categories?.find(
 									(category) => category.id === tx.category_id,
 								);
@@ -360,6 +387,36 @@ const TransactionPage = () => {
 							})}
 						</tbody>
 					</table>
+				</div>
+				{/* Pager */}
+				<div className="w-full bg-surface border border-t-0 border-border rounded-b-3xl px-4 py-3 flex items-center justify-between gap-2">
+					<p className="text-sm text-text-muted">
+						{total === 0
+							? "No entries"
+							: `Showing ${page * PAGE_SIZE + 1}-${Math.min(
+									(page + 1) * PAGE_SIZE,
+									total,
+								)} of ${total}`}
+					</p>
+					<div className="flex items-center gap-2">
+						<button
+							onClick={() => setPage((p) => Math.max(0, p - 1))}
+							disabled={page === 0}
+							className="text-sm text-text-muted border border-border rounded-xl px-3 py-1.5 hover:bg-surface-raised transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+						>
+							Prev
+						</button>
+						<span className="text-sm text-text-muted">
+							Page {Math.min(page + 1, totalPages)} of {totalPages}
+						</span>
+						<button
+							onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+							disabled={page >= totalPages - 1}
+							className="text-sm text-text-muted border border-border rounded-xl px-3 py-1.5 hover:bg-surface-raised transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+						>
+							Next
+						</button>
+					</div>
 				</div>
 			</div>
 			<TransactionModal
