@@ -4,14 +4,32 @@ import RecentTransactions from "../components/dashboard/RecentTransactions";
 import SummaryCard from "../components/dashboard/SummaryCard";
 import { useAuthStore } from "../store/authStore";
 import { useTransactions } from "../hooks/useTransactions";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import SpendingBreakdown from "../components/dashboard/SpendingBreakdown";
 import BudgetOverview from "../components/dashboard/BudgetOverview";
+import OnboardingModal from "../components/OnboardingModal";
 import { formatCurrency } from "../utils/formatCurrency";
+
+const onboardingKey = (userId: string) => `finai-onboarded-${userId}`;
 
 const DashboardPage = () => {
 	const currentUser = useAuthStore((s) => s.user);
 	const { transactions } = useTransactions()
+
+	// first run: no transactions at all and never onboarded on this device
+	const [onboardingDismissed, setOnboardingDismissed] = useState(false);
+	const showOnboarding =
+		!!currentUser &&
+		!onboardingDismissed &&
+		transactions?.length === 0 &&
+		localStorage.getItem(onboardingKey(currentUser.id)) === null;
+
+	const dismissOnboarding = () => {
+		if (currentUser) {
+			localStorage.setItem(onboardingKey(currentUser.id), "done");
+		}
+		setOnboardingDismissed(true);
+	};
 	
 	const today = new Date().toLocaleDateString("en-US", {
 		weekday: "long",
@@ -73,6 +91,7 @@ const DashboardPage = () => {
 
 	return (
 		<DashboardLayout>
+			<OnboardingModal isOpen={showOnboarding} onDone={dismissOnboarding} />
 			{/* Header */}
 			<div className="mb-8">
 				<h1 className="text-2xl font-bold text-foreground">

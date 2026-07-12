@@ -57,6 +57,12 @@ const SpendingBreakdown = () => {
             <h2 className="text-lg font-semibold text-foreground mb-4">
                 Spending Breakdown <span className="text-subtle">({currMonth})</span>
             </h2>
+            {transactions && breakdownData.length === 0 ? (
+                <div className="h-[200px] flex flex-col items-center justify-center gap-2 text-center">
+                    <p className="text-text-muted text-sm">No expenses this month.</p>
+                    <p className="text-subtle text-sm">Spending by category will appear here.</p>
+                </div>
+            ) : (
             <div className="flex flex-col gap-4">
                 <ResponsiveContainer width="100%" height={200}>
                     <PieChart>
@@ -89,6 +95,7 @@ const SpendingBreakdown = () => {
             ))}
         </div>
             </div>
+            )}
         </div>
     );
 };
