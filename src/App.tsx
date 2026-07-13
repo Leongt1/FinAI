@@ -13,6 +13,7 @@ import CategoriesPage from "./pages/CategoriesPage";
 import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import BudgetsPage from "./pages/BudgetsPage";
+import AssistantPage from "./pages/AssistantPage";
 import ToastContainer from "./components/ToastContainer";
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
 				<Route path="/transactions" element={<TransactionPage />} />
 				<Route path="/budget" element={<BudgetsPage />} />
 				<Route path="/categories" element={<CategoriesPage />} />
+				<Route path="/assistant" element={<AssistantPage />} />
 			</Route>
 
 			{/* admin routes */}

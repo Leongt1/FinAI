@@ -5,6 +5,7 @@ import { useAuthStore } from "../store/authStore";
 import { toast } from "../store/toastStore";
 import { login, logout, refresh, signup } from "../api/auth";
 import { getUserById } from "../api/users";
+import { parseJwt } from "../utils/parseJwt";
 import type { LoginRequest, SignupRequest } from "../types";
 
 export const useAuth = () => {
@@ -106,24 +107,6 @@ export const useAuth = () => {
 		error,
 	};
 };
-
-// --------------------------------------------------
-// Helper — decode a JWT token without a library
-// JWTs are just base64 encoded JSON
-// Structure: header.payload.signature
-// We only need the payload (middle part)
-// --------------------------------------------------
-function parseJwt(token: string): { user_id: string; role: string } {
-	// JWT payloads are base64url encoded — convert to standard base64
-	// (replace URL-safe chars, restore padding) before atob
-	const base64url = token.split(".")[1]; // get the payload part
-	const base64 = base64url
-		.replace(/-/g, "+")
-		.replace(/_/g, "/")
-		.padEnd(Math.ceil(base64url.length / 4) * 4, "=");
-	const decoded = atob(base64); // decode base64 to string
-	return JSON.parse(decoded); // parse JSON string to object
-}
 
 // Helper — check if an error is an Axios error
 // so we can safely access err.response
