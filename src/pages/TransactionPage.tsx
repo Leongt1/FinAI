@@ -146,7 +146,7 @@ const TransactionPage = () => {
 						onClick={handleAddNew}
 						onMouseEnter={() => setShowToolTip(true)}
 						onMouseLeave={() => setShowToolTip(false)}
-						className="bg-accent-dim w-12 h-12 text-accent-glow rounded-lg p-2 mt-3 font-semibold hover:bg-accent transition-colors cursor-pointer"
+						className="bg-accent-dim w-12 h-12 text-accent-glow rounded-lg p-2 mt-3 font-semibold hover:bg-accent hover:text-on-accent transition-colors cursor-pointer"
 					>
 						<span className="text-2xl mb-1 font-semibold text-accent-glow leading-none">+</span>
 					</button>
@@ -320,7 +320,7 @@ const TransactionPage = () => {
 								<tr className="hover:bg-surface-raised transition-colors py-1 px-4">
 									<td
 										colSpan={6}
-										className="py-4 text-center text-sm text-accent"
+										className="py-4 text-center text-sm text-text-muted"
 									>
 										Loading...
 									</td>
@@ -370,7 +370,7 @@ const TransactionPage = () => {
 										<td className="py-4 text-sm text-text-muted flex gap-4">
 											<button
 												onClick={() => handleEdit(tx)}
-												className="text-accent hover:text-accent-glow hover:bg-surface rounded-xl cursor-pointer p-2 transition-all"
+												className="text-text-muted hover:text-accent-glow hover:bg-surface rounded-xl cursor-pointer p-2 transition-all"
 											>
 												Edit
 											</button>

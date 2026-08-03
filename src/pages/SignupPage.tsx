@@ -107,7 +107,7 @@ const SignupPage = () => {
 					<button
 						type="submit"
 						disabled={isLoading}
-						className="w-full bg-accent-dim text-accent-glow rounded-lg p-3 my-4 font-semibold hover:bg-accent transition-colors cursor-pointer"
+						className="w-full bg-accent-dim text-accent-glow rounded-lg p-3 my-4 font-semibold hover:bg-accent hover:text-on-accent transition-colors cursor-pointer"
 					>
 						{isLoading ? "Signing up..." : "Sign up"}
 					</button>
