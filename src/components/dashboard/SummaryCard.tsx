@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
+
 export type CardType = "balance" | "income" | "expense" | "savings";
 
 interface SummaryCardProps {
@@ -33,7 +36,11 @@ const SummaryCard = ({ title, amount, change, isPositive, type }: SummaryCardPro
 						isPositive ? "text-income bg-income-bg" : "text-expense bg-expense-bg"
 					}`}
 				>
-					<span aria-hidden="true">{isPositive ? "↑" : "↓"}</span>
+					<FontAwesomeIcon
+						icon={isPositive ? faCaretUp : faCaretDown}
+						className="text-[0.7rem]"
+						aria-hidden="true"
+					/>
 					{change}
 				</span>
 				<span className="text-text-muted"> vs last month</span>
