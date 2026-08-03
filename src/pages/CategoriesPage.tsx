@@ -69,7 +69,7 @@ const CategoriesPage = () => {
 							onClick={() => setIsAddOpen(true)}
 							onMouseEnter={() => setShowToolTip(true)}
 							onMouseLeave={() => setShowToolTip(false)}
-							className="bg-accent-dim w-12 h-12 text-accent-glow rounded-lg p-2 mt-3 font-semibold hover:bg-accent transition-colors cursor-pointer"
+							className="bg-accent-dim w-12 h-12 text-accent-glow rounded-lg p-2 mt-3 font-semibold hover:bg-accent hover:text-on-accent transition-colors cursor-pointer"
 						>
 							<p className="text-2xl mb-1 font-semibold text-accent-glow">+</p>
 						</button>

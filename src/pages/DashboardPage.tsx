@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import SpendingBreakdown from "../components/dashboard/SpendingBreakdown";
 import BudgetOverview from "../components/dashboard/BudgetOverview";
 import OnboardingModal from "../components/OnboardingModal";
+import Skeleton from "../components/Skeleton";
 import { formatCurrency } from "../utils/formatCurrency";
 
 const onboardingKey = (userId: string) => `finai-onboarded-${userId}`;
@@ -89,13 +90,39 @@ const DashboardPage = () => {
 
 	const fmt = (n: number) => formatCurrency(n);
 
+	// transactions is undefined only while the first fetch is in flight
+	if (!transactions) {
+		return (
+			<DashboardLayout>
+				<div className="mb-8 flex flex-col gap-2">
+					<Skeleton className="h-7 w-64" />
+					<Skeleton className="h-4 w-40" />
+				</div>
+				<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+					{Array.from({ length: 4 }).map((_, i) => (
+						<Skeleton key={i} className="h-32 rounded-2xl" />
+					))}
+				</div>
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+					<Skeleton className="lg:col-span-2 h-72 rounded-2xl" />
+					<Skeleton className="h-72 rounded-2xl" />
+				</div>
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+					<Skeleton className="h-64 rounded-2xl" />
+					<Skeleton className="lg:col-span-2 h-64 rounded-2xl" />
+				</div>
+			</DashboardLayout>
+		);
+	}
+
 	return (
 		<DashboardLayout>
 			<OnboardingModal isOpen={showOnboarding} onDone={dismissOnboarding} />
 			{/* Header */}
 			<div className="mb-8">
-				<h1 className="text-2xl font-bold text-foreground">
-					<span className="font-light">Welcome back,</span><span className="text-accent-glow">{currentUser?.name}</span>!
+				<h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+					<span className="font-light">Welcome back, </span>
+					<span className="text-accent-glow">{currentUser?.name}</span>!
 				</h1>
 				<p className="text-text-muted text-sm mt-1">{today}</p>
 			</div>

@@ -324,7 +324,7 @@ const BudgetModal = ({
 					<button
 						type="submit"
 						disabled={isSaving}
-						className="w-full bg-accent text-accent-glow rounded-xl p-3 font-semibold hover:bg-accent-glow hover:text-accent transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+						className="w-full bg-accent text-on-accent rounded-xl p-3 font-semibold hover:brightness-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
 					>
 						{isSaving
 							? "Saving..."

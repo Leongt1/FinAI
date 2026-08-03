@@ -11,7 +11,7 @@ const RecentTransactions = () => {
 	const recent = transactions?.slice(0, 5);
 
 	return (
-		<div className="bg-surface rounded-2xl border border-border p-6 mt-4">
+		<div className="bg-surface rounded-2xl border border-border p-6 h-full">
 			<div className="flex justify-between items-center mb-6">
 				<h2 className="text-lg font-semibold text-foreground">
 					Recent Transactions

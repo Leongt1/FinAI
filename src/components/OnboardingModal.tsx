@@ -81,7 +81,7 @@ const OnboardingModal = ({ isOpen, onDone }: OnboardingModalProps) => {
 				<div className="flex gap-3">
 					<button
 						onClick={handleSave}
-						className="flex-1 bg-accent text-accent-glow rounded-xl p-3 font-semibold hover:bg-accent-glow hover:text-accent transition-all cursor-pointer"
+						className="flex-1 bg-accent text-on-accent rounded-xl p-3 font-semibold hover:brightness-95 transition-all cursor-pointer"
 					>
 						Set starting balance
 					</button>
