@@ -16,5 +16,7 @@ export const useThemeColors = () => {
 		textMuted: get("--color-text-muted"),
 		income: get("--color-income"),
 		expense: get("--color-expense"),
+		accent: get("--color-accent"),
+		subtle: get("--color-subtle"),
 	};
 };

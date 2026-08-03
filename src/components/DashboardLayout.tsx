@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "./Sidebar";
+import Logo from "./Logo";
 
 interface DashboardLayoutProps {
 	children: React.ReactNode;
@@ -17,19 +20,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 				<button
 					onClick={() => setIsSidebarOpen(true)}
 					aria-label="Open menu"
-					className="text-text-muted hover:text-accent-glow p-1 cursor-pointer"
+					className="text-text-muted hover:text-foreground p-1 cursor-pointer"
 				>
-					{/* hamburger */}
-					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-						<line x1="4" y1="6" x2="20" y2="6" />
-						<line x1="4" y1="12" x2="20" y2="12" />
-						<line x1="4" y1="18" x2="20" y2="18" />
-					</svg>
+					<FontAwesomeIcon icon={faBars} className="text-xl" />
 				</button>
-				<div>
-					<span className="text-accent-glow text-lg font-semibold tracking-widest">Fin</span>
-					<span className="text-foreground text-lg font-bold">AI</span>
-				</div>
+				<Logo />
 			</header>
 
 			{/* Backdrop for mobile drawer */}

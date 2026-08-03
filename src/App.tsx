@@ -15,6 +15,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import BudgetsPage from "./pages/BudgetsPage";
 import AssistantPage from "./pages/AssistantPage";
 import ToastContainer from "./components/ToastContainer";
+import TipsLoader from "./components/TipsLoader";
 
 const App = () => {
 	const { restoreSession } = useAuth();
@@ -25,11 +26,7 @@ const App = () => {
 	}, []);
 
 	if (isLoading) {
-		return (
-			<div className="min-h-screen flex items-center justify-center">
-				<p className="text-accent-glow text-2xl font-bold animate-pulse">Loading...</p>
-			</div>
-		);
+		return <TipsLoader fullscreen label="Signing you in" />;
 	}
 
 	return (

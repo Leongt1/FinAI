@@ -79,7 +79,7 @@ const AdminDashboard = () => {
 									type="button"
 									onClick={() => navigate(`/admin/users/${u.id}`)}
 									disabled={isDeleting}
-									className="text-accent hover:text-accent-glow rounded-xl cursor-pointer px-3 py-1.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed border border-border-strong hover:border-accent-glow transition-colors"
+									className="text-text-muted hover:text-accent-glow rounded-xl cursor-pointer px-3 py-1.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed border border-border-strong hover:border-border-strong transition-colors"
 								>
 									View
 								</button>
