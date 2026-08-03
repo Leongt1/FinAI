@@ -65,7 +65,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }: ForgotPasswordModalProps) => {
 						</p>
 						<button
 							onClick={handleClose}
-							className="w-full bg-accent-dim text-accent-glow rounded-xl p-3 font-semibold hover:bg-accent transition-colors cursor-pointer"
+							className="w-full bg-accent-dim text-accent-glow rounded-xl p-3 font-semibold hover:bg-accent hover:text-on-accent transition-colors cursor-pointer"
 						>
 							Done
 						</button>
@@ -91,7 +91,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }: ForgotPasswordModalProps) => {
 						<button
 							type="submit"
 							disabled={isLoading}
-							className="w-full bg-accent-dim text-accent-glow rounded-xl p-3 font-semibold hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+							className="w-full bg-accent-dim text-accent-glow rounded-xl p-3 font-semibold hover:bg-accent hover:text-on-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
 						>
 							{isLoading ? "Sending..." : "Send Reset Link"}
 						</button>

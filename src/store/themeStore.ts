@@ -5,11 +5,12 @@ export type Theme = "dark" | "light";
 const STORAGE_KEY = "finai-theme";
 
 const applyTheme = (theme: Theme) => {
-	document.documentElement.classList.toggle("light", theme === "light");
+	document.documentElement.classList.toggle("dark", theme === "dark");
 };
 
+// Light is the default; only an explicit stored "dark" opts out.
 const initialTheme: Theme =
-	localStorage.getItem(STORAGE_KEY) === "light" ? "light" : "dark";
+	localStorage.getItem(STORAGE_KEY) === "dark" ? "dark" : "light";
 applyTheme(initialTheme);
 
 interface ThemeState {

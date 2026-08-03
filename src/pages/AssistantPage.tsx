@@ -149,7 +149,7 @@ const AssistantPage = () => {
 					<button
 						onClick={handleSend}
 						disabled={outOfCredits || isThinking || !draft.trim()}
-						className="bg-accent text-accent-glow rounded-2xl px-6 font-semibold hover:bg-accent-glow hover:text-accent transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+						className="bg-accent text-on-accent rounded-2xl px-6 font-semibold hover:brightness-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
 					>
 						Send
 					</button>

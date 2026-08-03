@@ -1,101 +1,167 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
+/* General Sans - characterful geometric-humanist sans (Fontshare) */
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
 
 @import "tailwindcss";
 
 @theme {
-	/* ── Raw Palette ── */
-	--color-bg: #091413;
-	--color-surface: #0f1c1a;
-	--color-surface-raised: #162622;
+	/* ── Light palette (default): warm cream canvas, near-black ink, lime pop ── */
+	--color-bg: #f4f2e9;            /* warm paper canvas */
+	--color-surface: #ffffff;       /* cards */
+	--color-surface-raised: #faf9f2; /* insets / hover */
 
 	/* ── Borders ── */
-	--color-border: #1e3530;
-	--color-border-strong: #285A48;
+	--color-border: #e8e5d9;
+	--color-border-strong: #d6d2c3;
 
-	/* ── Brand Colors ── */
-	--color-accent: #408A71;
-	--color-accent-dim: #285A48;
-	--color-accent-glow: #B0E4CC;
+	/* ── Accent (lime signature) ── */
+	--color-accent: #bef264;        /* primary CTA bg, active indicators, bars */
+	--color-accent-dim: #eaf7c6;    /* soft lime: secondary bg, active nav, chips */
+	--color-accent-glow: #1b1b17;   /* emphasis TEXT (ink on light) */
+	--color-on-accent: #17170f;     /* text/icon sitting on top of lime */
 
 	/* ── Text ── */
-	--color-foreground: #dff2ea;
-	--color-text-muted: #7aaa96;
-	--color-subtle: #3d6b5a;
+	--color-foreground: #1b1b17;    /* ink */
+	--color-text-muted: #6b695e;
+	--color-subtle: #9a9789;
 
-	/* ── Semantic Status ── */
-	--color-income:        #408A71;
-	--color-income-bg:     #0f2720;
-	--color-expense:       #e05c5c;
-	--color-expense-bg:    #2a0f0f;
-	--color-warning:       #d9a23c;
-	--color-warning-bg:    #2a220f;
+	/* ── Semantic status ── */
+	--color-income:     #12945e;    /* emerald - distinct from lime brand */
+	--color-income-bg:  #e3f3ea;
+	--color-expense:    #e0533b;    /* warm vermilion */
+	--color-expense-bg: #fce7e1;
+	--color-warning:    #b7791f;
+	--color-warning-bg: #f7edd6;
 
-	--font-sans: 'Fira Code', monospace;
+	/* ── Type ── */
+	--font-sans: 'General Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-	/* toast slide-up */
+	/* ── Elevation (soft, low-contrast for a light UI) ── */
+	--shadow-card: 0 1px 2px rgb(24 24 20 / 0.04), 0 10px 30px -18px rgb(24 24 20 / 0.18);
+	--shadow-pop:  0 8px 40px -12px rgb(24 24 20 / 0.22);
+
+	/* ── Motion ── */
 	--animate-toast-in: toast-in 0.25s ease-out;
+	--animate-fade-in: fade-in 0.4s ease-out;
 
 	@keyframes toast-in {
-		from {
-			opacity: 0;
-			transform: translateY(0.75rem);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+		from { opacity: 0; transform: translateY(0.75rem); }
+		to   { opacity: 1; transform: translateY(0); }
+	}
+	@keyframes shimmer {
+		100% { transform: translateX(100%); }
+	}
+	@keyframes fade-in {
+		from { opacity: 0; transform: translateY(4px); }
+		to   { opacity: 1; transform: translateY(0); }
 	}
 }
 
-/* Light theme - Tailwind v4 utilities resolve to var(--color-*), so
-   overriding the variables under html.light re-skins every component.
-   Palette: off-white surfaces, green accents, red for expense. */
-.light {
-	--color-bg: #eef2ef;
-	--color-surface: #f9fbf9;
-	--color-surface-raised: #e2eae5;
+/* ── Dark: corresponding variant of cream+ink+lime ── */
+/* Tailwind v4 utilities resolve to var(--color-*) at runtime, so overriding the
+   variables under html.dark re-skins every component. */
+.dark {
+	--color-bg: #121210;            /* warm near-black */
+	--color-surface: #1b1b16;
+	--color-surface-raised: #24241d;
 
-	--color-border: #d3dfd8;
-	--color-border-strong: #9fc2b1;
+	--color-border: #2c2b23;
+	--color-border-strong: #403e32;
 
-	--color-accent: #2e7d5f;
-	--color-accent-dim: #cde7db;
-	--color-accent-glow: #1b5e44;
+	--color-accent: #c6f24e;        /* lime, a touch punchier on dark */
+	--color-accent-dim: #2a3318;    /* deep muted lime: secondary bg, active nav */
+	--color-accent-glow: #d7efa0;   /* emphasis TEXT (light lime-cream on dark) */
+	--color-on-accent: #17170f;     /* still ink - lime stays light in both modes */
 
-	--color-foreground: #14251f;
-	--color-text-muted: #38584b;
-	--color-subtle: #85a294;
+	--color-foreground: #f2f0e6;    /* cream text */
+	--color-text-muted: #a6a392;
+	--color-subtle: #6e6b5d;
 
-	--color-income: #2e7d5f;
-	--color-income-bg: #ddf0e6;
-	--color-expense: #c43d3d;
-	--color-expense-bg: #fbe7e7;
-	--color-warning: #96690a;
-	--color-warning-bg: #f5ecd4;
+	--color-income:     #34d399;
+	--color-income-bg:  #10302666;
+	--color-expense:    #f2775a;
+	--color-expense-bg: #33150f99;
+	--color-warning:    #e0b152;
+	--color-warning-bg: #2e261199;
+
+	--shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 34px -18px rgb(0 0 0 / 0.6);
+	--shadow-pop:  0 10px 44px -12px rgb(0 0 0 / 0.7);
 }
 
 @layer base {
-	/* var(), not theme(): theme() inlines the dark hex at build time, which
-	   would pin these even when html.light overrides the variables */
+	/* var(), not theme(): theme() inlines the light hex at build time, which
+	   would pin these even when html.dark overrides the variables */
 	html, body, #root {
 		background-color: var(--color-bg);
 		color: var(--color-foreground);
 		min-height: 100vh;
 	}
+	body {
+		font-family: var(--font-sans);
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+	}
 
-	/* Themed scrollbars everywhere (page, modals, dropdowns, tables).
-	   Standard properties cover Chrome/Edge/Firefox; Safari keeps native. */
+	/* Tabular, lined figures for money + data so digits never jitter */
+	.tnum {
+		font-variant-numeric: tabular-nums lining-nums;
+		font-feature-settings: "tnum" 1;
+	}
+
+	/* Visible keyboard focus everywhere (accessibility floor) */
+	:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 2px;
+		border-radius: 0.35rem;
+	}
+
+	::selection {
+		background-color: var(--color-accent);
+		color: var(--color-on-accent);
+	}
+
+	/* Themed thin scrollbars (Chrome/Edge/Firefox; Safari keeps native) */
 	* {
 		scrollbar-width: thin;
 		scrollbar-color: var(--color-border-strong) transparent;
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		*, *::before, *::after {
+			animation-duration: 0.001ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.001ms !important;
+		}
+	}
 }
 
-/* Datepicker Styles - overrides (theme tokens so both themes work) */
+@layer components {
+	/* Shimmering placeholder block for loading states */
+	.skeleton {
+		position: relative;
+		overflow: hidden;
+		background-color: var(--color-surface-raised);
+		border-radius: 0.75rem;
+	}
+	.skeleton::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		transform: translateX(-100%);
+		background: linear-gradient(
+			90deg,
+			transparent,
+			color-mix(in srgb, var(--color-border-strong) 55%, transparent),
+			transparent
+		);
+		animation: shimmer 1.6s infinite;
+	}
+}
+
+/* Datepicker - tokenized so both themes work */
 .react-datepicker {
 	border: 1px solid var(--color-border-strong) !important;
 	border-radius: 1rem !important;
-	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
+	box-shadow: var(--shadow-pop) !important;
 	font-family: inherit !important;
 	overflow: hidden !important;
 	background-color: var(--color-surface) !important;
@@ -109,7 +175,7 @@
 
 .react-datepicker__day--selected {
 	background-color: var(--color-accent) !important;
-	color: var(--color-bg) !important;
+	color: var(--color-on-accent) !important;
 	border-radius: 9999px !important;
 }
 
@@ -122,9 +188,6 @@
 	align-items: center !important;
 	justify-content: center !important;
 	border-radius: 9999px !important;
-}
-
-.react-datepicker__day {
 	color: var(--color-foreground) !important;
 }
 
@@ -133,9 +196,9 @@
 }
 
 .react-datepicker__day:hover {
-	background-color: var(--color-accent) !important;
+	background-color: var(--color-accent-dim) !important;
 	border-radius: 9999px !important;
-	color: var(--color-bg) !important;
+	color: var(--color-foreground) !important;
 }
 
 .react-datepicker__day--today {
