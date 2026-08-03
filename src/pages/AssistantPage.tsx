@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRobot } from "@fortawesome/free-solid-svg-icons";
+import { faRobot, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
 import DashboardLayout from "../components/DashboardLayout";
 import { useAI } from "../hooks/useAI";
 import type { AIChatTurn } from "../types";
+
+// lazy so the emoji dataset only loads when the picker is first opened
+const EmojiPickerPopover = lazy(() => import("../components/EmojiPickerPopover"));
 
 interface DisplayMessage {
 	role: "user" | "assistant";
@@ -28,7 +31,9 @@ const AssistantPage = () => {
 	const { credits, isLoadingCredits, sendMessage, isThinking } = useAI();
 	const [messages, setMessages] = useState<DisplayMessage[]>([]);
 	const [draft, setDraft] = useState("");
+	const [showEmoji, setShowEmoji] = useState(false);
 	const bottomRef = useRef<HTMLDivElement>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -36,6 +41,23 @@ const AssistantPage = () => {
 
 	const isUnlimited = credits !== undefined && credits < 0;
 	const outOfCredits = credits === 0;
+
+	// insert a picked emoji at the cursor (keeps focus + caret position)
+	const insertEmoji = (emoji: string) => {
+		const el = inputRef.current;
+		if (!el) {
+			setDraft((d) => d + emoji);
+			return;
+		}
+		const start = el.selectionStart ?? draft.length;
+		const end = el.selectionEnd ?? draft.length;
+		setDraft(draft.slice(0, start) + emoji + draft.slice(end));
+		requestAnimationFrame(() => {
+			el.focus();
+			const pos = start + emoji.length;
+			el.setSelectionRange(pos, pos);
+		});
+	};
 
 	const handleSend = async () => {
 		const message = draft.trim();
@@ -162,17 +184,37 @@ const AssistantPage = () => {
 				{/* Composer - pinned to the bottom of the screen */}
 				<div className="shrink-0 border-t border-border pt-3">
 					<div className="mx-auto flex max-w-3xl gap-2">
-						<input
-							type="text"
-							value={draft}
-							onChange={(e) => setDraft(e.target.value)}
-							onKeyDown={(e) => {
-								if (e.key === "Enter") handleSend();
-							}}
-							disabled={outOfCredits || isThinking}
-							placeholder={outOfCredits ? "You're out of credits" : "Message Fin…"}
-							className="flex-1 rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-foreground transition-colors focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:opacity-50 disabled:cursor-not-allowed"
-						/>
+						<div className="relative flex-1">
+							{/* Emoji picker toggle */}
+							<button
+								type="button"
+								onClick={() => setShowEmoji((s) => !s)}
+								disabled={outOfCredits || isThinking}
+								aria-label="Insert emoji"
+								className="absolute left-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-surface-raised hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+							>
+								<FontAwesomeIcon icon={faFaceSmile} className="text-lg" />
+							</button>
+
+							{showEmoji && (
+								<Suspense fallback={null}>
+									<EmojiPickerPopover onPick={insertEmoji} onClose={() => setShowEmoji(false)} />
+								</Suspense>
+							)}
+
+							<input
+								ref={inputRef}
+								type="text"
+								value={draft}
+								onChange={(e) => setDraft(e.target.value)}
+								onKeyDown={(e) => {
+									if (e.key === "Enter") handleSend();
+								}}
+								disabled={outOfCredits || isThinking}
+								placeholder={outOfCredits ? "You're out of credits" : "Message Fin…"}
+								className="w-full rounded-2xl border border-border bg-surface py-3 pl-12 pr-4 text-sm text-foreground transition-colors focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:opacity-50 disabled:cursor-not-allowed"
+							/>
+						</div>
 						<button
 							onClick={handleSend}
 							disabled={outOfCredits || isThinking || !draft.trim()}
