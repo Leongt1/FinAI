@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRobot } from "@fortawesome/free-solid-svg-icons";
 import DashboardLayout from "../components/DashboardLayout";
-import TitleText from "../components/TitleText";
 import { useAI } from "../hooks/useAI";
 import type { AIChatTurn } from "../types";
 
@@ -12,10 +13,16 @@ interface DisplayMessage {
 }
 
 const WELCOME =
-	"Hi! I'm your FinAI assistant. I can record expenses and income for you " +
-	'("add a 250 lunch expense"), create categories, and answer questions ' +
-	'about your spending ("how much did I spend this month?"). Each message ' +
-	"costs one credit.";
+	"Hi, I'm Fin - your finance assistant. Tell me what you spent and I'll log it " +
+	'(try "add a 250 lunch expense"), create categories, or answer questions about ' +
+	'your spending ("how much did I spend this month?").';
+
+// Fin's little avatar, shown beside each of its messages.
+const FinAvatar = () => (
+	<span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-on-accent">
+		<FontAwesomeIcon icon={faRobot} className="text-sm" />
+	</span>
+);
 
 const AssistantPage = () => {
 	const { credits, isLoadingCredits, sendMessage, isThinking } = useAI();
@@ -27,7 +34,6 @@ const AssistantPage = () => {
 		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [messages, isThinking]);
 
-	// admins get a sentinel negative balance from the API meaning unlimited
 	const isUnlimited = credits !== undefined && credits < 0;
 	const outOfCredits = credits === 0;
 
@@ -55,7 +61,8 @@ const AssistantPage = () => {
 				...prev,
 				{
 					role: "assistant",
-					content: "Sorry - that didn't go through. Your credit was not wasted if the assistant was unreachable.",
+					content:
+						"Sorry - that didn't go through. Your credit wasn't spent if I was unreachable.",
 					failed: true,
 				},
 			]);
@@ -64,14 +71,24 @@ const AssistantPage = () => {
 
 	return (
 		<DashboardLayout>
-			<div className="w-full h-full flex flex-col">
-				<div className="flex items-start justify-between gap-4">
-					<TitleText title="AI Assistant" />
+			{/* Chat fills the viewport: header + scrolling conversation + pinned composer */}
+			<div className="flex flex-col h-[calc(100dvh-5.5rem)] lg:h-[calc(100dvh-2rem)]">
+				{/* Header */}
+				<div className="flex items-center justify-between gap-3 pb-4 border-b border-border shrink-0">
+					<div className="flex items-center gap-3">
+						<span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-on-accent">
+							<FontAwesomeIcon icon={faRobot} />
+						</span>
+						<div>
+							<h1 className="text-lg font-bold leading-tight text-foreground">Fin</h1>
+							<p className="text-xs text-text-muted">Your finance assistant</p>
+						</div>
+					</div>
 					<span
-						className={`text-sm px-3 py-1.5 rounded-full border whitespace-nowrap ${
+						className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-sm ${
 							outOfCredits
-								? "text-expense border-expense bg-expense-bg"
-								: "text-accent-glow border-border-strong bg-surface-raised"
+								? "border-expense bg-expense-bg text-expense"
+								: "border-border bg-surface-raised text-text-muted"
 						}`}
 					>
 						{isLoadingCredits
@@ -83,82 +100,93 @@ const AssistantPage = () => {
 				</div>
 
 				{/* Conversation */}
-				<div className="flex-1 min-h-0 bg-surface border border-border rounded-3xl p-4 sm:p-6 flex flex-col gap-4 overflow-y-auto mb-4">
-					<div className="max-w-[85%] sm:max-w-[70%] self-start bg-surface-raised border border-border rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-text-muted">
-						{WELCOME}
-					</div>
-
-					{messages.map((m, i) =>
-						m.role === "user" ? (
-							<div
-								key={i}
-								className="max-w-[85%] sm:max-w-[70%] self-end bg-accent-dim text-accent-glow border border-border-strong rounded-2xl rounded-tr-sm px-4 py-3 text-sm"
-							>
-								{m.content}
+				<div className="flex-1 min-h-0 overflow-y-auto py-6">
+					<div className="mx-auto flex max-w-3xl flex-col gap-6 px-1">
+						{/* Fin's greeting */}
+						<div className="flex items-start gap-3">
+							<FinAvatar />
+							<div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-surface-raised px-4 py-3 text-sm text-text-muted">
+								{WELCOME}
 							</div>
-						) : (
-							<div key={i} className="max-w-[85%] sm:max-w-[70%] self-start flex flex-col gap-2">
-								<div
-									className={`bg-surface-raised border rounded-2xl rounded-tl-sm px-4 py-3 text-sm whitespace-pre-wrap ${
-										m.failed ? "border-expense text-expense" : "border-border text-text-muted"
-									}`}
-								>
-									{m.content}
-								</div>
-								{m.actions && m.actions.length > 0 && (
-									<div className="flex flex-col gap-1">
-										{m.actions.map((action, j) => (
-											<span
-												key={j}
-												className="text-xs text-income bg-income-bg border border-income/40 rounded-full px-3 py-1 self-start"
-											>
-												✓ {action}
-											</span>
-										))}
-									</div>
-								)}
-							</div>
-						),
-					)}
-
-					{isThinking && (
-						<div className="max-w-[70%] self-start bg-surface-raised border border-border rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-subtle animate-pulse">
-							Thinking…
 						</div>
-					)}
-					<div ref={bottomRef} />
+
+						{messages.map((m, i) =>
+							m.role === "user" ? (
+								<div key={i} className="flex justify-end">
+									<div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-accent-dim px-4 py-3 text-sm text-foreground">
+										{m.content}
+									</div>
+								</div>
+							) : (
+								<div key={i} className="flex items-start gap-3">
+									<FinAvatar />
+									<div className="flex max-w-[85%] flex-col gap-2">
+										<div
+											className={`rounded-2xl rounded-tl-sm px-4 py-3 text-sm whitespace-pre-wrap ${
+												m.failed
+													? "border border-expense text-expense"
+													: "bg-surface-raised text-text-muted"
+											}`}
+										>
+											{m.content}
+										</div>
+										{m.actions && m.actions.length > 0 && (
+											<div className="flex flex-col gap-1">
+												{m.actions.map((action, j) => (
+													<span
+														key={j}
+														className="self-start rounded-full border border-income/40 bg-income-bg px-3 py-1 text-xs text-income"
+													>
+														✓ {action}
+													</span>
+												))}
+											</div>
+										)}
+									</div>
+								</div>
+							),
+						)}
+
+						{isThinking && (
+							<div className="flex items-start gap-3">
+								<FinAvatar />
+								<div className="rounded-2xl rounded-tl-sm bg-surface-raised px-4 py-3 text-sm text-subtle animate-pulse">
+									Fin is thinking…
+								</div>
+							</div>
+						)}
+						<div ref={bottomRef} />
+					</div>
 				</div>
 
-				{/* Composer */}
-				<div className="flex gap-2">
-					<input
-						type="text"
-						value={draft}
-						onChange={(e) => setDraft(e.target.value)}
-						onKeyDown={(e) => {
-							if (e.key === "Enter") handleSend();
-						}}
-						disabled={outOfCredits || isThinking}
-						placeholder={
-							outOfCredits
-								? "You're out of credits"
-								: 'Ask anything - e.g. "add a 120 coffee expense"'
-						}
-						className="flex-1 bg-surface border border-border rounded-2xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-					/>
-					<button
-						onClick={handleSend}
-						disabled={outOfCredits || isThinking || !draft.trim()}
-						className="bg-accent text-on-accent rounded-2xl px-6 font-semibold hover:brightness-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-					>
-						Send
-					</button>
+				{/* Composer - pinned to the bottom of the screen */}
+				<div className="shrink-0 border-t border-border pt-3">
+					<div className="mx-auto flex max-w-3xl gap-2">
+						<input
+							type="text"
+							value={draft}
+							onChange={(e) => setDraft(e.target.value)}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") handleSend();
+							}}
+							disabled={outOfCredits || isThinking}
+							placeholder={outOfCredits ? "You're out of credits" : "Message Fin…"}
+							className="flex-1 rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-foreground transition-colors focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:opacity-50 disabled:cursor-not-allowed"
+						/>
+						<button
+							onClick={handleSend}
+							disabled={outOfCredits || isThinking || !draft.trim()}
+							className="rounded-2xl bg-accent px-6 font-semibold text-on-accent transition-all hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+						>
+							Send
+						</button>
+					</div>
+					{outOfCredits && (
+						<p className="mx-auto mt-2 max-w-3xl text-xs text-expense">
+							You&apos;ve used your launch credits - more coming soon.
+						</p>
+					)}
 				</div>
-				{outOfCredits && (
-					<p className="text-xs text-expense mt-2">
-						You&apos;ve used your launch credits - more coming soon.
-					</p>
-				)}
 			</div>
 		</DashboardLayout>
 	);

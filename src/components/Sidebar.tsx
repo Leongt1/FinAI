@@ -35,7 +35,7 @@ const navItems: NavItem[] = [
 	{ to: "/transactions", label: "Transactions", icon: faArrowRightArrowLeft },
 	{ to: "/budget", label: "Budget", icon: faWallet },
 	{ to: "/categories", label: "Categories", icon: faTags },
-	{ to: "/assistant", label: "AI Assistant", icon: faRobot },
+	{ to: "/assistant", label: "Fin", icon: faRobot },
 	{ to: "/profile", label: "Profile", icon: faUser },
 ];
 
