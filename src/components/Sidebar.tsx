@@ -57,7 +57,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 			className={`w-64 bg-surface border border-border text-foreground flex flex-col p-4 shadow-card
 				fixed inset-y-0 left-0 z-50 transform transition-transform duration-200
 				${isOpen ? "translate-x-0" : "-translate-x-full"}
-				lg:static lg:z-auto lg:translate-x-0 lg:h-full lg:rounded-2xl lg:shrink-0`}
+				lg:sticky lg:top-4 lg:z-auto lg:translate-x-0 lg:h-[calc(100dvh-2rem)] lg:self-start lg:rounded-2xl lg:shrink-0`}
 		>
 			{/* Logo */}
 			<div className="flex items-center justify-between pb-4 mb-3 border-b border-border">

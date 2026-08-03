@@ -114,6 +114,18 @@
 		border-radius: 0.35rem;
 	}
 
+	/* Text fields provide their own focus ring, so the global outline must not
+	   stack on top of them - that produced a doubled/offset highlight. */
+	input:focus, textarea:focus, select:focus,
+	input:focus-visible, textarea:focus-visible, select:focus-visible {
+		outline: none;
+	}
+
+	/* Only editable fields show a blinking caret; static text never does. Guards
+	   against stray carets (e.g. browser caret-browsing mode) on headings/labels. */
+	html { caret-color: transparent; }
+	input, textarea, select, [contenteditable="true"] { caret-color: auto; }
+
 	::selection {
 		background-color: var(--color-accent);
 		color: var(--color-on-accent);

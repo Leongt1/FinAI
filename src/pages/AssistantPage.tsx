@@ -144,7 +144,7 @@ const AssistantPage = () => {
 								? "You're out of credits"
 								: 'Ask anything - e.g. "add a 120 coffee expense"'
 						}
-						className="flex-1 bg-surface border border-border rounded-2xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-border-strong disabled:opacity-50 disabled:cursor-not-allowed"
+						className="flex-1 bg-surface border border-border rounded-2xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 					/>
 					<button
 						onClick={handleSend}

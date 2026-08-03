@@ -12,9 +12,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 	return (
-		// app shell: exactly viewport height, never grows - only <main> scrolls
-		// (dvh, not vh: on phones the URL bar overlaps 100vh)
-		<div className="flex h-dvh overflow-hidden p-3 sm:p-4 gap-4">
+		// The page itself scrolls (scrollbar at the viewport edge); the sidebar
+		// sticks. dvh, not vh: on phones the URL bar overlaps 100vh.
+		<div className="min-h-dvh p-3 sm:p-4">
 			{/* Mobile top bar */}
 			<header className="lg:hidden fixed top-0 inset-x-0 z-30 flex items-center gap-3 bg-surface border-b border-border px-4 py-3">
 				<button
@@ -35,10 +35,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 				/>
 			)}
 
-			<Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+			<div className="flex gap-4 items-start">
+				<Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-			{/* min-w-0 lets flex children (tables, charts) shrink instead of overflowing */}
-			<main className="flex-1 min-w-0 overflow-y-auto pt-16 lg:pt-0">{children}</main>
+				{/* min-w-0 lets flex children (tables, charts) shrink instead of overflowing */}
+				<main className="flex-1 min-w-0 pt-16 lg:pt-0">{children}</main>
+			</div>
 		</div>
 	);
 };
