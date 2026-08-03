@@ -27,7 +27,9 @@ const AssistantPage = () => {
 		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [messages, isThinking]);
 
-	const outOfCredits = credits !== undefined && credits <= 0;
+	// admins get a sentinel negative balance from the API meaning unlimited
+	const isUnlimited = credits !== undefined && credits < 0;
+	const outOfCredits = credits === 0;
 
 	const handleSend = async () => {
 		const message = draft.trim();
@@ -72,7 +74,11 @@ const AssistantPage = () => {
 								: "text-accent-glow border-border-strong bg-surface-raised"
 						}`}
 					>
-						{isLoadingCredits ? "…" : `${credits ?? 0} credit${credits === 1 ? "" : "s"} left`}
+						{isLoadingCredits
+							? "…"
+							: isUnlimited
+								? "Unlimited"
+								: `${credits ?? 0} credit${credits === 1 ? "" : "s"} left`}
 					</span>
 				</div>
 
@@ -150,7 +156,7 @@ const AssistantPage = () => {
 				</div>
 				{outOfCredits && (
 					<p className="text-xs text-expense mt-2">
-						You&apos;ve used your free credits. More options are coming soon.
+						You&apos;ve used your launch credits - more coming soon.
 					</p>
 				)}
 			</div>
