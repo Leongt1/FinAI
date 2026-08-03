@@ -30,7 +30,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 			{/* Backdrop for mobile drawer */}
 			{isSidebarOpen && (
 				<div
-					className="fixed inset-0 z-40 bg-bg/70 backdrop-blur-sm lg:hidden"
+					className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm lg:hidden"
 					onClick={() => setIsSidebarOpen(false)}
 				/>
 			)}
