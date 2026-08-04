@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { forgotPassword } from "../api/auth";
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 
 interface ForgotPasswordModalProps {
 	isOpen: boolean;
@@ -11,6 +12,8 @@ const ForgotPasswordModal = ({ isOpen, onClose }: ForgotPasswordModalProps) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [sent, setSent] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+
+	useBodyScrollLock(isOpen);
 
 	if (!isOpen) return null;
 
