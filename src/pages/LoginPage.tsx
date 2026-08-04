@@ -3,6 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useAuthStore } from "../store/authStore";
 import ForgotPasswordModal from "../components/ForgotPasswordModal";
+import PublicTopBar from "../components/PublicTopBar";
 
 const LoginPage = () => {
 	const [email, setEmail] = useState("");
@@ -22,9 +23,9 @@ const LoginPage = () => {
 	}
 
 	return (
-		<div
-			className="min-h-screen flex items-center justify-center bg bg-center bg-no-repeat px-4"
-		>
+		<div className="min-h-dvh flex flex-col bg-bg">
+			<PublicTopBar variant="login" />
+			<div className="flex flex-1 items-center justify-center px-4 py-10">
 			{/* Card */}
 			<div className="bg-surface rounded-2xl shadow-md p-6 sm:p-10 w-full max-w-md flex flex-col items-center justify-center border border-border">
 				<h1 className="text-2xl font-bold text-text-muted">Login</h1>
@@ -78,6 +79,7 @@ const LoginPage = () => {
 						Signup Now
 					</Link>
 				</p>
+			</div>
 			</div>
 			<ForgotPasswordModal isOpen={isForgotOpen} onClose={() => setIsForgotOpen(false)} />
 		</div>

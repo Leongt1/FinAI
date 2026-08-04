@@ -1,160 +1,137 @@
 import { Link, Navigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faArrowRight,
-	faComments,
-	faMicrophone,
-	faWandMagicSparkles,
-	faChartPie,
-	faShieldHalved,
-	faBolt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faLock } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../components/Logo";
+import PublicTopBar from "../components/PublicTopBar";
+import HeroDemo from "../components/landing/HeroDemo";
 import { useAuthStore } from "../store/authStore";
 
-// Public marketing page at "/". Sells the core pitch - logging a transaction is
-// so quick (just tell Fin) that you actually stay consistent - and routes to
-// signup. Logged-in visitors skip straight to their dashboard.
+// What you can actually say to Fin, and what it does - the value shown through
+// real phrasings rather than generic feature cards.
+const CAPABILITIES: { say: string; does: string }[] = [
+	{ say: "add 250 lunch", does: "Logs an expense under the right category, dated today." },
+	{
+		say: "how much did I spend on food this month?",
+		does: "Answers from your own transactions - no digging through screens.",
+	},
+	{
+		say: "paste a month of GPay / bank texts",
+		does: "Turns the whole backlog into transactions you review before saving.",
+	},
+	{
+		say: "make a category called Fuel",
+		does: "Creates it on the spot, ready to use.",
+	},
+];
+
 const LandingPage = () => {
 	const user = useAuthStore((s) => s.user);
 	if (user) return <Navigate to="/dashboard" replace />;
 
 	return (
-		<div className="min-h-dvh bg-background text-foreground">
-			{/* Nav */}
-			<header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur-sm">
-				<nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-					<Logo />
-					<div className="flex items-center gap-2 sm:gap-3">
+		<div className="min-h-dvh overflow-x-clip bg-bg text-foreground">
+			<PublicTopBar variant="landing" />
+
+			{/* Hero - product-led: the demo carries the pitch */}
+			<section className="mx-auto grid max-w-6xl items-center gap-12 px-4 pt-14 pb-16 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pt-20">
+				<div className="min-w-0">
+					<span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-text-muted">
+						<span className="h-1.5 w-1.5 rounded-full bg-accent" />
+						Personal finance, minus the data entry
+					</span>
+
+					<h1 className="mt-5 font-display text-5xl font-semibold leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
+						Just say it.
+						<br />
+						<span className="text-text-muted">It&apos;s logged.</span>
+					</h1>
+
+					<p className="mt-6 max-w-md text-lg leading-relaxed text-text-muted">
+						Tracking money falls apart because entering it is tedious. Tell Fin what
+						you spent - by voice or a quick line of chat - and it&apos;s recorded in
+						seconds, so you actually keep it up.
+					</p>
+
+					<div className="mt-8 flex flex-wrap items-center gap-3">
+						<Link
+							to="/signup"
+							className="group inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 font-semibold text-on-accent transition-all hover:brightness-95"
+						>
+							Start free
+							<FontAwesomeIcon
+								icon={faArrowRight}
+								className="transition-transform group-hover:translate-x-0.5"
+							/>
+						</Link>
 						<Link
 							to="/login"
-							className="rounded-xl px-4 py-2 text-sm font-semibold text-text-muted transition-colors hover:text-foreground"
+							className="rounded-xl border border-border-strong px-6 py-3 font-semibold text-foreground transition-colors hover:bg-surface-raised"
 						>
 							Log in
 						</Link>
-						<Link
-							to="/signup"
-							className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-on-accent transition-all hover:brightness-95"
-						>
-							Get started
-						</Link>
 					</div>
-				</nav>
-			</header>
 
-			{/* Hero */}
-			<section className="mx-auto max-w-6xl px-4 pt-16 pb-12 sm:px-6 sm:pt-24">
-				<div className="grid items-center gap-12 lg:grid-cols-2">
-					<div>
-						<span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-text-muted">
-							<FontAwesomeIcon icon={faBolt} className="text-accent-glow" />
-							Log an expense in seconds
+					<p className="mt-4 text-sm text-subtle">
+						Free to start · 100 AI credits · no card needed
+					</p>
+				</div>
+
+				<HeroDemo />
+			</section>
+
+			{/* Catch-up line - speaks to the real pain, product-specific */}
+			<section className="border-y border-border bg-surface-raised/60">
+				<div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
+					<p className="font-display text-2xl font-medium leading-snug tracking-tight sm:text-3xl">
+						Already a month behind?{" "}
+						<span className="text-text-muted">
+							Paste your bank and UPI texts and Fin rebuilds the whole backlog into
+							transactions you can check off in one sitting.
 						</span>
-						<h1 className="mt-5 text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-							Just tell Fin what you spent.
-						</h1>
-						<p className="mt-5 max-w-lg text-lg text-text-muted">
-							Keeping a money tracker up to date is tedious - so most people quit.
-							FinAI lets you log a transaction by chatting or speaking, so it stays
-							effortless and you actually keep it up.
-						</p>
-						<div className="mt-8 flex flex-wrap items-center gap-3">
-							<Link
-								to="/signup"
-								className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 font-semibold text-on-accent transition-all hover:brightness-95"
-							>
-								Start free <FontAwesomeIcon icon={faArrowRight} />
-							</Link>
-							<Link
-								to="/login"
-								className="rounded-xl border border-border bg-surface px-6 py-3 font-semibold text-text-muted transition-colors hover:border-border-strong hover:text-foreground"
-							>
-								Log in
-							</Link>
-						</div>
-						<p className="mt-4 text-sm text-subtle">
-							Free to start - 100 AI credits, no card needed.
-						</p>
-					</div>
-
-					{/* Chat mock */}
-					<div className="rounded-3xl border border-border bg-surface p-5 shadow-lg sm:p-6">
-						<div className="flex items-center gap-3 border-b border-border pb-3">
-							<span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-on-accent">
-								<FontAwesomeIcon icon={faComments} />
-							</span>
-							<div>
-								<p className="text-sm font-bold leading-tight">Fin</p>
-								<p className="text-xs text-text-muted">Your finance assistant</p>
-							</div>
-						</div>
-						<div className="flex flex-col gap-3 pt-4">
-							<div className="self-end max-w-[80%] rounded-2xl rounded-tr-sm bg-accent-dim px-4 py-2.5 text-sm">
-								add a 250 lunch expense
-							</div>
-							<div className="self-start max-w-[85%] rounded-2xl rounded-tl-sm bg-surface-raised px-4 py-2.5 text-sm text-text-muted">
-								Done - logged ₹250 under Food for today.
-								<span className="mt-2 flex w-fit items-center gap-1 rounded-full border border-income/40 bg-income-bg px-2.5 py-0.5 text-xs text-income">
-									✓ Added expense ₹250 - lunch (Food)
-								</span>
-							</div>
-							<div className="self-end max-w-[80%] rounded-2xl rounded-tr-sm bg-accent-dim px-4 py-2.5 text-sm">
-								how much did I spend on food this month?
-							</div>
-							<div className="self-start max-w-[85%] rounded-2xl rounded-tl-sm bg-surface-raised px-4 py-2.5 text-sm text-text-muted">
-								You've spent ₹4,820 on Food this month across 14 transactions.
-							</div>
-						</div>
-					</div>
+					</p>
 				</div>
 			</section>
 
-			{/* How it works */}
-			<section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-				<h2 className="text-center text-2xl font-bold sm:text-3xl">How it works</h2>
-				<div className="mt-10 grid gap-6 sm:grid-cols-3">
-					{[
-						{
-							icon: faMicrophone,
-							title: "Say it or type it",
-							body: "Tell Fin \"120 for coffee\" by voice or chat - no forms, no dropdowns to hunt through.",
-						},
-						{
-							icon: faWandMagicSparkles,
-							title: "Fin logs it",
-							body: "It reads the amount, category and date, and records the transaction for you. Behind a month? Paste it all and import in one go.",
-						},
-						{
-							icon: faChartPie,
-							title: "See where money goes",
-							body: "A live dashboard and budgets show your spending by category, so nothing slips through.",
-						},
-					].map((step, i) => (
-						<div
-							key={i}
-							className="rounded-3xl border border-border bg-surface p-6 shadow-sm"
+			{/* What you can say - real phrasings, not generic feature cards */}
+			<section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+				<div className="max-w-xl">
+					<h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+						Talk to it like a person
+					</h2>
+					<p className="mt-3 text-text-muted">
+						No forms, no dropdowns to hunt through. Here&apos;s the kind of thing you
+						can just say.
+					</p>
+				</div>
+
+				<ul className="mt-10 divide-y divide-border border-y border-border">
+					{CAPABILITIES.map((c) => (
+						<li
+							key={c.say}
+							className="grid gap-3 py-5 sm:grid-cols-[minmax(0,20rem)_1fr] sm:items-center sm:gap-8"
 						>
-							<span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent-dim text-accent-glow">
-								<FontAwesomeIcon icon={step.icon} className="text-lg" />
+							<span className="w-fit rounded-2xl rounded-tl-sm bg-accent-dim px-4 py-2.5 text-sm font-medium text-foreground">
+								&ldquo;{c.say}&rdquo;
 							</span>
-							<h3 className="mt-4 text-lg font-semibold">{step.title}</h3>
-							<p className="mt-2 text-sm text-text-muted">{step.body}</p>
-						</div>
+							<span className="text-text-muted">{c.does}</span>
+						</li>
 					))}
-				</div>
+				</ul>
 			</section>
 
-			{/* Trust strip */}
-			<section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-				<div className="flex flex-col items-center gap-4 rounded-3xl border border-border bg-surface p-8 text-center shadow-sm">
-					<span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-dim text-accent-glow">
-						<FontAwesomeIcon icon={faShieldHalved} className="text-xl" />
+			{/* Trust - quiet and honest */}
+			<section className="mx-auto max-w-5xl px-4 pb-16 sm:px-6">
+				<div className="flex items-start gap-4 rounded-2xl border border-border bg-surface p-6">
+					<span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-dim text-accent-glow">
+						<FontAwesomeIcon icon={faLock} />
 					</span>
-					<h2 className="text-xl font-bold sm:text-2xl">Your data stays yours</h2>
-					<p className="max-w-xl text-sm text-text-muted">
-						FinAI never asks for or stores your bank login. It only records what you
-						enter or dictate. Read our{" "}
-						<Link to="/privacy" className="font-semibold text-accent-glow hover:underline">
+					<p className="text-sm leading-relaxed text-text-muted">
+						<span className="font-semibold text-foreground">
+							Fin never asks for your bank login.
+						</span>{" "}
+						It only records what you enter or dictate - nothing is pulled from your
+						accounts. More in the{" "}
+						<Link to="/privacy" className="font-semibold text-accent-glow underline">
 							privacy note
 						</Link>
 						.
@@ -162,20 +139,23 @@ const LandingPage = () => {
 				</div>
 			</section>
 
-			{/* CTA */}
-			<section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
-				<div className="flex flex-col items-center gap-5 rounded-3xl bg-accent px-6 py-12 text-center text-on-accent">
-					<h2 className="text-2xl font-bold sm:text-3xl">
-						Stop falling behind on your spending
+			{/* Closing */}
+			<section className="mx-auto max-w-5xl px-4 pb-24 sm:px-6">
+				<div className="flex flex-col items-start gap-6 rounded-3xl border border-border bg-surface p-8 sm:p-12">
+					<h2 className="font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+						Stop falling behind
+						<br />
+						<span className="text-accent-glow">on your own money.</span>
 					</h2>
-					<p className="max-w-lg text-on-accent/80">
-						Start logging the easy way. It takes seconds and it's free to try.
-					</p>
 					<Link
 						to="/signup"
-						className="inline-flex items-center gap-2 rounded-xl bg-background px-6 py-3 font-semibold text-foreground transition-transform hover:scale-[1.02]"
+						className="group inline-flex items-center gap-2 rounded-xl bg-accent px-7 py-3.5 font-semibold text-on-accent transition-all hover:brightness-95"
 					>
-						Create your account <FontAwesomeIcon icon={faArrowRight} />
+						Create your account
+						<FontAwesomeIcon
+							icon={faArrowRight}
+							className="transition-transform group-hover:translate-x-0.5"
+						/>
 					</Link>
 				</div>
 			</section>
@@ -195,9 +175,7 @@ const LandingPage = () => {
 							Sign up
 						</Link>
 					</div>
-					<p className="text-xs text-subtle">
-						© {new Date().getFullYear()} FinAI
-					</p>
+					<p className="text-xs text-subtle">© {new Date().getFullYear()} FinAI</p>
 				</div>
 			</footer>
 		</div>

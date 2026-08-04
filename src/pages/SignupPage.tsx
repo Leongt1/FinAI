@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useAuthStore } from "../store/authStore";
+import PublicTopBar from "../components/PublicTopBar";
 import type { Gender } from "../types";
 
 const SignupPage = () => {
+	const user = useAuthStore((s) => s.user);
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -13,6 +16,10 @@ const SignupPage = () => {
 	const [localError, setLocalError] = useState<string | null>(null);
 
 	const { handleSignup, isLoading, error } = useAuth();
+
+	if (user) {
+		return <Navigate to="/dashboard" replace />;
+	}
 
 	async function handleSubmit(e: React.SyntheticEvent) {
 		e.preventDefault();
@@ -39,9 +46,9 @@ const SignupPage = () => {
 	}
 
 	return (
-		<div
-			className="min-h-screen bg-bg flex items-center justify-center bg-cover bg-center bg-no-repeat px-4"
-		>
+		<div className="min-h-dvh flex flex-col bg-bg">
+			<PublicTopBar variant="signup" />
+			<div className="flex flex-1 items-center justify-center px-4 py-10">
 			{/* Card */}
 			<div className="bg-surface rounded-2xl shadow-md p-6 sm:p-10 w-full max-w-md flex flex-col items-center justify-center border border-border">
 				<h1 className="text-2xl font-bold text-text-muted">Signup</h1>
@@ -119,8 +126,8 @@ const SignupPage = () => {
 					</Link>
 				</p>
 			</div>
+			</div>
 		</div>
-		
 	);
 };
 
