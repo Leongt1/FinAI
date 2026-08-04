@@ -1,8 +1,9 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRobot, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
+import { faRobot, faFaceSmile, faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import DashboardLayout from "../components/DashboardLayout";
 import { useAI } from "../hooks/useAI";
+import { useSpeechInput } from "../hooks/useSpeechInput";
 import type { AIChatTurn } from "../types";
 
 // lazy so the emoji dataset only loads when the picker is first opened
@@ -34,6 +35,29 @@ const AssistantPage = () => {
 	const [showEmoji, setShowEmoji] = useState(false);
 	const bottomRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
+	// text already in the box when dictation starts, so speech appends to it
+	const speechBaseRef = useRef("");
+
+	const {
+		supported: voiceSupported,
+		listening,
+		start: startVoice,
+		stop: stopVoice,
+	} = useSpeechInput({
+		onResult: (transcript) => {
+			const base = speechBaseRef.current;
+			setDraft(base ? `${base} ${transcript}` : transcript);
+		},
+	});
+
+	const toggleVoice = () => {
+		if (listening) {
+			stopVoice();
+			return;
+		}
+		speechBaseRef.current = draft.trim();
+		startVoice();
+	};
 
 	useEffect(() => {
 		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -62,6 +86,9 @@ const AssistantPage = () => {
 	const handleSend = async () => {
 		const message = draft.trim();
 		if (!message || isThinking || outOfCredits) return;
+
+		// stop dictation so late transcript doesn't refill the cleared box
+		if (listening) stopVoice();
 
 		// history = everything said so far (successful turns only)
 		const history: AIChatTurn[] = messages
@@ -211,9 +238,35 @@ const AssistantPage = () => {
 									if (e.key === "Enter") handleSend();
 								}}
 								disabled={outOfCredits || isThinking}
-								placeholder={outOfCredits ? "You're out of credits" : "Message Fin…"}
-								className="w-full rounded-2xl border border-border bg-surface py-3 pl-12 pr-4 text-sm text-foreground transition-colors focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:opacity-50 disabled:cursor-not-allowed"
+								placeholder={
+									outOfCredits
+										? "You're out of credits"
+										: listening
+											? "Listening… speak now"
+											: "Message Fin…"
+								}
+								className={`w-full rounded-2xl border bg-surface py-3 pl-12 text-sm text-foreground transition-colors focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:opacity-50 disabled:cursor-not-allowed ${
+									voiceSupported ? "pr-12" : "pr-4"
+								} ${listening ? "border-accent" : "border-border"}`}
 							/>
+
+							{/* Voice dictation toggle (hidden where the browser has no Speech API) */}
+							{voiceSupported && (
+								<button
+									type="button"
+									onClick={toggleVoice}
+									disabled={outOfCredits || isThinking}
+									aria-label={listening ? "Stop dictation" : "Dictate with voice"}
+									aria-pressed={listening}
+									className={`absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ${
+										listening
+											? "bg-accent text-on-accent animate-pulse"
+											: "text-text-muted hover:bg-surface-raised hover:text-foreground"
+									}`}
+								>
+									<FontAwesomeIcon icon={faMicrophone} className="text-lg" />
+								</button>
+							)}
 						</div>
 						<button
 							onClick={handleSend}
