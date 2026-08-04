@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useBudgets } from "../hooks/useBudgets";
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 import type {
 	Budget,
 	BudgetKind,
@@ -157,6 +158,8 @@ const BudgetModal = ({
 			onClose();
 		}
 	};
+
+	useBodyScrollLock(isOpen);
 
 	if (!isOpen) return null;
 

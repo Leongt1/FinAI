@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "./Sidebar";
 import Logo from "./Logo";
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 
 interface DashboardLayoutProps {
 	children: React.ReactNode;
@@ -10,6 +11,10 @@ interface DashboardLayoutProps {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+	// lock page scroll while the mobile drawer is open (no-op on desktop, where
+	// it never opens)
+	useBodyScrollLock(isSidebarOpen);
 
 	return (
 		// The page itself scrolls (scrollbar at the viewport edge); the sidebar
