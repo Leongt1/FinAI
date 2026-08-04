@@ -1,8 +1,9 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRobot, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
+import { faRobot, faFaceSmile, faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import DashboardLayout from "../components/DashboardLayout";
 import { useAI } from "../hooks/useAI";
+import { useSpeechInput } from "../hooks/useSpeechInput";
 import type { AIChatTurn } from "../types";
 
 // lazy so the emoji dataset only loads when the picker is first opened
@@ -33,11 +34,46 @@ const AssistantPage = () => {
 	const [draft, setDraft] = useState("");
 	const [showEmoji, setShowEmoji] = useState(false);
 	const bottomRef = useRef<HTMLDivElement>(null);
-	const inputRef = useRef<HTMLInputElement>(null);
+	const inputRef = useRef<HTMLTextAreaElement>(null);
+	// text already in the box when dictation starts, so speech appends to it
+	const speechBaseRef = useRef("");
+
+	const {
+		supported: voiceSupported,
+		listening,
+		start: startVoice,
+		stop: stopVoice,
+	} = useSpeechInput({
+		onResult: (transcript) => {
+			const base = speechBaseRef.current;
+			setDraft(base ? `${base} ${transcript}` : transcript);
+		},
+	});
+
+	const toggleVoice = () => {
+		if (listening) {
+			stopVoice();
+			return;
+		}
+		speechBaseRef.current = draft.trim();
+		startVoice();
+	};
 
 	useEffect(() => {
 		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [messages, isThinking]);
+
+	// grow the composer with its content (Claude/ChatGPT style): reset to auto so
+	// it can shrink, then match scrollHeight up to a cap, after which it scrolls.
+	// scrollHeight excludes the border, so add it back (border-box) to avoid a
+	// 1-2px scroll on a single line.
+	useEffect(() => {
+		const el = inputRef.current;
+		if (!el) return;
+		el.style.height = "auto";
+		const borderY = el.offsetHeight - el.clientHeight;
+		el.style.height = `${Math.min(el.scrollHeight + borderY, 160)}px`;
+	}, [draft]);
 
 	const isUnlimited = credits !== undefined && credits < 0;
 	const outOfCredits = credits === 0;
@@ -62,6 +98,9 @@ const AssistantPage = () => {
 	const handleSend = async () => {
 		const message = draft.trim();
 		if (!message || isThinking || outOfCredits) return;
+
+		// stop dictation so late transcript doesn't refill the cleared box
+		if (listening) stopVoice();
 
 		// history = everything said so far (successful turns only)
 		const history: AIChatTurn[] = messages
@@ -183,7 +222,7 @@ const AssistantPage = () => {
 
 				{/* Composer - pinned to the bottom of the screen */}
 				<div className="shrink-0 border-t border-border pt-3">
-					<div className="mx-auto flex max-w-3xl gap-2">
+					<div className="mx-auto flex max-w-3xl items-end gap-2">
 						<div className="relative flex-1">
 							{/* Emoji picker toggle */}
 							<button
@@ -191,7 +230,7 @@ const AssistantPage = () => {
 								onClick={() => setShowEmoji((s) => !s)}
 								disabled={outOfCredits || isThinking}
 								aria-label="Insert emoji"
-								className="absolute left-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-surface-raised hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+								className="absolute left-1.5 bottom-1.5 flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-surface-raised hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
 							>
 								<FontAwesomeIcon icon={faFaceSmile} className="text-lg" />
 							</button>
@@ -202,23 +241,53 @@ const AssistantPage = () => {
 								</Suspense>
 							)}
 
-							<input
+							<textarea
 								ref={inputRef}
-								type="text"
+								rows={1}
 								value={draft}
 								onChange={(e) => setDraft(e.target.value)}
 								onKeyDown={(e) => {
-									if (e.key === "Enter") handleSend();
+									// Enter sends; Shift+Enter inserts a newline (Claude/ChatGPT style)
+									if (e.key === "Enter" && !e.shiftKey) {
+										e.preventDefault();
+										handleSend();
+									}
 								}}
 								disabled={outOfCredits || isThinking}
-								placeholder={outOfCredits ? "You're out of credits" : "Message Fin…"}
-								className="w-full rounded-2xl border border-border bg-surface py-3 pl-12 pr-4 text-sm text-foreground transition-colors focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:opacity-50 disabled:cursor-not-allowed"
+								placeholder={
+									outOfCredits
+										? "You're out of credits"
+										: listening
+											? "Listening… speak now"
+											: "Message Fin…"
+								}
+								className={`block w-full resize-none rounded-2xl border bg-surface py-3 pl-12 text-sm leading-6 text-foreground transition-colors focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:opacity-50 disabled:cursor-not-allowed ${
+									voiceSupported ? "pr-12" : "pr-4"
+								} ${listening ? "border-accent" : "border-border"}`}
 							/>
+
+							{/* Voice dictation toggle (hidden where the browser has no Speech API) */}
+							{voiceSupported && (
+								<button
+									type="button"
+									onClick={toggleVoice}
+									disabled={outOfCredits || isThinking}
+									aria-label={listening ? "Stop dictation" : "Dictate with voice"}
+									aria-pressed={listening}
+									className={`absolute right-1.5 bottom-1.5 flex h-9 w-9 items-center justify-center rounded-full transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ${
+										listening
+											? "bg-accent text-on-accent animate-pulse"
+											: "text-text-muted hover:bg-surface-raised hover:text-foreground"
+									}`}
+								>
+									<FontAwesomeIcon icon={faMicrophone} className="text-lg" />
+								</button>
+							)}
 						</div>
 						<button
 							onClick={handleSend}
 							disabled={outOfCredits || isThinking || !draft.trim()}
-							className="rounded-2xl bg-accent px-6 font-semibold text-on-accent transition-all hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+							className="h-12 shrink-0 rounded-2xl bg-accent px-6 font-semibold text-on-accent transition-all hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
 						>
 							Send
 						</button>
