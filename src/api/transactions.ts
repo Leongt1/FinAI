@@ -37,6 +37,22 @@ export const createTransaction = async (
 	});
 };
 
+// Bulk import commit: create many transactions from the reviewed list. Each
+// row is an independent create (its own idempotency key), so a bad row fails on
+// its own without dropping the others. Returns the indexes that failed so the
+// UI can keep those rows for the user to fix and retry.
+export const createTransactions = async (
+	inputs: CreateTransactionRequest[],
+): Promise<{ failedIndexes: number[] }> => {
+	const results = await Promise.allSettled(
+		inputs.map((input) => createTransaction(input)),
+	);
+	const failedIndexes = results.flatMap((r, idx) =>
+		r.status === "rejected" ? [idx] : [],
+	);
+	return { failedIndexes };
+};
+
 export const getTransactionByID = async (id: string): Promise<Transaction> => {
 	const { data } = await api.get<Transaction>(`/transactions/${id}`);
 	return data;
