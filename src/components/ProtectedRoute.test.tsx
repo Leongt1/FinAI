@@ -65,6 +65,10 @@ describe("ProtectedRoute", () => {
 	it("shows a loading state while the session restores", () => {
 		useAuthStore.setState({ user: null, isLoading: true });
 		renderAt("/profile");
-		expect(screen.getByText(/Loading/)).toBeInTheDocument();
+		// the loader (TipsLoader) exposes role="status"; the protected page must
+		// not render yet, and we must not have bounced to /login prematurely
+		expect(screen.getByRole("status")).toBeInTheDocument();
+		expect(screen.queryByText("profile page")).not.toBeInTheDocument();
+		expect(screen.queryByText("login page")).not.toBeInTheDocument();
 	});
 });
