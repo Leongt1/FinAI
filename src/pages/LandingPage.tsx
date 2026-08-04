@@ -4,6 +4,7 @@ import { faArrowRight, faLock } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../components/Logo";
 import PublicTopBar from "../components/PublicTopBar";
 import HeroDemo from "../components/landing/HeroDemo";
+import TipsLoader from "../components/TipsLoader";
 import { useAuthStore } from "../store/authStore";
 
 // What you can actually say to Fin, and what it does - the value shown through
@@ -26,7 +27,13 @@ const CAPABILITIES: { say: string; does: string }[] = [
 
 const LandingPage = () => {
 	const user = useAuthStore((s) => s.user);
+	const isLoading = useAuthStore((s) => s.isLoading);
+
+	// already signed in -> straight to the app
 	if (user) return <Navigate to="/dashboard" replace />;
+	// a returning visitor's session is still being restored: show the splash
+	// rather than flashing the marketing page before redirecting them in
+	if (isLoading) return <TipsLoader fullscreen label="Signing you in" />;
 
 	return (
 		<div className="min-h-dvh overflow-x-clip bg-bg text-foreground">
