@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTransactions } from "../hooks/useTransactions";
 import { useCategories } from "../hooks/useCategories";
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 
 interface OnboardingModalProps {
 	isOpen: boolean;
@@ -14,6 +15,8 @@ const OnboardingModal = ({ isOpen, onDone }: OnboardingModalProps) => {
 	const { categories } = useCategories();
 	const [amount, setAmount] = useState("");
 	const [error, setError] = useState<string | null>(null);
+
+	useBodyScrollLock(isOpen);
 
 	if (!isOpen) return null;
 
