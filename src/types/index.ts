@@ -131,6 +131,26 @@ export interface AICreditsResponse {
 	credits: number;
 }
 
+// Bulk import: candidate transactions parsed from pasted text (not yet saved).
+// `category` is the model's suggested name; the client resolves it to an id and
+// lets the user fix it before committing.
+export interface ExtractedTransaction {
+	amount: number;
+	kind: TransactionType;
+	category: string;
+	date: string;
+	description: string;
+}
+
+export interface AIExtractRequest {
+	text: string;
+}
+
+export interface AIExtractResponse {
+	transactions: ExtractedTransaction[];
+	credits_remaining: number;
+}
+
 // Budget
 export type BudgetType = "overall" | "category";
 export type BudgetKind = "expense" | "savings";
