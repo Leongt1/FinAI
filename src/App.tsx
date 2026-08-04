@@ -14,6 +14,8 @@ import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import BudgetsPage from "./pages/BudgetsPage";
 import AssistantPage from "./pages/AssistantPage";
+import LandingPage from "./pages/LandingPage";
+import PrivacyPage from "./pages/PrivacyPage";
 import ToastContainer from "./components/ToastContainer";
 import TipsLoader from "./components/TipsLoader";
 
@@ -34,6 +36,8 @@ const App = () => {
 		<ToastContainer />
 		<Routes>
 			{/* Public routes */}
+			<Route path="/" element={<LandingPage />} />
+			<Route path="/privacy" element={<PrivacyPage />} />
 			<Route path="/login" element={<LoginPage />} />
 			<Route path="/signup" element={<SignupPage />} />
 			<Route path="/reset-password" element={<ResetPasswordPage />} />
