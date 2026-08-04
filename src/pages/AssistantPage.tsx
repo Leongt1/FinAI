@@ -34,7 +34,7 @@ const AssistantPage = () => {
 	const [draft, setDraft] = useState("");
 	const [showEmoji, setShowEmoji] = useState(false);
 	const bottomRef = useRef<HTMLDivElement>(null);
-	const inputRef = useRef<HTMLInputElement>(null);
+	const inputRef = useRef<HTMLTextAreaElement>(null);
 	// text already in the box when dictation starts, so speech appends to it
 	const speechBaseRef = useRef("");
 
@@ -62,6 +62,18 @@ const AssistantPage = () => {
 	useEffect(() => {
 		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [messages, isThinking]);
+
+	// grow the composer with its content (Claude/ChatGPT style): reset to auto so
+	// it can shrink, then match scrollHeight up to a cap, after which it scrolls.
+	// scrollHeight excludes the border, so add it back (border-box) to avoid a
+	// 1-2px scroll on a single line.
+	useEffect(() => {
+		const el = inputRef.current;
+		if (!el) return;
+		el.style.height = "auto";
+		const borderY = el.offsetHeight - el.clientHeight;
+		el.style.height = `${Math.min(el.scrollHeight + borderY, 160)}px`;
+	}, [draft]);
 
 	const isUnlimited = credits !== undefined && credits < 0;
 	const outOfCredits = credits === 0;
@@ -210,7 +222,7 @@ const AssistantPage = () => {
 
 				{/* Composer - pinned to the bottom of the screen */}
 				<div className="shrink-0 border-t border-border pt-3">
-					<div className="mx-auto flex max-w-3xl gap-2">
+					<div className="mx-auto flex max-w-3xl items-end gap-2">
 						<div className="relative flex-1">
 							{/* Emoji picker toggle */}
 							<button
@@ -218,7 +230,7 @@ const AssistantPage = () => {
 								onClick={() => setShowEmoji((s) => !s)}
 								disabled={outOfCredits || isThinking}
 								aria-label="Insert emoji"
-								className="absolute left-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-surface-raised hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+								className="absolute left-1.5 bottom-1.5 flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-surface-raised hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
 							>
 								<FontAwesomeIcon icon={faFaceSmile} className="text-lg" />
 							</button>
@@ -229,13 +241,17 @@ const AssistantPage = () => {
 								</Suspense>
 							)}
 
-							<input
+							<textarea
 								ref={inputRef}
-								type="text"
+								rows={1}
 								value={draft}
 								onChange={(e) => setDraft(e.target.value)}
 								onKeyDown={(e) => {
-									if (e.key === "Enter") handleSend();
+									// Enter sends; Shift+Enter inserts a newline (Claude/ChatGPT style)
+									if (e.key === "Enter" && !e.shiftKey) {
+										e.preventDefault();
+										handleSend();
+									}
 								}}
 								disabled={outOfCredits || isThinking}
 								placeholder={
@@ -245,7 +261,7 @@ const AssistantPage = () => {
 											? "Listening… speak now"
 											: "Message Fin…"
 								}
-								className={`w-full rounded-2xl border bg-surface py-3 pl-12 text-sm text-foreground transition-colors focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:opacity-50 disabled:cursor-not-allowed ${
+								className={`block w-full resize-none rounded-2xl border bg-surface py-3 pl-12 text-sm leading-6 text-foreground transition-colors focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:opacity-50 disabled:cursor-not-allowed ${
 									voiceSupported ? "pr-12" : "pr-4"
 								} ${listening ? "border-accent" : "border-border"}`}
 							/>
@@ -258,7 +274,7 @@ const AssistantPage = () => {
 									disabled={outOfCredits || isThinking}
 									aria-label={listening ? "Stop dictation" : "Dictate with voice"}
 									aria-pressed={listening}
-									className={`absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ${
+									className={`absolute right-1.5 bottom-1.5 flex h-9 w-9 items-center justify-center rounded-full transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ${
 										listening
 											? "bg-accent text-on-accent animate-pulse"
 											: "text-text-muted hover:bg-surface-raised hover:text-foreground"
@@ -271,7 +287,7 @@ const AssistantPage = () => {
 						<button
 							onClick={handleSend}
 							disabled={outOfCredits || isThinking || !draft.trim()}
-							className="rounded-2xl bg-accent px-6 font-semibold text-on-accent transition-all hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+							className="h-12 shrink-0 rounded-2xl bg-accent px-6 font-semibold text-on-accent transition-all hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
 						>
 							Send
 						</button>
