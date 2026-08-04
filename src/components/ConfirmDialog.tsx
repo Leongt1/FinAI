@@ -1,3 +1,5 @@
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
+
 type ConfirmDialogProps = {
 	isOpen: boolean;
 	title: string;
@@ -17,6 +19,8 @@ const ConfirmDialog = ({
 	onCancel,
 	onConfirm,
 }: ConfirmDialogProps) => {
+	useBodyScrollLock(isOpen);
+
 	if (!isOpen) return null;
 
 	return (

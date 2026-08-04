@@ -8,6 +8,7 @@ import type {
 import { useState } from "react";
 import CalendarInput from "./CalendarInput";
 import CategoryDropdown from "./CategoryDropdown";
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 
 interface TransactionModalProps {
 	isOpen: boolean;
@@ -94,6 +95,8 @@ const TransactionModal = ({
 		}
 		onClose();
 	};
+
+	useBodyScrollLock(isOpen);
 
 	if (!isOpen) return null;
 
