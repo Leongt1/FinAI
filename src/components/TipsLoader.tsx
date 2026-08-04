@@ -21,7 +21,7 @@ const TipsLoader = ({ fullscreen = false, label = "Getting things ready" }: Tips
 	const [i, setI] = useState(() => Math.floor(Math.random() * TIPS.length));
 
 	useEffect(() => {
-		const id = setInterval(() => setI((prev) => (prev + 1) % TIPS.length), 3200);
+		const id = setInterval(() => setI((prev) => (prev + 1) % TIPS.length), 8000);
 		return () => clearInterval(id);
 	}, []);
 
