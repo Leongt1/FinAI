@@ -9,6 +9,7 @@ import {
 import type { Category } from "../types";
 import { useAI } from "../hooks/useAI";
 import { useTransactions } from "../hooks/useTransactions";
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 import { toast } from "../store/toastStore";
 import CategoryDropdown from "./CategoryDropdown";
 import {
@@ -42,6 +43,8 @@ const BulkImportModal = ({ isOpen, onClose, categories }: BulkImportModalProps) 
 	const [phase, setPhase] = useState<"input" | "review">("input");
 	const [text, setText] = useState("");
 	const [rows, setRows] = useState<ReviewRow[]>([]);
+
+	useBodyScrollLock(isOpen); // freeze the page behind the modal while open
 
 	const reset = () => {
 		setPhase("input");

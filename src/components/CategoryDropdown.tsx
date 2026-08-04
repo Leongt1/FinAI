@@ -48,7 +48,9 @@ const CategoryDropdown = ({
 		const el = triggerRef.current;
 		if (!el) return;
 		const rect = el.getBoundingClientRect();
-		const width = Math.max(rect.width, 256);
+		// wider than the trigger so pills wrap 2+ per row (like the normal
+		// selector) instead of stacking into a single column
+		const width = Math.max(rect.width, 336);
 		const maxLeft = window.innerWidth - width - 16;
 		setCoords({
 			top: rect.bottom + 4,
