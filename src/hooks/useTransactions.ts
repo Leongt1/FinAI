@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
 	createTransaction,
+	createTransactions,
 	deleteTransaction,
 	listTransactions,
 	listTransactionsPage,
@@ -164,6 +165,19 @@ export const useTransactions = (filters?: TransactionFilter) => {
 		},
 	});
 
+	// bulk create (import): fire the reviewed rows as independent creates, then
+	// refresh once. No optimistic insert - the import modal closes on success
+	// and the invalidation below repopulates the list/dashboard/budgets.
+	const bulkCreateMutation = useMutation({
+		mutationFn: (inputs: CreateTransactionRequest[]) =>
+			createTransactions(inputs),
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ["transactions"] });
+			queryClient.invalidateQueries({ queryKey: ["categories"] });
+			queryClient.invalidateQueries({ queryKey: ["budgets"] });
+		},
+	});
+
 	// delete mutation
 	const deleteMutation = useMutation({
 		mutationFn: (id: string) => deleteTransaction(id),
@@ -211,10 +225,12 @@ export const useTransactions = (filters?: TransactionFilter) => {
 			options?: { onSuccess?: () => void },
 		) => updateMutation.mutate({ id, input }, { onSuccess: options?.onSuccess }),
 		deleteTransaction: (id: string) => deleteMutation.mutate(id),
+		bulkCreate: bulkCreateMutation.mutateAsync,
 
 		isCreating: createMutation.isPending,
 		isUpdating: updateMutation.isPending,
 		isDeleting: deleteMutation.isPending,
+		isBulkCreating: bulkCreateMutation.isPending,
 
 		createError: createMutation.error,
 		updateError: updateMutation.error,
