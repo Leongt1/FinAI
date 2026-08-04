@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore, getSessionHint } from "../store/authStore";
 import { toast } from "../store/toastStore";
 import { login, logout, refresh, signup } from "../api/auth";
 import { getUserById } from "../api/users";
@@ -16,8 +16,14 @@ export const useAuth = () => {
 	const queryClient = useQueryClient();
 	const { setUser, setIsLoading: setStoreLoading, clear } = useAuthStore();
 
-	// To restore session on app start-up
+	// To restore session on app start-up. Skip entirely when there's no session
+	// hint - an anonymous visitor shouldn't wait on (or wake) the backend just to
+	// read a public page.
 	const restoreSession = async () => {
+		if (!getSessionHint()) {
+			setStoreLoading(false);
+			return;
+		}
 		setStoreLoading(true);
 		try {
 			const data = await refresh();

@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useAuth } from "./hooks/useAuth";
-import { useAuthStore } from "./store/authStore";
 import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -14,26 +13,28 @@ import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import BudgetsPage from "./pages/BudgetsPage";
 import AssistantPage from "./pages/AssistantPage";
+import LandingPage from "./pages/LandingPage";
+import PrivacyPage from "./pages/PrivacyPage";
 import ToastContainer from "./components/ToastContainer";
-import TipsLoader from "./components/TipsLoader";
 
 const App = () => {
 	const { restoreSession } = useAuth();
-	const { isLoading } = useAuthStore();
 
+	// Restore any existing session in the background. Public routes (landing,
+	// login, signup) render immediately; only ProtectedRoute waits for this to
+	// resolve - so a logged-out visitor never waits on an auth check (or a cold
+	// backend) just to read the landing page.
 	useEffect(() => {
 		restoreSession();
 	}, []);
-
-	if (isLoading) {
-		return <TipsLoader fullscreen label="Signing you in" />;
-	}
 
 	return (
 		<>
 		<ToastContainer />
 		<Routes>
 			{/* Public routes */}
+			<Route path="/" element={<LandingPage />} />
+			<Route path="/privacy" element={<PrivacyPage />} />
 			<Route path="/login" element={<LoginPage />} />
 			<Route path="/signup" element={<SignupPage />} />
 			<Route path="/reset-password" element={<ResetPasswordPage />} />
