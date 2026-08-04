@@ -1,9 +1,12 @@
 import { useMemo, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
 import DashboardLayout from "../components/DashboardLayout";
 import type { Transaction, TransactionFilter } from "../types";
 import { useTransactions, useTransactionsPage } from "../hooks/useTransactions";
 import { useCategories } from "../hooks/useCategories";
 import TransactionModal from "../components/TransactionModal";
+import BulkImportModal from "../components/BulkImportModal";
 import CategoryDropdown from "../components/CategoryDropdown";
 import TitleText from "../components/TitleText";
 import ConfirmDialog from "../components/ConfirmDialog";
@@ -55,6 +58,7 @@ const TransactionPage = () => {
 		"All",
 	);
 	const [isModelOpen, setIsModelOpen] = useState(false);
+	const [isImportOpen, setIsImportOpen] = useState(false);
 	const [selectedTransaction, setSelectedTransaction] = useState<
 		Transaction | undefined
 	>(undefined);
@@ -134,7 +138,16 @@ const TransactionPage = () => {
 		<DashboardLayout>
 			<div className="w-full h-full">
 				{/* Header */}
-				<TitleText title="Transactions" />
+				<div className="flex flex-wrap items-center justify-between gap-3">
+					<TitleText title="Transactions" />
+					<button
+						onClick={() => setIsImportOpen(true)}
+						className="flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-text-muted transition-colors hover:border-border-strong hover:text-foreground cursor-pointer"
+					>
+						<FontAwesomeIcon icon={faWandMagicSparkles} className="text-accent-glow" />
+						Import with Fin
+					</button>
+				</div>
 				{/* Add transaction Btn */}
 				<div className="fixed right-4 bottom-4 sm:right-10 sm:bottom-10 z-20 flex items-center gap-2">
 					{showToolTip && (
@@ -424,6 +437,11 @@ const TransactionPage = () => {
 				onClose={handleClose}
 				categories={categories ?? []}
 				transaction={selectedTransaction}
+			/>
+			<BulkImportModal
+				isOpen={isImportOpen}
+				onClose={() => setIsImportOpen(false)}
+				categories={categories ?? []}
 			/>
 			<ConfirmDialog
 				isOpen={!!transactionToDelete}

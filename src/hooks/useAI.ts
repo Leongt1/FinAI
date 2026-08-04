@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCredits, postChat } from "../api/ai";
-import type { AIChatRequest } from "../types";
+import { getCredits, postChat, postExtract } from "../api/ai";
+import type { AIChatRequest, AIExtractRequest } from "../types";
 import { toast } from "../store/toastStore";
 
 export const useAI = () => {
@@ -26,10 +26,21 @@ export const useAI = () => {
 		onError: () => toast.error("The assistant couldn't answer - try again later"),
 	});
 
+	// bulk import: parse pasted text into candidate transactions (nothing saved
+	// yet). A credit is spent server-side, so mirror the new balance into cache.
+	const extractMutation = useMutation({
+		mutationFn: (input: AIExtractRequest) => postExtract(input),
+		onSuccess: (data) => {
+			queryClient.setQueryData(["ai", "credits"], data.credits_remaining);
+		},
+	});
+
 	return {
 		credits,
 		isLoadingCredits,
 		sendMessage: chatMutation.mutateAsync,
 		isThinking: chatMutation.isPending,
+		extractTransactions: extractMutation.mutateAsync,
+		isExtracting: extractMutation.isPending,
 	};
 };
