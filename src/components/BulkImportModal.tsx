@@ -222,6 +222,7 @@ const BulkImportModal = ({ isOpen, onClose, categories }: BulkImportModalProps) 
 															value={row.categoryId}
 															onChange={(value) => updateRow(i, { categoryId: value })}
 															placeholder="Pick category"
+															menuInPortal
 														/>
 													</div>
 												</td>
