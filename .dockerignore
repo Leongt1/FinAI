@@ -1,0 +1,11 @@
+# node_modules is reinstalled inside the image via `npm ci`; never copy the host
+# copy (it's huge and may be platform-specific). dist is rebuilt in the image.
+# .env* is excluded so ONLY the VITE_API_URL build ARG decides the API base URL.
+node_modules
+dist
+.env
+.env.*
+.git
+.gitignore
+Dockerfile
+.dockerignore
